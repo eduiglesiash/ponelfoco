@@ -1,0 +1,66 @@
+---
+/** Plano de una línea (un principio WCAG): tramos por pauta y una estación por criterio. */
+import LevelBadge from "./LevelBadge.astro";
+import { CRITERIOS, PAUTAS, obsoleto, pauta, slug } from "../data/criterios";
+
+interface Props {
+  /** Número del principio: "1"…"4" */
+  n: string;
+  /** Criterio de la página actual, que se marca como «Estás aquí» */
+  current?: string;
+  /** Versión del listado: niveles y novedades visibles, AAA ocultos al inicio y datos para el filtro */
+  listado?: boolean;
+  /** Prefijo de ids, para poder pintar la misma línea dos veces en una página */
+  idPrefix?: string;
+}
+
+const { n, current, listado = false, idPrefix = "" } = Astro.props;
+
+/** Texto normalizado (minúsculas, sin tildes) para el buscador */
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+const tramos = Object.keys(PAUTAS)
+  .filter((p) => p[0] === n)
+  .map((p) => ({ id: p, items: CRITERIOS.filter((c) => pauta(c.id) === p) }));
+const Zone = listado ? "h3" : "p";
+---
+
+<div class:list={["metro-track", `linea-${n}`]}>
+  {
+    tramos.map((t) => (
+      <div data-zone>
+        <Zone class="metro-zone" id={`${idPrefix}z-${slug(t.id)}`}>
+          {`${t.id} ${PAUTAS[t.id]}`}
+        </Zone>
+        <ol aria-labelledby={`${idPrefix}z-${slug(t.id)}`}>
+          {t.items.map((c) => (
+            <li
+              class="metro-stop"
+              data-crit={listado ? "" : undefined}
+              data-lv={c.nivel}
+              data-new={c.nuevo ? "1" : undefined}
+              data-obsoleto={obsoleto(c.id) ? "" : undefined}
+              data-q={listado ? norm(Object.values(c).join(" ")) : undefined}
+              hidden={listado && c.nivel === "AAA"}
+            >
+              <a href={`/criterios/${slug(c.id)}/`} aria-current={c.id === current ? "page" : undefined}>
+                <span class="metro-num">{c.id}</span>
+                <span class="metro-name">
+                  {c.nombre}
+                  {listado && c.nuevo && <span class="badge-new ml-1.5 inline-block align-[.1em]">Nuevo</span>}
+                  {c.id === current && <span class="block text-caption font-bold text-muted">Estás aquí</span>}
+                </span>
+                {listado && (
+                  <span class="flex flex-none flex-wrap justify-end gap-1.5 pt-0.5">
+                    {obsoleto(c.id) ? <span class="lv lv-AAA">Eliminado</span> : <LevelBadge nivel={c.nivel} />}
+                  </span>
+                )}
+                {!listado && c.nivel === "AAA" && <span class="pt-0.5 font-mono text-caption text-muted">AAA</span>}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))
+  }
+</div>

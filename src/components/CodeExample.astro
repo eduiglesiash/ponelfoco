@@ -1,0 +1,35 @@
+---
+import { Code } from "astro:components";
+import Icon from "./Icon.astro";
+
+type Lang = "html" | "css" | "js" | "astro" | "txt";
+
+interface Props {
+  code: string;
+  lang: Lang;
+  /** bien: ejemplo correcto · mal: ejemplo que incumple · neutro: sin valoración */
+  tone?: "bien" | "mal" | "neutro";
+  /** Texto de la etiqueta; por defecto según el tono */
+  label?: string;
+}
+
+const { code, lang, tone = "neutro", label } = Astro.props;
+const LANG: Record<Lang, string> = { html: "HTML", css: "CSS", js: "JavaScript", astro: "Astro", txt: "Texto" };
+const text = label ?? (tone === "bien" ? "Correcto" : tone === "mal" ? "Incorrecto" : LANG[lang]);
+---
+
+<figure class="m-0 min-w-0">
+  <figcaption
+    class:list={[
+      "flex items-center gap-2 rounded-t-md px-4 py-2 text-[.88rem] font-bold",
+      tone === "bien" && "bg-ok-soft text-ok",
+      tone === "mal" && "bg-ko-soft text-ko",
+      tone === "neutro" && "bg-line text-ink",
+    ]}
+  >
+    {tone !== "neutro" && <Icon name={tone === "bien" ? "check" : "cross"} size={16} />}
+    {text}
+    {tone !== "neutro" && <span class="ml-auto font-mono font-semibold">{LANG[lang]}</span>}
+  </figcaption>
+  <Code code={code.trim()} lang={lang === "txt" ? "plaintext" : lang} theme="css-variables" wrap />
+</figure>

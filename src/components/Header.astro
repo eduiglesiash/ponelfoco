@@ -1,0 +1,128 @@
+---
+import { SECCIONES } from "../data/navegacion";
+
+const path = Astro.url.pathname.replace(/\/?$/, "/");
+---
+
+<header class="z-50 bg-sign text-sign-ink md:sticky md:top-[env(safe-area-inset-top,0px)]">
+  <div class="wrap-wide flex flex-wrap items-center gap-x-2 gap-y-0 py-1.5 md:gap-x-4 md:py-2">
+    <a
+      href="/"
+      aria-current={path === "/" ? "page" : undefined}
+      class="flex min-h-11 items-center gap-2 font-display text-label font-extrabold tracking-[-0.01em] text-sign-ink no-underline md:gap-2.5 md:text-[1.15rem]"
+    >
+      <svg class="size-6 flex-none md:size-7" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <circle cx="14" cy="14" r="13" fill="none" stroke="currentColor" stroke-width="2"></circle>
+        <circle cx="14" cy="8" r="2.2" fill="currentColor"></circle>
+        <path
+          d="M7.5 11.5 L14 12.8 L20.5 11.5 M14 12.8 V17 M14 17 L10.5 22.5 M14 17 L17.5 22.5"
+          stroke="currentColor"
+          stroke-width="2"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      Accesibilidad en Claro
+    </a>
+    <nav aria-label="Principal" class="order-last w-full md:order-none md:ml-auto md:w-auto">
+      <ul class="-mx-2 -my-1 flex gap-0.5 overflow-x-auto px-2 py-2 pr-8 [mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] [scrollbar-width:none] md:mx-0 md:my-0 md:flex-wrap md:overflow-visible md:p-0 md:[mask-image:none]">
+        {
+          SECCIONES.map((s) => {
+            // "page" en la página exacta; "true" en sus subpáginas (p. ej. un criterio concreto)
+            const current = path === s.href ? "page" : path.startsWith(s.href) ? "true" : undefined;
+            return (
+              <li>
+                <a
+                  href={s.href}
+                  aria-current={current}
+                  class:list={[
+                    "relative flex min-h-11 items-center whitespace-nowrap rounded-md px-2.5 text-[.95rem] font-bold text-sign-ink no-underline hover:bg-sign-hover md:px-3 md:text-[.98rem]",
+                    current && "after:absolute after:inset-x-3 after:bottom-1 after:h-[3px] after:rounded-full after:bg-mark",
+                  ]}
+                >
+                  {s.label}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+    <div class="ml-auto flex items-center gap-2 md:ml-0">
+    <div role="group" aria-label="Tamaño del texto" class="flex items-center gap-1">
+      <button
+        type="button"
+        id="txtDown"
+        aria-label="Reducir tamaño del texto"
+        class="min-h-11 min-w-11 cursor-pointer rounded-md border border-sign-muted bg-transparent font-bold text-sign-ink hover:bg-sign-hover disabled:cursor-not-allowed disabled:opacity-50"
+      >A−</button>
+      <button
+        type="button"
+        id="txtUp"
+        aria-label="Aumentar tamaño del texto"
+        class="min-h-11 min-w-11 cursor-pointer rounded-md border border-sign-muted bg-transparent font-bold text-sign-ink hover:bg-sign-hover disabled:cursor-not-allowed disabled:opacity-50"
+      >A+</button>
+    </div>
+    <button
+      type="button"
+      id="themeToggle"
+      aria-label="Modo oscuro"
+      aria-pressed="false"
+      class="group flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-md border border-sign-muted bg-transparent text-sign-ink hover:bg-sign-hover"
+    >
+      <svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true">
+        <path
+          d="M18.5 13.2A7.8 7.8 0 1 1 8.8 3.5a6.2 6.2 0 0 0 9.7 9.7Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linejoin="round"
+          class="group-aria-pressed:fill-current"></path>
+      </svg>
+    </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  /* Tamaño de texto */
+  const sizes = [90, 100, 112.5, 125, 150, 175, 200];
+  let si = 1;
+  try {
+    const v = Number(localStorage.getItem("ac-size"));
+    if (sizes.includes(v)) si = sizes.indexOf(v);
+  } catch {}
+  const down = document.getElementById("txtDown") as HTMLButtonElement;
+  const up = document.getElementById("txtUp") as HTMLButtonElement;
+  function applySize() {
+    document.documentElement.style.setProperty("--root-size", sizes[si] + "%");
+    try {
+      localStorage.setItem("ac-size", String(sizes[si]));
+    } catch {}
+    down.disabled = si === 0;
+    up.disabled = si === sizes.length - 1;
+  }
+  down.addEventListener("click", () => {
+    if (si > 0) { si--; applySize(); }
+  });
+  up.addEventListener("click", () => {
+    if (si < sizes.length - 1) { si++; applySize(); }
+  });
+  applySize();
+
+  /* Modo oscuro: botón conmutador. Sin elección guardada sigue la preferencia del sistema. */
+  const themeBtn = document.getElementById("themeToggle") as HTMLButtonElement;
+  const systemDark = matchMedia("(prefers-color-scheme: dark)");
+  const isDark = () => (document.documentElement.dataset.theme ?? (systemDark.matches ? "dark" : "light")) === "dark";
+  const syncTheme = () => themeBtn.setAttribute("aria-pressed", String(isDark()));
+  themeBtn.addEventListener("click", () => {
+    const next = isDark() ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem("ac-theme", next);
+    } catch {}
+    syncTheme();
+  });
+  systemDark.addEventListener("change", syncTheme);
+  syncTheme();
+</script>

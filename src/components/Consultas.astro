@@ -1,0 +1,292 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+const suggestions = [
+  "Tengo una tienda online con 15 empleados, ¿qué debo hacer?",
+  "¿Qué diferencia hay entre WCAG 2.1 y 2.2 a efectos legales?",
+  "¿Cómo justifico una carga desproporcionada?",
+  "¿Un PDF publicado en mi web tiene que ser accesible?",
+];
+
+const faq = [
+  {
+    q: "¿Una web con contenido solo informativo está obligada?",
+    a: [
+      "Si eres una empresa privada y tu web no vende ni permite contratar servicios del Acta Europea, la Ley 11/2023 no te obliga. Sí te obliga si eres sector público (RD 1112/2018) o una gran empresa de los sectores de la Ley 56/2007.",
+      "Aun así, la accesibilidad evita discriminación, mejora el SEO y amplía tu público.",
+    ],
+  },
+  {
+    q: "¿Basta con instalar un plugin o «overlay» de accesibilidad?",
+    a: [
+      "No. Ninguna norma reconoce estas herramientas como forma de cumplir. Los requisitos se refieren al código y al contenido: textos alternativos, estructura, contraste, teclado, formularios… Un overlay puede incluso empeorar la experiencia con lectores de pantalla.",
+    ],
+  },
+  {
+    q: "¿Qué nivel de WCAG tengo que cumplir?",
+    a: [
+      "El nivel <b>AA</b>, que incluye todos los criterios A y AA. Hoy la referencia oficial es WCAG 2.1 (EN 301 549 v3.2.1), pero la v4.1.1 publicada en septiembre de 2026 pasa a WCAG 2.2. Lo prudente es trabajar ya con WCAG 2.2 AA.",
+    ],
+  },
+  {
+    q: "¿Quién vigila y sanciona?",
+    a: [
+      "En el sector público hace el seguimiento el Observatorio de Accesibilidad Web y las Unidades responsables de accesibilidad de cada administración. En el ámbito privado, las autoridades de vigilancia del mercado designadas, que pueden ser estatales o autonómicas según el sector.",
+    ],
+  },
+  {
+    q: "¿Los documentos PDF y Word también cuentan?",
+    a: [
+      "Sí. La EN 301 549 tiene un apartado específico para documentos. En el sector público quedan exentos los documentos ofimáticos publicados antes del 20 de septiembre de 2018, salvo que sean necesarios para un trámite activo.",
+    ],
+  },
+  {
+    q: "¿Y las apps móviles?",
+    a: [
+      "Sí, en ambos bloques. Las apps del sector público están obligadas desde junio de 2021, y las apps de comercio electrónico, banca o transporte entran en la Ley 11/2023.",
+    ],
+  },
+];
+---
+
+<section id="consultas" aria-labelledby="t-cons" class="border-t border-line py-[clamp(2.5rem,5vw,4rem)]">
+  <div class="wrap">
+    <SectionHead title="¿Te queda alguna duda?" id="t-cons">
+      El asistente responde dudas sobre la normativa española y europea de accesibilidad citando la norma aplicable. Debajo
+      tienes las preguntas más frecuentes ya resueltas.
+    </SectionHead>
+
+    <div id="consultas-grid" class="consultas grid items-start gap-5 min-[861px]:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <div
+        id="chat"
+        aria-labelledby="t-chat"
+        class="flex min-h-104 flex-col overflow-hidden rounded-lg border border-line bg-surface"
+      >
+        <h3 id="t-chat" class="sr-only">Asistente de normativa</h3>
+        <div
+          id="log"
+          role="log"
+          aria-live="polite"
+          aria-relevant="additions"
+          class="flex max-h-136 flex-1 flex-col gap-4 overflow-y-auto p-[1.1rem]"
+        >
+          <div class="md min-w-0 rounded-[14px_14px_14px_4px] bg-sunk px-4 py-3.5">
+            <p>
+              Hola. Puedo explicarte qué dice la ley sobre accesibilidad web, a quién obliga, plazos, sanciones o cómo
+              redactar la declaración de accesibilidad. ¿Qué quieres saber?
+            </p>
+          </div>
+        </div>
+        <div id="suggest" class="flex flex-wrap gap-2 px-[1.1rem] pb-4">
+          {suggestions.map((s) => <button type="button" class="chip">{s}</button>)}
+        </div>
+        <form id="composer" class="flex flex-wrap gap-2 border-t border-line bg-bg p-3.5">
+          <label for="q" class="sr-only">Tu pregunta</label>
+          <textarea
+            id="q"
+            rows="2"
+            placeholder="Escribe tu pregunta sobre la normativa…"
+            class="max-h-48 min-h-12 min-w-0 flex-[1_1_16rem] resize-y rounded-[10px] border-[1.5px] border-line bg-surface px-3 py-2.5 text-ink focus:border-ink"
+          ></textarea>
+          <button type="submit" id="send" class="btn btn-primary">Preguntar</button>
+          <button type="button" id="stop" class="btn btn-ghost" hidden>Detener</button>
+        </form>
+        <p id="off" hidden class="border-t border-line px-[1.1rem] py-4 text-[.95rem] text-muted">
+          El asistente no está disponible en esta vista. Tienes las respuestas a las dudas más habituales en las preguntas frecuentes.
+        </p>
+        <p class="border-t border-line px-[1.1rem] py-2.5 text-[.88rem] text-muted">
+          Información orientativa, no asesoramiento jurídico. Para un caso concreto, consulta con un profesional.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <h3 class="mb-1.5 text-subtitle">Preguntas frecuentes</h3>
+        {
+          faq.map((f) => (
+            <details class="group card">
+              <summary class="flex min-h-11 cursor-pointer items-start gap-2.5 px-4 py-3 font-bold">
+                <svg width="16" height="16" viewBox="0 0 22 22" aria-hidden="true" class="mt-1 flex-none transition-transform group-open:rotate-90">
+                  <path d="M8 4l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                {f.q}
+              </summary>
+              <div class="flex flex-col gap-2 pr-4 pb-4 pl-[2.3rem]">
+                {f.a.map((p) => <p set:html={p} />)}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { RULES } from "../data/asistente";
+
+  /* window.claude.use("sample") solo existe dentro de un artefacto de claude.ai */
+  type Sample = (
+    messages: { role: string; content: string }[],
+    opts: { cache: boolean; signal: AbortSignal; onText: (r: { text: string }) => void },
+  ) => Promise<{ text: string; truncated?: boolean }>;
+  type SampleError = { code?: string; text?: string };
+  const claude = (window as unknown as { claude?: { use?: (cap: string) => Promise<Sample> } }).claude;
+
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
+  /** Markdown mínimo: párrafos, listas, encabezados, negrita y cursiva */
+  function md(s: string) {
+    const lines = esc(s).split(/\n/);
+    let html = "";
+    let list: "ul" | "ol" | null = null;
+    const inl = (t: string) =>
+      t.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*(?!\s)(.+?)\*/g, "$1<em>$2</em>");
+    const close = () => {
+      if (list) { html += "</" + list + ">"; list = null; }
+    };
+    for (const l of lines) {
+      let m;
+      if ((m = l.match(/^\s*[-*•]\s+(.*)/))) {
+        if (list !== "ul") { close(); html += "<ul>"; list = "ul"; }
+        html += "<li>" + inl(m[1]) + "</li>";
+      } else if ((m = l.match(/^\s*\d+[.)]\s+(.*)/))) {
+        if (list !== "ol") { close(); html += "<ol>"; list = "ol"; }
+        html += "<li>" + inl(m[1]) + "</li>";
+      } else if ((m = l.match(/^#{1,6}\s+(.*)/))) {
+        close();
+        html += "<h4>" + inl(m[1]) + "</h4>";
+      } else if (l.trim() === "") {
+        close();
+      } else {
+        close();
+        html += "<p>" + inl(l) + "</p>";
+      }
+    }
+    close();
+    return html;
+  }
+
+  const ERR: Record<string, string> = {
+    not_granted: "Para usar el asistente hay que permitir que esta página consulte a Claude. Mientras tanto, revisa las preguntas frecuentes.",
+    sampling_disabled: "El asistente no está disponible para esta cuenta.",
+    rate_limited: "Has hecho muchas preguntas seguidas. Espera un momento y vuelve a intentarlo.",
+    session_expired: "Tu sesión ha caducado. Vuelve a iniciar sesión para seguir preguntando.",
+    refused: "No puedo responder a eso. Prueba a reformular la pregunta.",
+    prompt_too_large: "La conversación es demasiado larga. Recarga la página para empezar de nuevo.",
+  };
+  const DISABLING = ["not_granted", "sampling_disabled", "not_declared", "capability_disabled"];
+  const META = "mt-2.5 text-caption text-muted";
+
+  const turns: { role: string; content: string }[] = [];
+  let ctl: AbortController | null = null;
+  let busy = false;
+  let sample: Sample | null = null;
+
+  const log = document.getElementById("log")!;
+  const q = document.getElementById("q") as HTMLTextAreaElement;
+  const send = document.getElementById("send") as HTMLButtonElement;
+  const stop = document.getElementById("stop") as HTMLButtonElement;
+  const composer = document.getElementById("composer") as HTMLFormElement;
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>("#suggest .chip"));
+
+  function addMsg(role: "user" | "bot", html: string) {
+    const d = document.createElement("div");
+    d.className =
+      role === "user"
+        ? "max-w-[85%] self-end rounded-[14px_14px_4px_14px] bg-ink px-4 py-2.5 text-bg"
+        : "md min-w-0 rounded-[14px_14px_14px_4px] bg-sunk px-4 py-3.5";
+    d.innerHTML = html;
+    log.appendChild(d);
+    log.scrollTop = log.scrollHeight;
+    return d;
+  }
+  function setBusy(b: boolean) {
+    busy = b;
+    send.disabled = b;
+    stop.hidden = !b;
+    chips.forEach((c) => (c.disabled = b));
+  }
+  function disableChat() {
+    composer.hidden = true;
+    document.getElementById("suggest")!.hidden = true;
+    document.getElementById("off")!.hidden = false;
+    // Sin asistente, el panel se queda en una nota breve y las preguntas frecuentes pasan delante
+    document.getElementById("log")!.hidden = true;
+    document.getElementById("chat")!.classList.remove("min-h-104");
+    document.getElementById("consultas-grid")!.dataset.off = "";
+  }
+
+  async function ask(text: string) {
+    text = text.trim();
+    if (!text || busy || !sample) return;
+    addMsg("user", "<p>" + esc(text) + "</p>");
+    turns.push({ role: "user", content: text });
+    while (turns.length > 12) turns.splice(0, 2);
+    const bubble = addMsg("bot", '<p class="text-muted italic">Consultando la normativa…</p>');
+    setBusy(true);
+    ctl = new AbortController();
+    try {
+      const r = await sample([{ role: "user", content: RULES }, ...turns], {
+        cache: false,
+        signal: ctl.signal,
+        onText: ({ text }) => {
+          bubble.innerHTML = md(text);
+          log.scrollTop = log.scrollHeight;
+        },
+      });
+      bubble.innerHTML =
+        md(r.text) +
+        (r.truncated
+          ? `<p class="${META}">La respuesta se ha cortado. Pide que continúe o haz una pregunta más concreta.</p>`
+          : "");
+      turns.push({ role: "assistant", content: r.text });
+    } catch (err) {
+      const e = (err || {}) as SampleError;
+      if (e.code === "cancelled") {
+        bubble.innerHTML = (e.text ? md(e.text) : "") + `<p class="${META}">Respuesta detenida.</p>`;
+        if (e.text) turns.push({ role: "assistant", content: e.text });
+      } else if (e.code && DISABLING.includes(e.code)) {
+        bubble.innerHTML = "<p>" + esc(ERR[e.code] || ERR.not_granted) + "</p>";
+        turns.pop();
+        disableChat();
+      } else {
+        bubble.innerHTML =
+          (e.text ? md(e.text) : "") +
+          "<p>" + esc((e.code && ERR[e.code]) || "No se ha podido completar la respuesta. Inténtalo de nuevo.") + "</p>";
+        turns.pop();
+      }
+    } finally {
+      setBusy(false);
+      q.focus();
+    }
+  }
+
+  composer.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const t = q.value;
+    q.value = "";
+    ask(t);
+  });
+  q.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      composer.requestSubmit();
+    }
+  });
+  stop.addEventListener("click", () => ctl?.abort());
+  chips.forEach((c) => c.addEventListener("click", () => ask(c.textContent || "")));
+
+  setBusy(true);
+  send.textContent = "Cargando…";
+  (async () => {
+    try {
+      sample = claude?.use ? await claude.use("sample") : null;
+    } catch {
+      sample = null;
+    }
+    send.textContent = "Preguntar";
+    if (!sample) disableChat();
+    setBusy(false);
+  })();
+</script>

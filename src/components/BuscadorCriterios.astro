@@ -1,0 +1,138 @@
+---
+/**
+ * Buscador de la columna de criterios en la ficha. Mientras hay texto, sustituye el plano de la línea por la lista de
+ * criterios que coinciden (de todas las líneas). Sin JavaScript es un formulario que lleva al listado con la búsqueda
+ * (/criterios/?q=…).
+ */
+import { CRITERIOS, obsoleto, slug } from "../data/criterios";
+
+interface Props {
+  /** Prefijo de ids, para poder tener el buscador en el plano lateral y en el plegable de móvil */
+  idPrefix?: string;
+  /** Activa el atajo «/» (solo en una de las instancias de la página) */
+  atajo?: boolean;
+}
+
+const { idPrefix = "", atajo = false } = Astro.props;
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+---
+
+<form data-buscador action="/criterios/" method="get" role="search" class="flex flex-col gap-2">
+  <label for={`${idPrefix}buscar`} class="sr-only">Buscar criterio</label>
+  <div
+    class="flex items-center gap-2 rounded-md border-[1.5px] border-muted bg-surface px-2.5 focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
+  >
+    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" class="flex-none">
+      <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle>
+      <path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <input
+      id={`${idPrefix}buscar`}
+      name="q"
+      type="search"
+      autocomplete="off"
+      aria-keyshortcuts={atajo ? "/" : undefined}
+      aria-describedby={`${idPrefix}buscar-estado`}
+      data-atajo={atajo ? "" : undefined}
+      placeholder="Número o tema: contraste, teclado…"
+      class="min-h-11 min-w-0 flex-1 border-0 bg-transparent py-2 text-label text-ink focus-visible:shadow-none focus-visible:outline-none"
+    />
+    {
+      atajo && (
+        <kbd aria-hidden="true" class="rounded border border-line bg-sunk px-1.5 font-mono text-caption text-muted">
+          /
+        </kbd>
+      )
+    }
+  </div>
+  <p id={`${idPrefix}buscar-estado`} role="status" class="text-caption text-muted empty:hidden"></p>
+  <ul data-resultados hidden class="-mx-2 flex max-h-[calc(100vh-16rem)] flex-col overflow-y-auto p-2">
+    {
+      CRITERIOS.map((c) => (
+        <li data-q={norm(`${c.id} ${c.nombre} ${c.descripcion}`)} hidden>
+          <a
+            href={`/criterios/${slug(c.id)}/`}
+            class:list={[
+              `linea-${c.id[0]}`,
+              "flex min-h-11 items-start gap-2.5 rounded-md px-1.5 py-2 text-ink no-underline hover:bg-sunk",
+            ]}
+          >
+            <span class="line-badge mt-0.5 text-caption" aria-hidden="true">
+              L{c.id[0]}
+            </span>
+            <span class="w-[3.1rem] flex-none pt-0.5 font-mono text-[.9rem] font-semibold">{c.id}</span>
+            <span class="min-w-0 flex-1 leading-snug">
+              {c.nombre}
+              {obsoleto(c.id) ? (
+                <span class="text-muted"> · eliminado</span>
+              ) : (
+                c.nivel === "AAA" && <span class="text-muted"> · AAA</span>
+              )}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</form>
+
+<script>
+  const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  for (const root of document.querySelectorAll<HTMLFormElement>("[data-buscador]")) {
+    const input = root.querySelector<HTMLInputElement>("input")!;
+    const estado = root.querySelector<HTMLElement>("[role=status]")!;
+    const lista = root.querySelector<HTMLElement>("[data-resultados]")!;
+    const items = Array.from(lista.querySelectorAll<HTMLLIElement>("li"));
+    // El plano de la línea que el buscador sustituye mientras hay texto
+    const scope = root.closest<HTMLElement>("[data-rail], nav");
+    const plano = scope?.querySelector<HTMLElement>(".metro-track");
+    const titulo = scope?.querySelector<HTMLElement>("[data-plano-titulo]");
+    let timer: ReturnType<typeof setTimeout>;
+
+    function render() {
+      const q = norm(input.value.trim());
+      let n = 0;
+      for (const li of items) {
+        li.hidden = !q || !li.dataset.q!.includes(q);
+        if (!li.hidden) n++;
+      }
+      lista.hidden = !q;
+      if (plano) plano.hidden = !!q;
+      if (titulo) titulo.hidden = !!q;
+      estado.textContent = !q ? "" : n === 0 ? "Ningún criterio coincide." : n === 1 ? "1 criterio" : `${n} criterios`;
+    }
+
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(render, 120);
+    });
+    // Intro abre el primer resultado; si no hay ninguno, el formulario lleva al listado con la búsqueda
+    root.addEventListener("submit", (e) => {
+      render();
+      const first = items.find((li) => !li.hidden)?.querySelector("a");
+      if (first) {
+        e.preventDefault();
+        first.click();
+      }
+    });
+    // Escape vacía la búsqueda y vuelve al plano
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && input.value) {
+        e.preventDefault();
+        input.value = "";
+        render();
+      }
+    });
+  }
+
+  // «/» lleva al buscador, salvo si ya se está escribiendo en un campo
+  document.addEventListener("keydown", (e) => {
+    const t = e.target as HTMLElement;
+    if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey || t.closest("input, textarea, select, [contenteditable]")) return;
+    const input = document.querySelector<HTMLInputElement>("input[data-atajo]");
+    if (!input || !input.offsetParent) return;
+    e.preventDefault();
+    input.focus();
+  });
+</script>

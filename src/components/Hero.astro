@@ -1,0 +1,110 @@
+---
+import { CRITERIOS, PRINCIPIOS, obsoleto } from "../data/criterios";
+
+const facts = [
+  {
+    value: "28/06/2025",
+    text: "Fecha desde la que la Ley 11/2023 obliga a muchas empresas privadas.",
+    source: { label: "BOE", href: "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022" },
+  },
+  {
+    value: "WCAG 2.2 · AA",
+    text: "Nivel de referencia en la nueva norma EN 301 549 v4.1.1.",
+    source: {
+      label: "ETSI, PDF en inglés",
+      href: "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/04.01.01_60/en_301549v040101p.pdf",
+    },
+  },
+  {
+    value: "55 criterios",
+    text: "Son los de nivel A y AA que hay que cumplir.",
+    source: { label: "W3C, en inglés", href: "https://www.w3.org/TR/WCAG22/" },
+  },
+  {
+    value: "Hasta 1.000.000 €",
+    text: "Multa máxima del régimen general de sanciones.",
+    source: { label: "BOE", href: "https://www.boe.es/buscar/act.php?id=BOE-A-2013-12632" },
+  },
+];
+
+const lineas = Object.entries(PRINCIPIOS).map(([n, name]) => ({
+  n,
+  name,
+  total: CRITERIOS.filter((c) => c.id[0] === n && !obsoleto(c.id)).length,
+}));
+---
+
+<section aria-labelledby="t-hero" class="wrap pt-[clamp(2.5rem,6vw,4.5rem)] pb-10">
+  <div class="grid items-center gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+    <div>
+      <h1 id="t-hero" class="max-w-[20ch] text-[clamp(2.3rem,1.4rem+3.4vw,4rem)] leading-[1.02] tracking-[-0.03em]">
+        La accesibilidad web{" "}
+        <mark class="rounded-[.08em] bg-mark px-[.08em] text-mark-ink [box-decoration-break:clone]">ya es obligatoria.</mark>{" "}
+        Aquí aprendes a cumplirla.
+      </h1>
+      <p class="mt-5 max-w-160 text-[1.2rem] text-muted">
+        Qué exige la ley, si te afecta y cómo llevarlo al código. En castellano claro, con ejemplos que puedes copiar y
+        pensado para quien diseña, programa o dirige un proyecto digital.
+      </p>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a class="btn btn-primary" href="/me-afecta/">Comprobar si me afecta</a>
+        <a class="btn btn-ghost" href="/criterios/">Ver los criterios con código</a>
+      </div>
+    </div>
+
+    <nav aria-labelledby="t-red" class="border-t-2 border-ink pt-4">
+      <h2 id="t-red" class="text-[1.15rem]">La red de criterios WCAG 2.2</h2>
+      <p class="mt-1 text-[.95rem] text-muted">Cuatro líneas, una por principio. Cada estación es un criterio.</p>
+      <ul class="mt-4 flex flex-col gap-1">
+        {
+          lineas.map((l) => (
+            <li>
+              <a
+                href={`/criterios/#linea-${l.n}`}
+                class:list={[
+                  `linea-${l.n}`,
+                  "group grid min-h-12 grid-cols-[auto_8.5rem_minmax(0,1fr)] items-center gap-3 rounded-md px-1 py-1.5 text-ink no-underline hover:bg-sunk max-[479px]:grid-cols-[auto_1fr]",
+                ]}
+              >
+                <span class="line-badge" aria-hidden="true">L{l.n}</span>
+                <span class="font-bold group-hover:underline">
+                  <span class="sr-only">Línea {l.n}: </span>
+                  {l.name}
+                  <span class="block font-mono text-caption font-semibold text-muted">{l.total} estaciones</span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  class="relative flex h-4 items-center justify-between max-[479px]:hidden"
+                >
+                  <span class="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-(--c)"></span>
+                  {Array.from({ length: l.total }, () => (
+                    <span class="relative size-2.5 rounded-full border-2 border-(--c) bg-bg"></span>
+                  ))}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="mt-12 border-t border-line">
+    <dl class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-x-8">
+      {
+        facts.map((f) => (
+          <div class="flex flex-col gap-1 border-b border-line py-4">
+            <dt class="font-mono text-lead font-semibold">{f.value}</dt>
+            <dd class="text-[.95rem] text-muted">
+              {f.text}{" "}
+              <a href={f.source.href} target="_blank" rel="noopener" class="whitespace-nowrap font-semibold">
+                Fuente: {f.source.label}
+              </a>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+    <p class="pt-3 text-[.9rem] text-muted">España y Unión Europea. Datos revisados en octubre de 2026.</p>
+  </div>
+</section>

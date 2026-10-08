@@ -1,0 +1,749 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-08T19:01:29+00:00",
+  "title": "Design System: Accesibilidad en Claro",
+  "extensions": {
+    "colorMeta": {
+      "sign-navy": {
+        "role": "primary",
+        "displayName": "Azul cartel de estación",
+        "canonical": "#14275e",
+        "cssVar": "--sign",
+        "dark": "#15275c",
+        "oklch": "oklch(29.4% 0.101 265.9)",
+        "tonalRamp": [
+          "#020726",
+          "#0c1e54",
+          "#263c75",
+          "#425b97",
+          "#617bba",
+          "#819dde",
+          "#aac3fd",
+          "#e8effc"
+        ]
+      },
+      "sign-navy-hover": {
+        "role": "primary",
+        "displayName": "Azul cartel encendido",
+        "canonical": "#213a7c",
+        "cssVar": "--sign-hover",
+        "dark": "#233c80",
+        "oklch": "oklch(36.9% 0.116 265.4)",
+        "tonalRamp": [
+          "#01062a",
+          "#081b5b",
+          "#213a7c",
+          "#3d5a9f",
+          "#5c7ac2",
+          "#7b9ce7",
+          "#a9c4fd",
+          "#e8effc"
+        ]
+      },
+      "sign-ink": {
+        "role": "primary",
+        "displayName": "Blanco cartel",
+        "canonical": "#ffffff",
+        "cssVar": "--sign-ink",
+        "dark": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "sign-muted": {
+        "role": "primary",
+        "displayName": "Gris cartel",
+        "canonical": "#c9d3ec",
+        "cssVar": "--sign-muted",
+        "dark": "#c9d3ec",
+        "oklch": "oklch(86.7% 0.036 268.3)",
+        "tonalRamp": [
+          "#070b15",
+          "#1c2336",
+          "#373f53",
+          "#555d73",
+          "#747d94",
+          "#959eb6",
+          "#bac4dc",
+          "#e8eeff"
+        ]
+      },
+      "line-1-red": {
+        "role": "secondary",
+        "displayName": "Rojo línea 1 · Perceptible",
+        "canonical": "#c8102e",
+        "cssVar": "--l1",
+        "dark": "#ff8a8a",
+        "oklch": "oklch(53.0% 0.207 22.3)",
+        "tonalRamp": [
+          "#220001",
+          "#4c0009",
+          "#7b0217",
+          "#b10225",
+          "#de3040",
+          "#fd6467",
+          "#fdaba7",
+          "#fee9e8"
+        ]
+      },
+      "line-2-blue": {
+        "role": "secondary",
+        "displayName": "Azul línea 2 · Operable",
+        "canonical": "#0057b8",
+        "cssVar": "--l2",
+        "dark": "#7fb2ff",
+        "oklch": "oklch(47.4% 0.169 257.2)",
+        "tonalRamp": [
+          "#00062d",
+          "#002152",
+          "#003c84",
+          "#0359ba",
+          "#317bdf",
+          "#5c9ffc",
+          "#9fc7fe",
+          "#e5efff"
+        ]
+      },
+      "line-3-green": {
+        "role": "secondary",
+        "displayName": "Verde línea 3 · Comprensible",
+        "canonical": "#00754a",
+        "cssVar": "--l3",
+        "dark": "#5fd39b",
+        "oklch": "oklch(49.6% 0.114 159.3)",
+        "tonalRamp": [
+          "#001005",
+          "#012c19",
+          "#024d2f",
+          "#047047",
+          "#319164",
+          "#57b485",
+          "#7fdbaa",
+          "#c5fedd"
+        ]
+      },
+      "line-4-purple": {
+        "role": "secondary",
+        "displayName": "Morado línea 4 · Robusto",
+        "canonical": "#6b2c91",
+        "cssVar": "--l4",
+        "dark": "#c99bf0",
+        "oklch": "oklch(43.2% 0.162 309.9)",
+        "tonalRamp": [
+          "#160026",
+          "#370052",
+          "#59177e",
+          "#793ba0",
+          "#9a5dc4",
+          "#bd7ee9",
+          "#dbaffd",
+          "#f4eafe"
+        ]
+      },
+      "line-ink": {
+        "role": "secondary",
+        "displayName": "Texto de insignia de línea",
+        "canonical": "#ffffff",
+        "cssVar": "--l-ink",
+        "dark": "#0d1118",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "mark-yellow": {
+        "role": "tertiary",
+        "displayName": "Amarillo de aviso",
+        "canonical": "#ffd84d",
+        "cssVar": "--mark",
+        "dark": "#ffd84d",
+        "oklch": "oklch(89.2% 0.157 93.0)",
+        "tonalRamp": [
+          "#120a00",
+          "#2e2300",
+          "#4e3e00",
+          "#705b04",
+          "#957b0f",
+          "#bd9b08",
+          "#e7c02d",
+          "#ffeeb9"
+        ]
+      },
+      "mark-ink": {
+        "role": "tertiary",
+        "displayName": "Tinta de aviso",
+        "canonical": "#10151d",
+        "cssVar": "--mark-ink",
+        "dark": "#10151d",
+        "oklch": "oklch(19.4% 0.018 259.7)",
+        "tonalRamp": [
+          "#080b10",
+          "#1f242d",
+          "#3a4049",
+          "#585e68",
+          "#777e88",
+          "#989faa",
+          "#bdc5d0",
+          "#eaeff6"
+        ]
+      },
+      "link-blue": {
+        "role": "neutral",
+        "displayName": "Azul enlace",
+        "canonical": "#0b4fc0",
+        "cssVar": "--accent",
+        "dark": "#8fb4ff",
+        "oklch": "oklch(46.5% 0.188 260.9)",
+        "tonalRamp": [
+          "#00003a",
+          "#001c5e",
+          "#003694",
+          "#1154c5",
+          "#3577eb",
+          "#669dfd",
+          "#a4c5fe",
+          "#e7effd"
+        ]
+      },
+      "link-blue-ink": {
+        "role": "neutral",
+        "displayName": "Texto sobre azul enlace",
+        "canonical": "#ffffff",
+        "cssVar": "--accent-ink",
+        "dark": "#0d1118",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "link-blue-soft": {
+        "role": "neutral",
+        "displayName": "Azul enlace suave",
+        "canonical": "#e4ecfb",
+        "cssVar": "--accent-soft",
+        "dark": "#1c2a48",
+        "oklch": "oklch(94.1% 0.022 263.2)",
+        "tonalRamp": [
+          "#080b11",
+          "#1e242f",
+          "#3a404c",
+          "#575e6a",
+          "#767d8b",
+          "#979fad",
+          "#bdc4d3",
+          "#eaeff8"
+        ]
+      },
+      "ok-green": {
+        "role": "neutral",
+        "displayName": "Verde correcto",
+        "canonical": "#17663a",
+        "cssVar": "--ok",
+        "dark": "#7fd6a0",
+        "oklch": "oklch(45.2% 0.103 153.8)",
+        "tonalRamp": [
+          "#001003",
+          "#002d14",
+          "#014d27",
+          "#226e42",
+          "#468f60",
+          "#68b181",
+          "#8ed8a5",
+          "#cdfcda"
+        ]
+      },
+      "ok-soft": {
+        "role": "neutral",
+        "displayName": "Fondo correcto",
+        "canonical": "#e2f3e8",
+        "cssVar": "--ok-soft",
+        "dark": "#14301f",
+        "oklch": "oklch(94.9% 0.023 157.6)",
+        "tonalRamp": [
+          "#060d09",
+          "#1b2820",
+          "#36443b",
+          "#536259",
+          "#728278",
+          "#93a399",
+          "#b8c9be",
+          "#e7f2eb"
+        ]
+      },
+      "ko-red": {
+        "role": "neutral",
+        "displayName": "Rojo incorrecto",
+        "canonical": "#a3261c",
+        "cssVar": "--ko",
+        "dark": "#ff9d92",
+        "oklch": "oklch(47.2% 0.163 29.3)",
+        "tonalRamp": [
+          "#220000",
+          "#4c0000",
+          "#7d0000",
+          "#a6291f",
+          "#cc4e40",
+          "#f37160",
+          "#fdac9f",
+          "#ffe9e5"
+        ]
+      },
+      "ko-soft": {
+        "role": "neutral",
+        "displayName": "Fondo incorrecto",
+        "canonical": "#fbe6e3",
+        "cssVar": "--ko-soft",
+        "dark": "#3a1a17",
+        "oklch": "oklch(94.1% 0.023 27.3)",
+        "tonalRamp": [
+          "#110908",
+          "#2f201e",
+          "#4c3b39",
+          "#6a5956",
+          "#8b7876",
+          "#ad9997",
+          "#d3bfbc",
+          "#f8ebe9"
+        ]
+      },
+      "platform-bg": {
+        "role": "neutral",
+        "displayName": "Fondo de andén",
+        "canonical": "#fafbfc",
+        "cssVar": "--bg",
+        "dark": "#0d1118",
+        "oklch": "oklch(98.8% 0.002 247.8)",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5e",
+          "#7c7d7e",
+          "#9d9e9f",
+          "#c3c4c5",
+          "#eeeeef"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Superficie",
+        "canonical": "#ffffff",
+        "cssVar": "--surface",
+        "dark": "#141a24",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#7d7d7d",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "sunk": {
+        "role": "neutral",
+        "displayName": "Hundido",
+        "canonical": "#eef1f5",
+        "cssVar": "--sunk",
+        "dark": "#1b2330",
+        "oklch": "oklch(95.7% 0.006 255.5)",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#222427",
+          "#3e4043",
+          "#5b5e61",
+          "#7b7d81",
+          "#9c9fa2",
+          "#c1c4c8",
+          "#edeff1"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta",
+        "canonical": "#10151d",
+        "cssVar": "--ink",
+        "dark": "#e9edf3",
+        "oklch": "oklch(19.4% 0.018 259.7)",
+        "tonalRamp": [
+          "#080b10",
+          "#1f242d",
+          "#3a4049",
+          "#585e68",
+          "#777e88",
+          "#989faa",
+          "#bdc5d0",
+          "#eaeff6"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Gris rótulo",
+        "canonical": "#4b5564",
+        "cssVar": "--muted",
+        "dark": "#a8b2c1",
+        "oklch": "oklch(44.7% 0.028 258.4)",
+        "tonalRamp": [
+          "#070b13",
+          "#1c2432",
+          "#37404f",
+          "#545e6e",
+          "#737e8e",
+          "#949fb0",
+          "#b9c5d7",
+          "#e7effb"
+        ]
+      },
+      "rule-line": {
+        "role": "neutral",
+        "displayName": "Filete",
+        "canonical": "#d3d8e0",
+        "cssVar": "--line",
+        "dark": "#2c3646",
+        "oklch": "oklch(88.1% 0.012 259.8)",
+        "tonalRamp": [
+          "#090b0f",
+          "#21242a",
+          "#3c4046",
+          "#5a5e65",
+          "#797e85",
+          "#9a9fa6",
+          "#bfc4cc",
+          "#ebeff4"
+        ]
+      }
+    },
+    "colorSchemes": {
+      "source": "src/styles/global.css",
+      "light": ":root",
+      "dark": "@media (prefers-color-scheme: dark) :root:not([data-theme=light]) y :root[data-theme=dark]",
+      "note": "El frontmatter lleva los valores claros; el campo dark de colorMeta lleva el valor oscuro de la misma variable. mark-yellow y mark-ink no cambian; el azul cartel apenas cambia."
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Solo el titular de portada, con un tramo en <mark> amarillo."
+      },
+      "headline": {
+        "displayName": "Titular de página",
+        "purpose": "El único h1 de cada página (4rem de máximo en Criterios)."
+      },
+      "station-number": {
+        "displayName": "Número de estación",
+        "purpose": "Número del criterio en su ficha, en el color de la línea."
+      },
+      "section-title": {
+        "displayName": "Título de sección",
+        "purpose": "h2 de sección; 1,6rem en la cabecera de cada línea."
+      },
+      "title": {
+        "displayName": "Título",
+        "purpose": "h3 y subtítulos."
+      },
+      "lead": {
+        "displayName": "Entradilla",
+        "purpose": "Texto bajo los títulos, en muted, hasta 44rem."
+      },
+      "body": {
+        "displayName": "Cuerpo",
+        "purpose": "Lectura a 44rem (~68ch), cifras tabulares."
+      },
+      "label": {
+        "displayName": "Etiqueta",
+        "purpose": "Navegación, botones, conmutadores."
+      },
+      "data-mono": {
+        "displayName": "Dato mono",
+        "purpose": "Números de criterio, recuentos, niveles y cifras clave."
+      },
+      "subtitle": {
+        "displayName": "Subtítulo",
+        "purpose": "h3 de bloques de contenido; utilidad text-subtitle (1,35rem, 800)."
+      },
+      "caption": {
+        "displayName": "Leyenda",
+        "purpose": "Metadatos breves; tamaño mínimo del sitio; utilidad text-caption (0,85rem)."
+      }
+    },
+    "fonts": {
+      "provider": "Google Fonts",
+      "families": [
+        {
+          "family": "Atkinson Hyperlegible Next",
+          "weights": [
+            400,
+            600,
+            700,
+            800
+          ],
+          "italic": [
+            400
+          ]
+        },
+        {
+          "family": "Atkinson Hyperlegible Mono",
+          "weights": [
+            400,
+            600
+          ]
+        }
+      ],
+      "rootSize": "var(--root-size, 100%), ajustable con A−/A+ de 90% a 200%; se aplica antes de pintar desde localStorage (ac-size)"
+    },
+    "shadows": [
+      {
+        "name": "focus-halo",
+        "value": "outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink)",
+        "purpose": "Foco global de doble anillo, visible en claro y oscuro."
+      },
+      {
+        "name": "station-current-ring",
+        "value": "0 0 0 3px var(--c)",
+        "purpose": "Anillo de la estación «Estás aquí» alrededor de un borde de 4px del color del fondo."
+      },
+      {
+        "name": "option-checked",
+        "value": "inset 0 0 0 1px var(--ink)",
+        "purpose": "Engrosa el borde de la opción elegida del comprobador."
+      }
+    ],
+    "motion": [
+      {
+        "name": "scroll-smooth",
+        "value": "scroll-behavior: smooth; scroll-padding-top: 5rem",
+        "purpose": "Saltos a anclas bajo la cabecera fija."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce) { scroll-behavior: auto; transition: none; animation: none }",
+        "purpose": "Sin movimiento cuando se pide; el sistema no anima nada esencial."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "40rem"
+      },
+      {
+        "name": "md",
+        "value": "48rem",
+        "note": "cabecera fija"
+      },
+      {
+        "name": "lg",
+        "value": "64rem",
+        "note": "plano lateral en la ficha"
+      },
+      {
+        "name": "xl",
+        "value": "80rem",
+        "note": "columna «En esta ficha»"
+      },
+      {
+        "name": "wide",
+        "value": "87.5rem",
+        "note": "cuatro líneas en paralelo en el listado"
+      },
+      {
+        "name": "search-sticky",
+        "value": "701px"
+      }
+    ],
+    "layout": {
+      "wrap": "max-width 72rem",
+      "wrapWide": "max-width 92rem",
+      "readingColumn": "44rem",
+      "stationRail": "17rem (lg) / 18rem (xl)",
+      "asideColumn": "14rem"
+    },
+    "theming": {
+      "toggle": "#themeToggle con aria-pressed; guarda ac-theme y fija data-theme en <html> antes de pintar; sin elección sigue prefers-color-scheme"
+    },
+    "icons": {
+      "source": "src/components/Icon.astro",
+      "viewBox": "0 0 22 22",
+      "strokeWidth": 2.6,
+      "linecap": "round",
+      "linejoin": "round",
+      "set": [
+        "check",
+        "cross",
+        "arrow-left",
+        "arrow-right",
+        "transbordo"
+      ],
+      "ariaHidden": true
+    }
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Acción principal: cartel azul marino con texto blanco, 44 px de alto.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">Comprobar si me afecta</a>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.75rem; padding: .625rem 1.15rem; border: 2px solid; border-radius: 6px; font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-weight: 700; text-decoration: none; cursor: pointer; } .ds-btn-primary { background: var(--sign); border-color: var(--sign); color: var(--sign-ink); } .ds-btn-primary:hover { background: var(--sign-hover); border-color: var(--sign-hover); } .ds-btn:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink); border-radius: 4px; }"
+    },
+    {
+      "name": "Botón secundario",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acción secundaria: transparente con borde y texto en tinta.",
+      "html": "<a class=\"ds-btn-ghost\" href=\"#\">Ver los criterios con código</a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; min-height: 2.75rem; padding: .625rem 1.15rem; border: 2px solid var(--ink); border-radius: 6px; background: transparent; color: var(--ink); font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-weight: 700; text-decoration: none; } .ds-btn-ghost:hover { background: var(--sunk); } .ds-btn-ghost:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink); }"
+    },
+    {
+      "name": "Conmutadores de filtro",
+      "kind": "chip",
+      "refersTo": "toggle",
+      "description": "Filtros de nivel con aria-pressed; pulsado = cartel azul marino.",
+      "html": "<div class=\"ds-toggles\"><button type=\"button\" class=\"ds-toggle\" aria-pressed=\"true\">A</button><button type=\"button\" class=\"ds-toggle\" aria-pressed=\"true\">AA</button><button type=\"button\" class=\"ds-toggle\" aria-pressed=\"false\">AAA</button></div>",
+      "css": ".ds-toggles { display: flex; gap: .375rem; } .ds-toggle { min-height: 2.75rem; padding: .375rem .75rem; border: 1.5px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: .95rem; font-weight: 700; cursor: pointer; } .ds-toggle:hover { border-color: var(--ink); } .ds-toggle[aria-pressed=\"true\"] { background: var(--sign); border-color: var(--sign); color: var(--sign-ink); } .ds-toggle:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink); }"
+    },
+    {
+      "name": "Buscador de criterios",
+      "kind": "input",
+      "refersTo": "",
+      "description": "Campo con lupa en trazo, borde muted y atajo «/».",
+      "html": "<div class=\"ds-search\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 20 20\" aria-hidden=\"true\"><circle cx=\"8.5\" cy=\"8.5\" r=\"6\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"/><path d=\"M13 13l5 5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg><input type=\"search\" aria-label=\"Buscar criterio\" placeholder=\"Número, nombre o tema\"><kbd>/</kbd></div>",
+      "css": ".ds-search { display: flex; align-items: center; gap: .5rem; max-width: 26rem; padding: 0 .75rem; border: 1.5px solid var(--muted); border-radius: 6px; background: var(--surface); color: var(--ink); } .ds-search:focus-within { border-color: var(--ink); outline: 3px solid var(--mark); outline-offset: 2px; } .ds-search input { flex: 1; min-width: 0; padding: .625rem 0; border: 0; background: transparent; color: var(--ink); font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); font-size: 1.0625rem; outline: none; } .ds-search kbd { padding: 0 .375rem; border: 1px solid var(--line); border-radius: 4px; background: var(--sunk); font-family: var(--font-mono, 'Atkinson Hyperlegible Mono', monospace); font-size: .8rem; color: var(--muted); }"
+    },
+    {
+      "name": "Cabecera cartel de estación",
+      "kind": "nav",
+      "refersTo": "header-sign",
+      "description": "Cabecera azul marino; la sección actual lleva barra amarilla de 3 px.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-brand\" href=\"#\">Accesibilidad en Claro</a><nav aria-label=\"Principal\"><ul><li><a href=\"#\">Inicio</a></li><li><a href=\"#\" aria-current=\"page\">Criterios</a></li><li><a href=\"#\">Componentes</a></li><li><a href=\"#\">¿Me afecta?</a></li></ul></nav></header>",
+      "css": ".ds-header { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: .5rem 1.5rem; background: var(--sign); color: var(--sign-ink); font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-brand { display: flex; align-items: center; min-height: 2.75rem; color: var(--sign-ink); font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; text-decoration: none; } .ds-header ul { display: flex; gap: .125rem; margin: 0 0 0 auto; padding: 0; list-style: none; } .ds-header nav a { position: relative; display: flex; align-items: center; min-height: 2.75rem; padding: 0 .75rem; border-radius: 6px; color: var(--sign-ink); font-weight: 700; font-size: .98rem; text-decoration: none; } .ds-header nav a:hover { background: var(--sign-hover); } .ds-header nav a[aria-current]::after { content: ''; position: absolute; left: .75rem; right: .75rem; bottom: .25rem; height: 3px; border-radius: 9999px; background: var(--mark); } .ds-header a:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink); }"
+    },
+    {
+      "name": "Insignias de línea y nivel",
+      "kind": "chip",
+      "refersTo": "line-badge-l1",
+      "description": "«L1»…«L4» en el color pleno de cada línea; niveles A (borde), AA (relleno), AAA (discontinuo) y «Nuevo».",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-line\" style=\"--c: var(--l1)\">L1</span><span class=\"ds-line\" style=\"--c: var(--l2)\">L2</span><span class=\"ds-line\" style=\"--c: var(--l3)\">L3</span><span class=\"ds-line\" style=\"--c: var(--l4)\">L4</span><span class=\"ds-lv\">A</span><span class=\"ds-lv ds-lv-aa\">AA</span><span class=\"ds-lv ds-lv-aaa\">AAA</span><span class=\"ds-new\">Nuevo</span></div>",
+      "css": ".ds-badges { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-line { display: inline-flex; align-items: center; justify-content: center; height: 1.9em; min-width: 2.4em; padding: 0 .4em; border-radius: 6px; background: var(--c); color: var(--l-ink); font-weight: 800; line-height: 1; } .ds-lv, .ds-new { display: inline-block; min-width: 2.6rem; padding: .08rem .45rem; border: 1.5px solid var(--ink); border-radius: 4px; color: var(--ink); text-align: center; font-family: var(--font-mono, 'Atkinson Hyperlegible Mono', monospace); font-size: .8rem; font-weight: 600; } .ds-lv-aa { background: var(--ink); color: var(--bg); } .ds-lv-aaa { border-style: dashed; border-color: var(--muted); color: var(--muted); } .ds-new { min-width: 0; border-color: var(--mark); background: var(--mark); color: var(--mark-ink); }"
+    },
+    {
+      "name": "Plano de línea",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Componente firma: trazo de 6 px, estaciones con borde, AAA punteada, estación cerrada discontinua y «Estás aquí».",
+      "html": "<ol class=\"ds-metro\" style=\"--c: var(--l1)\"><li><a href=\"#\"><span class=\"ds-num\">1.4.1</span><span>Uso del color</span></a></li><li><a href=\"#\" aria-current=\"page\"><span class=\"ds-num\">1.4.3</span><span>Contraste (mínimo)<small>Estás aquí</small></span></a></li><li data-aaa><a href=\"#\"><span class=\"ds-num\">1.4.6</span><span>Contraste (mejorado)</span></a></li><li data-closed><a href=\"#\"><span class=\"ds-num\">4.1.1</span><span>Procesamiento</span></a></li></ol>",
+      "css": ".ds-metro { --x: .95rem; position: relative; margin: 0; padding: 0; list-style: none; font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); color: var(--ink); } .ds-metro::before { content: ''; position: absolute; left: calc(var(--x) - 3px); top: .4rem; bottom: .4rem; width: 6px; border-radius: 3px; background: var(--c); } .ds-metro a { position: relative; display: flex; align-items: flex-start; gap: .625rem; min-height: 2.75rem; padding: .5rem .5rem .5rem calc(var(--x) * 2 + .35rem); border-radius: 6px; color: var(--ink); text-decoration: none; } .ds-metro a:hover { background: var(--sunk); } .ds-metro a:hover span:last-child { text-decoration: underline 2px; } .ds-metro a:focus-visible { outline: 3px solid var(--mark); outline-offset: 2px; box-shadow: 0 0 0 6px var(--ink); } .ds-metro a::before { content: ''; position: absolute; left: calc(var(--x) - .55rem); top: .72rem; width: 1.1rem; height: 1.1rem; box-sizing: border-box; border-radius: 50%; background: var(--bg); border: 3.5px solid var(--c); } .ds-metro [data-aaa] a::before { border-style: dotted; } .ds-metro [data-closed] a::before { border-style: dashed; border-color: var(--muted); } .ds-metro [data-closed] a { color: var(--muted); } .ds-metro a[aria-current] { background: var(--sunk); font-weight: 700; } .ds-metro a[aria-current]::before { left: calc(var(--x) - .8rem); top: .47rem; width: 1.6rem; height: 1.6rem; background: var(--c); border: 4px solid var(--bg); box-shadow: 0 0 0 3px var(--c); } .ds-metro small { display: block; font-size: .82rem; font-weight: 700; color: var(--muted); } .ds-num { flex: none; width: 3.1rem; font-family: var(--font-mono, 'Atkinson Hyperlegible Mono', monospace); font-size: .9rem; font-weight: 600; }"
+    },
+    {
+      "name": "Opción del comprobador",
+      "kind": "input",
+      "refersTo": "route-option",
+      "description": "Radio nativo oculto sobre una fila de 64 px con punto; elegida = borde y punto en tinta.",
+      "html": "<div class=\"ds-opt\"><input type=\"radio\" name=\"ds-org\" id=\"ds-o1\" checked><label for=\"ds-o1\"><span class=\"ds-dot\"></span><span><b>Empresa privada</b><br><span class=\"ds-hint\">Sociedad, autónomo o comercio</span></span></label></div><div class=\"ds-opt\"><input type=\"radio\" name=\"ds-org\" id=\"ds-o2\"><label for=\"ds-o2\"><span class=\"ds-dot\"></span><span><b>Sector público</b><br><span class=\"ds-hint\">Administración, universidad pública</span></span></label></div>",
+      "css": ".ds-opt { position: relative; max-width: 30rem; margin-bottom: .5rem; font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-opt input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; } .ds-opt label { display: grid; grid-template-columns: 1.25rem minmax(0,1fr); align-items: center; gap: .875rem; min-height: 4rem; padding: .75rem 1rem; border: 1.5px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); } .ds-opt:hover label { border-color: var(--ink); } .ds-dot { width: 1.25rem; height: 1.25rem; box-sizing: border-box; border: 3px solid var(--muted); border-radius: 50%; background: var(--surface); } .ds-hint { font-size: .93rem; color: var(--muted); } .ds-opt input:checked + label { border-color: var(--ink); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--ink); } .ds-opt input:checked + label .ds-dot { border-color: var(--ink); background: var(--ink); box-shadow: inset 0 0 0 3px var(--sunk); } .ds-opt input:focus-visible + label { outline: 3px solid var(--mark); outline-offset: 2px; }"
+    },
+    {
+      "name": "Veredicto en cartel",
+      "kind": "card",
+      "refersTo": "sign-board",
+      "description": "Panel azul marino del comprobador con píldora amarilla de obligación.",
+      "html": "<div class=\"ds-verdict\"><span class=\"ds-pill\">Te obliga</span><p class=\"ds-title\">Tienes que cumplir la Ley 11/2023</p><ul><li>WCAG 2.2 nivel AA (EN 301 549)</li><li>Declaración de accesibilidad</li></ul></div>",
+      "css": ".ds-verdict { display: flex; flex-direction: column; gap: .75rem; max-width: 36rem; padding: 1.25rem 1.75rem; border-radius: 8px; background: var(--sign); color: var(--sign-ink); font-family: var(--font-body, 'Atkinson Hyperlegible Next', system-ui, sans-serif); } .ds-pill { align-self: flex-start; padding: .125rem .625rem; border-radius: 4px; background: var(--mark); color: var(--mark-ink); font-size: .9rem; font-weight: 800; } .ds-title { margin: 0; font-size: 1.6rem; font-weight: 800; line-height: 1.25; } .ds-verdict ul { margin: 0; padding-left: 1.15rem; } .ds-verdict li::marker { color: var(--sign-muted); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Plano de metro",
+    "overview": "La web se lee como la señalética de una red de metro española. Los cuatro principios de WCAG son cuatro líneas de color pleno (L1 Perceptible, L2 Operable, L3 Comprensible, L4 Robusto). Las pautas son tramos de cada línea y cada criterio es una estación. Quien lee siempre sabe en qué línea está, cuántas estaciones tiene y dónde está su parada: la estación actual se marca con un punto relleno, un anillo y el texto «Estás aquí». La cabecera es un cartel de estación en azul marino, en modo claro y en modo oscuro.\n\nLa estructura sale de filetes, trazos y tipografía, no de tarjetas. Un trazo de 6 px une las estaciones, un filete superior de 6 px en el color de la línea abre cada línea y los grupos de contenido se separan con filetes de 1 o 2 px. La densidad es la de un plano: mucha información a la vista, ordenada por posición y no por cajas. Hay una sola familia tipográfica, Atkinson Hyperlegible Next, diseñada para baja visión. Su versión mono se reserva para código y para números de criterio y datos.\n\nLa web tiene que ser un ejemplo de lo que explica. Cada decisión visual está por debajo del suelo de accesibilidad de `CLAUDE.md`: contraste de 4,5:1 en texto y 3:1 en componentes en los dos esquemas, objetivos de 44 px, foco siempre visible, movimiento reducido y controles propios de tema y tamaño de texto.",
+    "keyCharacteristics": [
+      "Cuatro líneas de color fijo; el color de línea solo significa principio.",
+      "Cartel de estación azul marino para la cabecera, los paneles de portada y el veredicto del comprobador.",
+      "Estaciones como círculos con borde sobre un trazo de 6 px; la actual, rellena con anillo.",
+      "Amarillo de señal reservado para el foco, el resaltado, «Nuevo» y la píldora de obligación.",
+      "Una familia, mono solo para código y números; sin tarjetas como andamiaje.",
+      "Iconos de un solo juego SVG de trazo 2,6, nunca glifos Unicode."
+    ],
+    "rules": [
+      {
+        "name": "La regla del color de línea",
+        "body": "Los cuatro colores de línea solo significan «principio WCAG». No se usan para estados, decoración ni llamadas a la acción. El trayecto del comprobador se pinta en tinta precisamente para no tomar prestado un color de línea.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del amarillo de aviso",
+        "body": "El amarillo es para lo que tiene que saltar a la vista: el foco, el resaltado (`<mark>`, selección, sección actual, hover del botón sobre cartel), «Nuevo» y la obligación. Si algo amarillo no es ninguna de esas cosas, sobra.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del cartel",
+        "body": "El azul marino con texto blanco es la voz del sistema que te orienta (cabecera, paneles de destino, veredicto). Es igual en claro y en oscuro.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de una familia",
+        "body": "Todo es Atkinson Hyperlegible Next. La mono solo aparece en código, números de criterio, niveles y datos. Nunca en titulares ni en etiquetas de prosa.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla del peso",
+        "body": "Los títulos van a 800 con tracking ligeramente negativo; la jerarquía la marcan el peso y el tamaño, no las mayúsculas.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla del filete",
+        "body": "Los grupos se separan con filetes, no con cajas: 1 px en rule-line entre secciones y filas, 2 px en ink para abrir un bloque (perfiles, red de líneas) y 6 px en el color de la línea para abrir una línea o el enlace anterior/siguiente.",
+        "section": "layout"
+      },
+      {
+        "name": "La regla del plano",
+        "body": "Las superficies son planas. Una sombra solo dibuja un anillo de estado (foco, estación actual, opción elegida), nunca una elevación.",
+        "section": "elevation"
+      },
+      {
+        "name": "La regla del trazo que habla",
+        "body": "La forma del borde codifica el estado, y siempre acompaña al texto: continuo = A u obligatorio, relleno = AA o estación actual, punteado = estación AAA, discontinuo = AAA en la insignia, estación cerrada o pregunta saltada.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** usa los colores de línea solo para identificar un principio: trazo, estaciones, insignia «L», filete de 6 px y número del criterio.",
+      "**Do** marca la estación actual con punto relleno, anillo y el texto «Estás aquí»; la forma nunca va sin texto.",
+      "**Do** separa con filetes (1 px rule-line, 2 px ink, 6 px color de línea) y tipografía antes que con cajas.",
+      "**Do** usa el cartel azul marino con texto blanco para la cabecera y para los paneles que orientan o dan un veredicto, igual en claro y en oscuro.",
+      "**Do** da a cada control principal 44 × 44 px como mínimo y deja el foco global (contorno amarillo de 3 px con halo de tinta de 6 px).",
+      "**Do** comprueba cada pareja nueva de tokens en claro y en oscuro: 4,5:1 en texto y 3:1 en bordes de control (usa muted o ink, no rule-line).",
+      "**Do** saca los iconos de `Icon.astro` (SVG, trazo 2,6, `aria-hidden`)."
+    ],
+    "donts": [
+      "**Don't** uses un color de línea para estados, avisos o llamadas a la acción; el trayecto del comprobador va en tinta.",
+      "**Don't** uses el amarillo de aviso fuera del foco, el resaltado, «Nuevo» y la píldora de obligación; nunca como relleno decorativo ni como color de texto sobre fondo claro.",
+      "**Don't** montes la página con tarjetas con borde y sombra, ni con una barra lateral gris de documentación.",
+      "**Don't** pongas en mono titulares, etiquetas ni prosa; la mono es para código, números y datos.",
+      "**Don't** uses glifos Unicode (✓, →, ›) como iconos, ni etiquetas en mayúsculas espaciadas sobre los títulos.",
+      "**Don't** añadas sombras de elevación; las únicas sombras son anillos de estado.",
+      "**Don't** escribas hex ni colores de la paleta de Tailwind en los componentes; todo color es un token de `global.css` con su versión oscura.",
+      "**Don't** quites ni rebajes el `:focus-visible` global, ni fijes alturas en contenedores de texto."
+    ]
+  }
+}

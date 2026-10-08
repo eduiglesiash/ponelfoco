@@ -1,0 +1,333 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import LevelBadge from "../../components/LevelBadge.astro";
+import CodeExample from "../../components/CodeExample.astro";
+import LineaMetro from "../../components/LineaMetro.astro";
+import Icon from "../../components/Icon.astro";
+import BuscadorCriterios from "../../components/BuscadorCriterios.astro";
+import { CRITERIOS, PAUTAS, PRINCIPIOS, obsoleto as esObsoleto, pauta, slug, type Criterio } from "../../data/criterios";
+import { EJEMPLOS } from "../../data/ejemplos";
+import { w3cUrl } from "../../data/w3c";
+
+export function getStaticPaths() {
+  return CRITERIOS.map((c, i) => ({
+    params: { id: slug(c.id) },
+    props: { c, prev: CRITERIOS[i - 1], next: CRITERIOS[i + 1] },
+  }));
+}
+
+interface Props {
+  c: Criterio;
+  prev?: Criterio;
+  next?: Criterio;
+}
+
+const { c, prev, next } = Astro.props;
+const n = c.id[0];
+const p = pauta(c.id);
+const ejemplos = EJEMPLOS[c.id] ?? [];
+const obsoleto = esObsoleto(c.id);
+const estado =
+  c.nivel === "AAA"
+    ? "Recomendable; la ley no lo exige."
+    : obsoleto
+      ? "Eliminado en WCAG 2.2."
+      : "Lo exige la normativa (EN 301 549).";
+
+const indice = [
+  { href: "#que-pide", label: "Qué pide" },
+  { href: "#caso", label: "Un caso real" },
+  ...(ejemplos.length > 0 ? [{ href: "#t-codigo", label: "Cómo aplicarlo en código" }] : []),
+  { href: "#t-comprobar", label: "Cómo comprobarlo" },
+];
+
+/** Enlace a otra estación: en la misma línea o con transbordo */
+const paso = (x: Criterio) => ({
+  href: `/criterios/${slug(x.id)}/`,
+  n: x.id[0],
+  transbordo: x.id[0] !== n,
+  x,
+});
+/** Primera ficha vigente de cada línea: el selector L1–L4 cambia de línea sin salir de la documentación */
+const lineas = Object.entries(PRINCIPIOS).map(([k, name]) => ({
+  k,
+  name,
+  href: `/criterios/${slug(CRITERIOS.find((x) => x.id[0] === k && !esObsoleto(x.id))!.id)}/`,
+}));
+const anterior = prev && paso(prev);
+const siguiente = next && paso(next);
+---
+
+<Layout title={`${c.id} ${c.nombre}`} description={`Criterio WCAG 2.2 ${c.id} (nivel ${c.nivel}): ${c.descripcion}`}>
+  <div
+    class="wrap-wide grid gap-x-10 gap-y-6 pt-6 lg:grid-cols-[17rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)_14rem]"
+  >
+    {/* Plano de la línea actual: columna fija en escritorio y plegable en móvil. Solo uno de los dos se muestra a la vez. */}
+    <nav aria-labelledby="t-plano" class="hidden lg:block">
+      <div
+        data-rail
+        class="sticky top-[calc(env(safe-area-inset-top,0px)+4.75rem)] -mx-2 max-h-[calc(100vh-6rem)] overflow-y-auto px-2 pt-2 pb-28 [mask-image:linear-gradient(to_bottom,black_calc(100%-2.5rem),transparent)]"
+      >
+        <div data-rail-head class="sticky top-0 z-10 bg-bg pb-3 after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-3 after:bg-linear-to-b after:from-bg after:to-transparent">
+        <BuscadorCriterios atajo />
+        <a href="/criterios/" class="mt-1 inline-flex min-h-11 items-center gap-1.5 font-bold"><Icon name="arrow-left" size={16} /> Todos los criterios</a>
+        <ul class="mt-2 mb-4 flex gap-1.5" aria-label="Cambiar de línea">
+          {
+            lineas.map(({ k, name, href }) => (
+              <li>
+                <a
+                  href={href}
+                  class:list={[
+                    `linea-${k}`,
+                    "line-badge min-h-11 min-w-11 text-[.95rem] no-underline",
+                    k === n && "outline-2 outline-offset-2 outline-ink",
+                  ]}
+                  aria-current={k === n ? "true" : undefined}
+                >
+                  <span aria-hidden="true">L{k}</span>
+                  <span class="sr-only">Línea {k}: {name}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <h2 id="t-plano" data-plano-titulo class:list={[`linea-${n}`, "border-t-[6px] border-(--c) pt-2 text-[1.15rem]"]}>
+          Línea {n} · {PRINCIPIOS[n]}
+        </h2>
+        </div>
+        <LineaMetro n={n} current={c.id} />
+      </div>
+    </nav>
+
+    <article class="min-w-0 pb-6">
+      <nav aria-label="Ruta" class="text-[.93rem]">
+        <ol class="flex flex-wrap items-center gap-x-2 text-muted">
+          <li><a href="/">Inicio</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/criterios/">Criterios</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href={`/criterios/${slug(c.id)}/`} aria-current="page" class="text-muted no-underline">{c.id}</a></li>
+        </ol>
+      </nav>
+
+      <details class="card mt-4 lg:hidden">
+        <summary class="flex min-h-11 cursor-pointer items-center gap-2.5 px-3 font-bold">
+          <span class:list={[`linea-${n}`, "line-badge text-[.9rem]"]} aria-hidden="true">L{n}</span>
+          Plano de la línea {n} · {PRINCIPIOS[n]}
+        </summary>
+        <nav aria-label={`Plano de la línea ${n}`} class="border-t border-line px-2 py-3">
+          <div class="mb-3 px-1"><BuscadorCriterios idPrefix="m-" /></div>
+          <ul class="mb-3 flex gap-1.5 px-1" aria-label="Cambiar de línea">
+            {
+              lineas.map(({ k, name, href }) => (
+                <li>
+                  <a
+                    href={href}
+                    class:list={[
+                      `linea-${k}`,
+                      "line-badge min-h-11 min-w-11 text-[.95rem] no-underline",
+                      k === n && "outline-2 outline-offset-2 outline-ink",
+                    ]}
+                    aria-current={k === n ? "true" : undefined}
+                  >
+                    <span aria-hidden="true">L{k}</span>
+                    <span class="sr-only">Línea {k}: {name}</span>
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+          <LineaMetro n={n} current={c.id} idPrefix="m-" />
+          <a href="/criterios/" class="mt-2 ml-2 inline-flex min-h-11 items-center gap-1.5 font-bold"><Icon name="arrow-left" size={16} /> Todos los criterios</a>
+        </nav>
+      </details>
+
+      <header class="mt-6 flex flex-col gap-3">
+        <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-bold">
+          <span class:list={[`linea-${n}`, "line-badge"]} aria-hidden="true">L{n}</span>
+          <span>{PRINCIPIOS[n]}</span>
+          <span class="text-muted">Pauta {p} {PAUTAS[p]}</span>
+        </p>
+        <h1 class="flex flex-col">
+          <span
+            class:list={[
+              `linea-${n}`,
+              "font-mono text-[clamp(3rem,2rem+5vw,5.5rem)] leading-none font-semibold tracking-[-0.04em] text-(--c)",
+            ]}>{c.id}</span
+          >
+          <span class="mt-2 text-[clamp(1.9rem,1.3rem+2.4vw,3rem)]">{c.nombre}</span>
+        </h1>
+        <div class="flex flex-wrap items-center gap-2">
+          <LevelBadge nivel={c.nivel} />
+          {c.nuevo && <span class="badge-new">Nuevo en WCAG 2.2</span>}
+          <span class="text-[.95rem] text-muted">{estado}</span>
+        </div>
+      </header>
+
+      <section id="que-pide" aria-labelledby="t-que" class="prose mt-8 max-w-[44rem] scroll-mt-24">
+        <h2 id="t-que" class="sr-only">Qué pide</h2>
+        <p class="text-[1.22rem] leading-relaxed">{c.descripcion}</p>
+        <p><b>A quién ayuda:</b> {c.ayuda}</p>
+      </section>
+
+      <section id="caso" aria-labelledby="t-caso" class="prose mt-10 max-w-[44rem] scroll-mt-24">
+        <h2 id="t-caso" class="mt-0!">Un caso real</h2>
+        <p>{c.caso}</p>
+        {
+          c.bien && (
+            <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))] gap-2.5">
+              <div class="flex items-start gap-2.5 rounded-md bg-ok-soft px-4 py-3">
+                <Icon name="check" class="mt-0.5 text-ok" />
+                <div>
+                  <strong class="block text-caption">Bien</strong>
+                  {c.bien}
+                </div>
+              </div>
+              <div class="flex items-start gap-2.5 rounded-md bg-ko-soft px-4 py-3">
+                <Icon name="cross" class="mt-0.5 text-ko" />
+                <div>
+                  <strong class="block text-caption">Mal</strong>
+                  {c.mal}
+                </div>
+              </div>
+            </div>
+          )
+        }
+      </section>
+
+      {
+        ejemplos.length > 0 && (
+          <section aria-labelledby="t-codigo-h" id="t-codigo" class="mt-12 scroll-mt-24">
+            <h2 id="t-codigo-h" class="text-[1.6rem]">
+              Cómo aplicarlo en código
+            </h2>
+            {ejemplos.map((e) => (
+              <div class="mt-6 flex flex-col gap-3">
+                <h3 class="text-[1.2rem]">{e.titulo}</h3>
+                {e.explicacion && <p class="max-w-[44rem]">{e.explicacion}</p>}
+                <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,24rem),1fr))] gap-3">
+                  <CodeExample code={e.bien} lang={e.lang} tone={e.mal ? "bien" : "neutro"} />
+                  {e.mal && <CodeExample code={e.mal} lang={e.lang} tone="mal" />}
+                </div>
+              </div>
+            ))}
+          </section>
+        )
+      }
+
+      <section id="t-comprobar" aria-labelledby="t-comprobar-h" class="prose mt-12 max-w-[44rem] scroll-mt-24">
+        <h2 id="t-comprobar-h" class="mt-0!">Cómo comprobarlo</h2>
+        {
+          c.comprobar ? (
+            <p>{c.comprobar}</p>
+          ) : (
+            <p>
+              Es un criterio AAA: no lo exige la normativa, pero mejora la experiencia de muchas personas. Consulta la
+              explicación del W3C para ver cómo evaluarlo.
+            </p>
+          )
+        }
+        <p>
+          <a href={w3cUrl(c.id)} target="_blank" rel="noopener" hreflang="en">
+            <span lang="en">Understanding {c.id}</span> (W3C, en inglés)
+          </a>
+        </p>
+      </section>
+
+      <nav aria-label="Criterio anterior y siguiente" class="mt-14 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        {
+          [anterior, siguiente].map(
+            (x, i) =>
+              x && (
+                <a
+                  href={x.href}
+                  rel={i === 0 ? "prev" : "next"}
+                  class:list={[
+                    `linea-${x.n}`,
+                    "group flex flex-col gap-1.5 border-t-[6px] border-(--c) pt-3 text-ink no-underline",
+                    i === 1 && "items-end text-right sm:col-start-2",
+                  ]}
+                >
+                  <span class="flex items-center gap-1.5 text-[.9rem] font-bold text-muted">
+                    {i === 0 && <Icon name="arrow-left" size={16} />}
+                    {x.transbordo && <Icon name="transbordo" size={16} class="text-(--c)" />}
+                    {x.transbordo
+                      ? `Transbordo a la línea ${x.n} · ${PRINCIPIOS[x.n]}`
+                      : i === 0
+                        ? "Estación anterior"
+                        : "Siguiente estación"}
+                    {i === 1 && <Icon name="arrow-right" size={16} />}
+                  </span>
+                  <span class="text-[1.2rem] font-extrabold leading-snug group-hover:underline group-hover:decoration-2">
+                    <span class="font-mono text-(--c)">{x.x.id}</span> {x.x.nombre}
+                  </span>
+                </a>
+              ),
+          )
+        }
+      </nav>
+    </article>
+
+    <aside aria-labelledby="t-ficha" class="hidden xl:block">
+      <div class="sticky top-[calc(env(safe-area-inset-top,0px)+4.75rem)] flex flex-col gap-6 pt-12">
+        <nav aria-labelledby="t-enficha">
+          <h2 id="t-enficha" class="mb-2 text-label">En esta ficha</h2>
+          <ul class="flex flex-col border-l border-line">
+            {
+              indice.map((i) => (
+                <li>
+                  <a href={i.href} class="-ml-px flex min-h-10 items-center border-l-2 border-transparent pl-3 text-[.95rem] text-ink no-underline hover:border-ink hover:underline">
+                    {i.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <div>
+          <h2 id="t-ficha" class="mb-2 text-label">Datos</h2>
+          <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-[.93rem]">
+            <dt class="text-muted">Nivel</dt>
+            <dd><LevelBadge nivel={c.nivel} /></dd>
+            <dt class="text-muted">Línea</dt>
+            <dd>{n} · {PRINCIPIOS[n]}</dd>
+            <dt class="text-muted">Pauta</dt>
+            <dd>{p} {PAUTAS[p]}</dd>
+            <dt class="text-muted">En 2.2</dt>
+            <dd>{obsoleto ? "Eliminado" : c.nuevo ? "Nuevo" : "Ya existía"}</dd>
+          </dl>
+        </div>
+      </div>
+    </aside>
+  </div>
+</Layout>
+
+<script>
+  // Centra la estación actual en el plano lateral sin mover la página
+  const rail = document.querySelector<HTMLElement>("[data-rail]");
+  const here = rail?.querySelector<HTMLElement>('[aria-current="page"]');
+  // Al tabular, la estación con foco no queda bajo la cabecera fija ni bajo el degradado inferior (WCAG 2.4.11)
+  const railHead = rail?.querySelector<HTMLElement>("[data-rail-head]");
+  if (rail && railHead) {
+    const pad = () => {
+      rail.style.scrollPaddingTop = railHead.offsetHeight + 12 + "px";
+      rail.style.scrollPaddingBottom = "3rem";
+    };
+    new ResizeObserver(pad).observe(railHead);
+    pad();
+  }
+  // Se calcula cuando ya han cargado las fuentes: antes, la altura de las líneas aún puede cambiar
+  if (rail && here) document.fonts.ready.then(() => {
+    // Centrada en el hueco que queda bajo la cabecera fija del plano
+    const head = rail.querySelector<HTMLElement>("[data-rail-head]")?.offsetHeight ?? 0;
+    const offset = here.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop;
+    const target = offset - head - (rail.clientHeight - head - here.offsetHeight) / 2;
+    // Ajusta al inicio de una estación o tramo para que ninguno quede cortado bajo la cabecera
+    const tops = Array.from(rail.querySelectorAll<HTMLElement>(".metro-stop, .metro-zone")).map(
+      (el) => el.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop - head,
+    );
+    const max = rail.scrollHeight - rail.clientHeight;
+    const snap = tops.filter((t) => t <= Math.min(target, max)).pop();
+    rail.scrollTop = Math.max(0, snap ?? target);
+  });
+</script>

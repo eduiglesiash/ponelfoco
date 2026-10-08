@@ -1,0 +1,11 @@
+---
+import type { Nivel } from "../data/criterios";
+
+interface Props {
+  nivel: Nivel;
+}
+
+const { nivel } = Astro.props;
+---
+
+<span class:list={["lv", `lv-${nivel}`]}><span class="sr-only">Nivel </span>{nivel}</span>

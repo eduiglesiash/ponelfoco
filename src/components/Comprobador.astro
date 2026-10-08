@@ -1,0 +1,198 @@
+---
+/**
+ * Comprobador «¿Me afecta?» como un trayecto: una pregunta por estación, las respondidas quedan como paradas
+ * que se pueden cambiar y el resultado es la estación de destino. Sin JavaScript se ven todas las preguntas.
+ */
+const groups = [
+  {
+    id: "fs-org",
+    name: "org",
+    legend: "¿Qué tipo de organización eres?",
+    opts: [
+      { value: "pub", label: "Sector público", hint: "Administración, universidad pública, organismo dependiente" },
+      { value: "priv", label: "Empresa privada", hint: "Sociedad, autónomo o comercio" },
+      { value: "ong", label: "Asociación o fundación", hint: "Entidad sin ánimo de lucro" },
+    ],
+  },
+  {
+    id: "fs-serv",
+    name: "serv",
+    legend: "¿Qué ofreces a los consumidores?",
+    opts: [
+      { value: "ecom", label: "Venta online", hint: "Tienda web o app, reservas, suscripciones" },
+      { value: "bank", label: "Banca o pagos", hint: "Cuentas, tarjetas, crédito, dinero electrónico" },
+      { value: "tel", label: "Telecomunicaciones o audiovisual", hint: "Operadores, plataformas de TV o vídeo" },
+      { value: "trans", label: "Transporte de viajeros", hint: "Avión, tren, autobús o barco" },
+      { value: "book", label: "Libros electrónicos", hint: "Edición o venta de ebooks" },
+      { value: "info", label: "Solo información", hint: "Web corporativa sin venta ni contratación" },
+    ],
+  },
+  {
+    id: "fs-size",
+    name: "size",
+    legend: "¿Qué tamaño tiene tu organización?",
+    opts: [
+      { value: "micro", label: "Microempresa", hint: "Menos de 10 personas y hasta 2 M€" },
+      { value: "pyme", label: "Pyme", hint: "De 10 a 100 personas" },
+      { value: "big", label: "Grande", hint: "Más de 100 personas o más de 6 M€" },
+    ],
+  },
+];
+---
+
+<section aria-labelledby="t-test" class="wrap">
+  <h2 id="t-test" class="sr-only">Comprobador</h2>
+  <form id="checker" novalidate class="max-w-3xl">
+    <ol class="route">
+      {
+        groups.map((g, i) => (
+          <li class="route-stop" data-step={g.name} data-state={i === 0 ? "current" : "pending"}>
+            <span class="route-marker" aria-hidden="true">
+              {i + 1}
+            </span>
+            <fieldset id={g.id} tabindex="-1" class="m-0 flex flex-col gap-3 border-0 p-0 focus-visible:outline-offset-8">
+              <legend class="route-q">
+                <span class="sr-only">Pregunta {i + 1} de 3: </span>
+                {g.legend}
+              </legend>
+              <p data-answer hidden class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span>
+                  <span class="text-muted">Tu respuesta: </span>
+                  <b data-answer-text />
+                </span>
+                <button type="button" data-change class="route-change">
+                  Cambiar<span class="sr-only"> la respuesta a «{g.legend}»</span>
+                </button>
+              </p>
+              <p data-skip hidden class="text-muted">
+                No aplica al sector público.
+              </p>
+              <div data-options class="flex flex-col gap-2">
+                {g.opts.map((o) => (
+                  <div class="relative">
+                    <input
+                      type="radio"
+                      name={g.name}
+                      id={`${g.name}-${o.value}`}
+                      value={o.value}
+                      class="route-input peer absolute inset-0 m-0 size-full cursor-pointer opacity-0"
+                    />
+                    <label for={`${g.name}-${o.value}`} class="route-option">
+                      <span class="route-dot" aria-hidden="true" />
+                      <span class="flex flex-col">
+                        <span class="font-bold">{o.label}</span>
+                        <span class="text-[.93rem] text-muted">{o.hint}</span>
+                      </span>
+                    </label>
+                  </div>
+                ))}
+              </div>
+              <div data-actions class="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <button type="button" data-next class="btn btn-primary">
+                  Siguiente
+                </button>
+                <p data-error role="status" class="font-bold text-ko" />
+              </div>
+            </fieldset>
+          </li>
+        ))
+      }
+      <li class="route-stop" data-step="fin" data-state="pending">
+        <span class="route-marker route-marker-end" aria-hidden="true"></span>
+        <h3 id="t-destino" tabindex="-1" class="route-q">Tu resultado</h3>
+        <p data-wait class="mt-1 text-muted">Responde las preguntas y aquí verás qué normas te aplican.</p>
+        <div id="verdict" hidden class="mt-3 flex flex-col gap-3 rounded-lg bg-sign px-[clamp(1rem,3vw,1.75rem)] py-5 text-sign-ink">
+          <span data-pill class="self-start rounded px-2.5 py-0.5 text-[.9rem] font-extrabold"></span>
+          <p data-title class="text-[clamp(1.4rem,1.2rem+.8vw,1.75rem)] leading-tight font-extrabold"></p>
+          <ul data-items class="m-0 flex list-disc flex-col gap-1.5 pl-[1.15rem] marker:text-sign-muted"></ul>
+        </div>
+        <button type="button" data-restart hidden class="btn btn-ghost mt-4">Volver a empezar</button>
+      </li>
+    </ol>
+  </form>
+</section>
+
+<script>
+  import { verdict, type Org, type Serv, type Size } from "../data/comprobador";
+
+  const form = document.getElementById("checker") as HTMLFormElement;
+  const stops = Array.from(form.querySelectorAll<HTMLLIElement>("[data-step]"));
+  const steps = stops.slice(0, -1);
+  const fin = stops[stops.length - 1];
+  const box = document.getElementById("verdict")!;
+  const destino = document.getElementById("t-destino")!;
+  const q = <T extends HTMLElement>(el: Element, sel: string) => el.querySelector<T>(sel)!;
+
+  const checked = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
+  const isPublic = () => checked("org")?.value === "pub";
+  /** Las preguntas 2 y 3 no aplican al sector público */
+  const applies = (i: number) => i === 0 || !isPublic();
+
+  /** Índice de la estación actual; steps.length es el destino */
+  let current = 0;
+
+  function render() {
+    steps.forEach((li, i) => {
+      const done = i < current && applies(i);
+      const skipped = i < current && !applies(i);
+      li.dataset.state = done ? "done" : skipped ? "skipped" : i === current ? "current" : "pending";
+      const input = checked(li.dataset.step!);
+      q(li, "[data-answer]").hidden = !done;
+      q(li, "[data-answer-text]").textContent = input ? q(form, `label[for="${input.id}"] .font-bold`).textContent : "";
+      q(li, "[data-skip]").hidden = !skipped;
+      q(li, "[data-options]").hidden = i !== current;
+      q(li, "[data-actions]").hidden = i !== current;
+    });
+    const end = current === steps.length;
+    fin.dataset.state = end ? "current" : "pending";
+    q(fin, "[data-wait]").hidden = end;
+    box.hidden = !end;
+    q(fin, "[data-restart]").hidden = !end;
+    if (end) {
+      const v = verdict(
+        checked("org")!.value as Org,
+        (checked("serv")?.value ?? "info") as Serv,
+        (checked("size")?.value ?? "pyme") as Size,
+      );
+      // Obligado o posible obligación: etiqueta amarilla; sin obligación: etiqueta blanca. El texto lo dice siempre.
+      const pill = q(box, "[data-pill]");
+      pill.classList.toggle("bg-mark", v.tone === "yes");
+      pill.classList.toggle("text-mark-ink", v.tone === "yes");
+      pill.classList.toggle("bg-sign-ink", v.tone === "no");
+      pill.classList.toggle("text-sign", v.tone === "no");
+      pill.textContent = v.pill;
+      q(box, "[data-title]").textContent = v.title;
+      q(box, "[data-items]").replaceChildren(
+        ...v.items.map((t) => Object.assign(document.createElement("li"), { textContent: t })),
+      );
+    }
+  }
+
+  function go(to: number) {
+    current = to;
+    render();
+    (current === steps.length ? destino : q(steps[current], "fieldset")).focus();
+  }
+
+  steps.forEach((li, i) => {
+    q(li, "[data-next]").addEventListener("click", () => {
+      const error = q(li, "[data-error]");
+      if (!checked(li.dataset.step!)) {
+        error.textContent = "Elige una opción para seguir.";
+        return;
+      }
+      error.textContent = "";
+      let next = i + 1;
+      while (next < steps.length && !applies(next)) next++;
+      go(next);
+    });
+    q(li, "[data-change]").addEventListener("click", () => go(i));
+    li.addEventListener("change", () => (q(li, "[data-error]").textContent = ""));
+  });
+  q(fin, "[data-restart]").addEventListener("click", () => {
+    form.reset();
+    go(0);
+  });
+  form.addEventListener("submit", (e) => e.preventDefault());
+  render();
+</script>

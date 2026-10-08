@@ -1,0 +1,125 @@
+{
+  "title": "Elige el mundo visual",
+  "question": "El sorteo asignó «Rejilla suiza». Quédate con ella, elige una alternativa o vuelve a tirar.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Rejilla suiza",
+      "kicker": "THE ROLL",
+      "lineage": "Estilo tipográfico internacional (Müller-Brockmann, Ruder), carteles y manuales de identidad de los 60",
+      "thesis": "La claridad como sistema: una rejilla visible, una sola familia y el número del criterio como titular.",
+      "palette": ["#ffffff", "#0d0d0d", "#d4211c", "#1f3fbf", "#0b7a4b", "#ffd84d"],
+      "materials": ["rejilla de 12 columnas a la vista", "campos planos de color por principio", "filetes en lugar de cajas"],
+      "viewport": "Criterios a todo el ancho: cuatro columnas, una por principio, cada una abierta por su campo de color con el número y el nombre; buscador con atajo «/» fijo arriba. En la ficha: índice a la izquierda, columna de lectura de ~68 caracteres, a la derecha «En esta ficha» y los datos (nivel, pauta, W3C); el número 1.4.3 enorme en ExtraBold como titular.",
+      "risk": "El estilo suizo es conocido; si la rejilla se pone tímida queda en una web corporativa más.",
+      "raised": [
+        {"from": "challenger-catalogo", "raise": "El número del criterio es el titular y la identidad: se compone a escala monumental y ordena todo."},
+        {"from": "challenger-tormenta", "raise": "Una sola familia, Atkinson Hyperlegible Next, de 400 a 800, hecha para baja visión: se elimina la serif."},
+        {"from": "challenger-cracktro", "raise": "Nada se encierra en tarjetas: la jerarquía la dan tamaño, peso y filetes de la rejilla."},
+        {"from": "challenger-moviola", "raise": "El estado es una marca, no un color: criterios ya vistos marcados y «sigue donde lo dejaste»."},
+        {"from": "challenger-ciclorama", "raise": "Niveles A, AA y AAA como estados con nombre y forma propia; el color nunca va solo."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Plano de metro",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Diagramas de líneas de Metro de Madrid y Barcelona, herederos del plano de Beck",
+      "thesis": "Los cuatro principios son cuatro líneas; cada criterio, una estación; siempre sabes en qué parada estás.",
+      "palette": ["#ffffff", "#141414", "#e2231a", "#0055a5", "#00a650", "#f7a800"],
+      "materials": ["trazos de línea de 6 px", "estaciones como círculos", "rótulos de señalética"],
+      "viewport": "Criterios como un plano horizontal a todo el ancho: cuatro líneas de color con sus estaciones numeradas; al pulsar una, se abre la ficha con la línea recorriendo el margen y tu estación marcada.",
+      "risk": "Es la metáfora a la que llegan muchas webs de navegación; mal llevada es un disfraz que cuesta leer a 320 px."
+    },
+    {
+      "id": "challenger-manual",
+      "label": "Manual con separadores",
+      "verdict": "competitive",
+      "lineage": "Manuales de software en caja con separadores de colores y hojas de acetato",
+      "thesis": "La web como manual técnico: un separador de color por principio y su grosor dice cuánto ocupa.",
+      "palette": ["#f2f1ec", "#1a1a1a", "#e8641b", "#f2c200", "#2f8f3a", "#2a3fb0"],
+      "materials": ["separadores de cartulina a tinta plena", "hojas de acetato lechoso", "pestañas escalonadas en el canto"],
+      "viewport": "Cuatro pestañas escalonadas en el borde derecho, de altura proporcional a los criterios de cada principio; la del principio actual se extiende y tiñe el fondo; la lectura va en una hoja clara encima.",
+      "case": "Gana en claridad (dónde estás y cuánto queda); pierde algo en identificación del público.",
+      "risk": "Las hojas translúcidas sobre color exigen calcular el contraste en cada tono; mal resuelto rompe el 4,5:1.",
+      "hero": "https://impeccable.style/worlds/cards/rw-manual-acetate-tab-board-hero.webp"
+    },
+    {
+      "id": "challenger-catalogo",
+      "label": "Catálogo numerado",
+      "verdict": "declined",
+      "lineage": "Identidad de catálogo de Factory Records",
+      "thesis": "Todo es una entrada de catálogo con número.",
+      "palette": ["#0d0d0d", "#ffffff", "#e0413a"],
+      "materials": ["negro mate", "trazos blancos finos"],
+      "viewport": "Índice por número sobre negro.",
+      "case": "Sustituye nombres por códigos de color: choca con la accesibilidad.",
+      "risk": "Ilegible para quien no conoce el código.",
+      "kept": "El número como único titular."
+    },
+    {
+      "id": "challenger-tormenta",
+      "label": "Tormenta de letras",
+      "verdict": "declined",
+      "lineage": "Mundos surrealistas tipográficos",
+      "thesis": "Las letras se comportan como materia.",
+      "palette": ["#ffffff", "#0d0d0d", "#b8bcc2"],
+      "materials": ["una grotesca monumental"],
+      "viewport": "Palabras que se rompen como frentes.",
+      "case": "El movimiento tipográfico estorba la lectura.",
+      "risk": "Distrae y choca con reduced-motion.",
+      "kept": "Una sola familia a escala monumental."
+    },
+    {
+      "id": "challenger-cracktro",
+      "label": "Cracktro",
+      "verdict": "declined",
+      "lineage": "Pantallas de demoscene",
+      "thesis": "Rango por profundidad sobre negro.",
+      "palette": ["#050505", "#f0ead8", "#f0a020"],
+      "materials": ["fuente bitmap", "polvo en capas"],
+      "viewport": "Línea fija sobre fondo en movimiento.",
+      "case": "Fondo en movimiento y fuente bitmap: mala lectura.",
+      "risk": "Pierde a quien dirige o asesora.",
+      "kept": "Nada encerrado en cajas."
+    },
+    {
+      "id": "challenger-moviola",
+      "label": "Banco de montaje",
+      "verdict": "declined",
+      "lineage": "Moviola y mesa de corte de cine",
+      "thesis": "Una tira perforada con marcas de estado.",
+      "palette": ["#0d0d0d", "#f26a1b", "#ffffff"],
+      "materials": ["grano de película", "cinta naranja"],
+      "viewport": "Tira de fotogramas cruzando la página.",
+      "case": "Ajeno al público y con naranja en un tercio de la pantalla.",
+      "risk": "Disfraz de herramienta.",
+      "kept": "Estado como marca: dónde lo dejaste."
+    },
+    {
+      "id": "challenger-ciclorama",
+      "label": "Ciclorama",
+      "verdict": "declined",
+      "lineage": "Iluminación teatral",
+      "thesis": "Bandas de luz de noche a día.",
+      "palette": ["#050505", "#1d3aa8", "#e48aa0", "#ffffff"],
+      "materials": ["bandas de color"],
+      "viewport": "Horizonte de color tras el contenido.",
+      "case": "Atmósfera sin relación con la normativa.",
+      "risk": "Color de fondo que compite con el texto.",
+      "kept": "Estados discretos con nombre."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "Documentación estándar",
+    "thesis": "Lo que hacen MDN o Stripe Docs, bien ejecutado.",
+    "palette": ["#ffffff", "#111827", "#2563eb"],
+    "materials": ["sans de sistema", "barra lateral en árbol", "tabla de contenidos a la derecha"],
+    "viewport": "Barra lateral con el árbol de criterios, buscador ⌘K arriba, ficha en el centro y tabla de contenidos a la derecha.",
+    "risk": "Indistinguible de cualquier documentación técnica."
+  },
+  "steer": true
+}

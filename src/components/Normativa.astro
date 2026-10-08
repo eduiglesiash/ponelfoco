@@ -1,0 +1,210 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+const timeline = [
+  { time: "2016", text: "Directiva (UE) 2016/2102 para el sector público." },
+  { time: "sep 2018", text: "Se aprueba el RD 1112/2018." },
+  { time: "sep 2019", text: "Obligatorio para webs públicas nuevas." },
+  { time: "sep 2020", text: "Obligatorio para todas las webs públicas." },
+  { time: "jun 2021", text: "Obligatorio para las apps del sector público." },
+  { time: "28 jun 2025", text: "Entra en aplicación la Ley 11/2023 para empresas.", state: "now" },
+  { time: "sep 2026", text: "Se publica EN 301 549 v4.1.1 con WCAG 2.2.", state: "now" },
+  { time: "28 jun 2030", text: "Fin del periodo transitorio para servicios previos.", state: "future" },
+];
+
+const fines = [
+  { level: "Leve", amount: "301 € – 30.000 €" },
+  { level: "Grave", amount: "30.001 € – 90.000 €" },
+  { level: "Muy grave", amount: "90.001 € – 1.000.000 €" },
+];
+
+/* Cada norma es un bloque con filete superior, sin tarjeta; el ámbito va bajo el título */
+const law = "flex min-w-0 flex-col gap-3 border-t-2 border-ink pt-4";
+/* La Ley 11/2023, la que más empresas busca, con el filete grueso */
+const lawMain = "flex min-w-0 flex-col gap-3 border-t-[6px] border-ink pt-3";
+const tag = "-mt-1.5 font-bold text-muted";
+const who = "rounded-md bg-sunk px-3 py-2.5 text-[.95rem]";
+const list = "m-0 flex list-disc flex-col gap-1.5 pl-[1.1rem]";
+const src = "mt-auto text-[.92rem]";
+---
+
+<section id="normativa" aria-labelledby="t-norm" class="border-t border-line py-[clamp(2.5rem,5vw,4rem)]">
+  <div class="wrap">
+    <SectionHead title="Qué normas aplican y a quién" id="t-norm">
+      Hay dos grandes bloques: uno para el sector público y otro para empresas que venden productos o prestan servicios a
+      consumidores. Ambos se apoyan en la misma norma técnica, la EN 301 549, que a su vez incorpora las pautas WCAG.
+    </SectionHead>
+
+    <div class="grid gap-x-10 gap-y-12 md:grid-cols-2">
+      <article class={law}>
+        <h3 class="text-subtitle">Real Decreto 1112/2018</h3>
+        <p class={tag}>Sector público</p>
+        <p>
+          Traslada a España la Directiva (UE) 2016/2102. Obliga a que las webs y apps del sector público sean
+          perceptibles, operables, comprensibles y robustas.
+        </p>
+        <p class={who}>
+          <b>A quién obliga:</b> administraciones estatales, autonómicas y locales, universidades públicas, organismos y
+          entidades dependientes, y otras entidades incluidas en su ámbito.
+        </p>
+        <ul class={list}>
+          <li>Cumplir la norma UNE-EN 301 549 (en la práctica, WCAG nivel AA).</li>
+          <li>Publicar y mantener al día una <b>declaración de accesibilidad</b>.</li>
+          <li>
+            Ofrecer un canal de quejas y solicitudes de información accesible, con respuesta en <b>20 días hábiles</b>.
+          </li>
+          <li>
+            Atender reclamaciones en un máximo de <b>dos meses</b> a través de la Unidad responsable de accesibilidad.
+          </li>
+        </ul>
+        <p class={src}>
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2018-12699" target="_blank" rel="noopener"
+            >Texto consolidado en el BOE</a
+          >
+        </p>
+      </article>
+
+      <article class={lawMain}>
+        <h3 class="text-subtitle">Ley 11/2023 (Acta Europea de Accesibilidad)</h3>
+        <p class={tag}>Empresas · productos y servicios</p>
+        <p>
+          Transpone la Directiva (UE) 2019/882. Su título I se aplica desde el <b>28 de junio de 2025</b> a determinados
+          productos y servicios dirigidos a consumidores.
+        </p>
+        <p class={who}>
+          <b>Servicios afectados:</b> comercio electrónico, banca para consumidores, comunicaciones electrónicas, acceso a
+          servicios audiovisuales, libros electrónicos, transporte de viajeros (webs, apps, billetes e información) y
+          comunicaciones de emergencia.
+        </p>
+        <ul class={list}>
+          <li>
+            Las <b>microempresas que prestan servicios</b> (menos de 10 personas y hasta 2 M€ de facturación o balance) están
+            exentas.
+          </li>
+          <li>Los servicios con contratos o productos anteriores a 2025 tienen hasta el <b>28 de junio de 2030</b>.</li>
+          <li>Hay que informar de cómo el servicio cumple los requisitos de accesibilidad.</li>
+          <li>Se puede alegar <b>carga desproporcionada</b>, documentándola.</li>
+        </ul>
+        <p class={src}>
+          <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022" target="_blank" rel="noopener"
+            >Texto consolidado en el BOE</a
+          >
+        </p>
+      </article>
+
+      <article class={law}>
+        <h3 class="text-subtitle">
+          UNE-EN 301 549
+          <span class="badge-new align-middle">v4.1.1</span>
+        </h3>
+        <p class={tag}>Norma técnica</p>
+        <p>Es la norma armonizada que concreta los requisitos técnicos. Cumplirla da <b>presunción de conformidad</b> con la ley.</p>
+        <ul class={list}>
+          <li><b>v3.2.1 (2021):</b> se basa en WCAG 2.1 nivel AA. Es la versión citada oficialmente hasta ahora.</li>
+          <li>
+            <b>v4.1.1 (publicada el 2 de septiembre de 2026):</b> pasa a WCAG 2.2 nivel AA y conecta sus cláusulas con la Ley
+            de Accesibilidad.
+          </li>
+          <li>Su cita en el Diario Oficial de la UE está prevista para finales de 2026.</li>
+          <li>Cubre también software, documentos, hardware y comunicación bidireccional, no solo webs.</li>
+        </ul>
+        <p class={src}>
+          <a
+            href="https://www.etsi.org/deliver/etsi_en/301500_301599/301549/04.01.01_60/en_301549v040101p.pdf"
+            target="_blank"
+            rel="noopener">Norma EN 301 549 v4.1.1 (ETSI, PDF)</a
+          >
+        </p>
+      </article>
+
+      <article class={law}>
+        <h3 class="text-subtitle">LSSI y Ley 56/2007</h3>
+        <p class={tag}>Grandes empresas</p>
+        <p>Antes del Acta Europea ya existía una obligación para empresas grandes de servicios de especial trascendencia económica.</p>
+        <p class={who}>
+          <b>A quién obliga:</b> empresas con más de 100 trabajadores o más de 6 M€ de facturación anual en sectores como
+          telecomunicaciones, servicios financieros, suministros (agua, gas, electricidad), agencias de viaje, transporte de
+          viajeros y comercio minorista.
+        </p>
+        <ul class={list}>
+          <li>Sus webs deben cumplir un nivel medio de accesibilidad (equivalente a AA).</li>
+          <li>Convive con la Ley 11/2023: muchas empresas están afectadas por ambas.</li>
+        </ul>
+      </article>
+    </div>
+
+    <div
+      tabindex="0"
+      role="region"
+      aria-label="Cronología de la normativa (desplazable)"
+      class="-mx-2 mt-10 overflow-x-auto px-2 pt-2 pb-2"
+    >
+      <ol
+        class="relative m-0 grid min-w-304 list-none grid-cols-[repeat(8,minmax(9.5rem,1fr))] p-0 before:absolute before:inset-x-0 before:top-[2.4rem] before:h-1.5 before:rounded-full before:bg-ink"
+      >
+        {
+          timeline.map((t) => (
+            <li class="relative pr-4">
+              <time class:list={["block font-mono text-[.95rem] font-semibold", t.state === "future" && "text-muted"]}>
+                {t.time}
+              </time>
+              <div
+                aria-hidden="true"
+                class:list={[
+                  "relative mt-2 mb-3 size-5 rounded-full border-[3.5px] border-ink",
+                  t.state === "now" ? "bg-mark" : "bg-bg",
+                  t.state === "future" && "border-dashed",
+                ]}
+              />
+              <p class="text-[.93rem] text-muted">{t.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mt-12 grid gap-x-10 gap-y-12 md:grid-cols-2">
+      <div class="min-w-0 border-t-2 border-ink pt-4">
+        <h3 class="mb-3 text-subtitle">Sanciones</h3>
+        <p>
+          Si la normativa sectorial no fija otras, se aplica el régimen general de la Ley General de Derechos de las Personas
+          con Discapacidad.
+        </p>
+        <table class="w-full border-collapse tabular-nums">
+          <caption class="sr-only">Importe de las multas según gravedad</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="border-b border-line px-1 py-2 text-left">Infracción</th>
+              <th scope="col" class="border-b border-line px-1 py-2 text-left">Multa</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              fines.map((f) => (
+                <tr>
+                  <td class="border-b border-line px-1 py-2">{f.level}</td>
+                  <td class="border-b border-line px-1 py-2 text-right font-mono">{f.amount}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <p class="mt-3 text-[.92rem] text-muted">
+          Pagar la multa no exime de corregir el problema. Las comunidades autónomas pueden tener su propio régimen.
+        </p>
+      </div>
+      <div class="min-w-0 border-t-2 border-ink pt-4">
+        <h3 class="mb-3 text-subtitle">La declaración de accesibilidad</h3>
+        <p>Es el documento público donde explicas cómo de accesible es tu web. Debe incluir:</p>
+        <ol class="m-0 mt-2 flex list-decimal flex-col gap-2 pl-5">
+          <li>Situación de cumplimiento: total, parcial o no conforme.</li>
+          <li>Contenidos no accesibles y motivo (falta de conformidad, carga desproporcionada o exclusión).</li>
+          <li>Cómo se ha evaluado (autoevaluación o auditoría externa) y fecha.</li>
+          <li>Canal para comunicar problemas y pedir información accesible.</li>
+          <li>Procedimiento de reclamación.</li>
+        </ol>
+        <p class="mt-3 text-[.92rem] text-muted">En el sector público es obligatoria y debe revisarse periódicamente.</p>
+      </div>
+    </div>
+  </div>
+</section>

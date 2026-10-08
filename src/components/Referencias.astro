@@ -1,0 +1,146 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+/** Enlaces oficiales comprobados en octubre de 2026. */
+const grupos = [
+  {
+    title: "Legislación española",
+    links: [
+      {
+        href: "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022",
+        label: "Ley 11/2023 (Acta Europea de Accesibilidad)",
+        text: "Obligaciones de las empresas que venden o prestan servicios a consumidores desde el 28 de junio de 2025.",
+      },
+      {
+        href: "https://www.boe.es/buscar/act.php?id=BOE-A-2018-12699",
+        label: "Real Decreto 1112/2018",
+        text: "Accesibilidad de webs y apps del sector público. Útil si trabajas para la Administración.",
+      },
+      {
+        href: "https://www.boe.es/buscar/act.php?id=BOE-A-2007-22440",
+        label: "Ley 56/2007, de impulso de la sociedad de la información",
+        text: "Obligación de accesibilidad web para grandes empresas de sectores clave.",
+      },
+      {
+        href: "https://www.boe.es/buscar/act.php?id=BOE-A-2002-13758",
+        label: "Ley 34/2002 (LSSI)",
+        text: "Ley de servicios de la sociedad de la información, modificada por la Ley 56/2007.",
+      },
+      {
+        href: "https://www.boe.es/buscar/act.php?id=BOE-A-2013-12632",
+        label: "Real Decreto Legislativo 1/2013",
+        text: "Ley General de derechos de las personas con discapacidad. Fija el régimen general de sanciones.",
+      },
+    ],
+  },
+  {
+    title: "Legislación europea",
+    links: [
+      {
+        href: "https://eur-lex.europa.eu/eli/dir/2019/882/oj",
+        label: "Directiva (UE) 2019/882",
+        text: "El Acta Europea de Accesibilidad original. La Ley 11/2023 la traslada a España.",
+      },
+      {
+        href: "https://eur-lex.europa.eu/eli/dir/2016/2102/oj",
+        label: "Directiva (UE) 2016/2102",
+        text: "Accesibilidad de los sitios web y apps del sector público.",
+      },
+      {
+        href: "https://eur-lex.europa.eu/eli/dec_impl/2018/1523/oj",
+        label: "Decisión de Ejecución (UE) 2018/1523",
+        text: "Modelo oficial de declaración de accesibilidad.",
+      },
+      {
+        href: "https://commission.europa.eu/strategy-and-policy/policies/justice-and-fundamental-rights/disability/union-equality-strategy-rights-persons-disabilities-2021-2030/european-accessibility-act_en",
+        label: "European Accessibility Act (Comisión Europea, en inglés)",
+        text: "Resumen oficial del Acta, productos y servicios afectados y preguntas frecuentes.",
+        en: true,
+      },
+    ],
+  },
+  {
+    title: "Normas técnicas",
+    links: [
+      {
+        href: "https://www.etsi.org/deliver/etsi_en/301500_301599/301549/04.01.01_60/en_301549v040101p.pdf",
+        label: "EN 301 549 v4.1.1 (ETSI, PDF, en inglés)",
+        text: "La norma armonizada. Cumplirla da presunción de conformidad con la ley.",
+        en: true,
+      },
+      {
+        href: "https://www.w3.org/TR/WCAG22/",
+        label: "WCAG 2.2 (W3C, en inglés)",
+        text: "Las pautas originales en las que se basa la EN 301 549.",
+        en: true,
+      },
+      {
+        href: "https://www.w3.org/WAI/standards-guidelines/wcag/es",
+        label: "Introducción a las WCAG (W3C, en castellano)",
+        text: "Resumen oficial de qué son las pautas y cómo se organizan.",
+      },
+    ],
+  },
+  {
+    title: "Organismos y guías",
+    links: [
+      {
+        href: "https://administracionelectronica.gob.es/pae_Home/pae_Estrategias/pae_Accesibilidad.html",
+        label: "Observatorio de Accesibilidad Web",
+        text: "Guías, modelos de declaración e informes de seguimiento del Gobierno de España.",
+      },
+      {
+        href: "https://accessible-eu-centre.ec.europa.eu/",
+        label: "AccessibleEU (en inglés)",
+        text: "Centro de recursos de la Comisión Europea para aplicar el Acta Europea.",
+        en: true,
+      },
+      {
+        href: "https://ceapat.imserso.es/",
+        label: "CEAPAT (Imserso)",
+        text: "Centro estatal de referencia en accesibilidad y productos de apoyo.",
+      },
+      {
+        href: "https://www.w3.org/WAI/planning/statements/",
+        label: "Generador de declaraciones de accesibilidad (W3C, en inglés)",
+        text: "Ayuda a redactar la declaración paso a paso.",
+        en: true,
+      },
+      {
+        href: "https://www.w3.org/WAI/test-evaluate/tools/list/",
+        label: "Herramientas de evaluación (W3C, en inglés)",
+        text: "Listado de herramientas para revisar tu web. Ninguna automática detecta todos los problemas.",
+        en: true,
+      },
+    ],
+  },
+];
+---
+
+<section id="referencias" aria-labelledby="t-ref" class="border-t border-line py-[clamp(2.5rem,5vw,4rem)]">
+  <div class="wrap">
+    <SectionHead title="Enlaces de referencia" id="t-ref">
+      Las fuentes oficiales que conviene tener a mano si tu empresa tiene que cumplir. Los enlaces se abren en una pestaña
+      nueva.
+    </SectionHead>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] gap-x-8 gap-y-10">
+      {
+        grupos.map((g) => (
+          <div>
+            <h3 class="mb-3 text-subtitle">{g.title}</h3>
+            <ul class="flex flex-col gap-3.5">
+              {g.links.map((l) => (
+                <li>
+                  <a href={l.href} target="_blank" rel="noopener" hreflang={l.en ? "en" : undefined} class="font-semibold">
+                    {l.label}
+                  </a>
+                  <p class="text-[.95rem] text-muted">{l.text}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

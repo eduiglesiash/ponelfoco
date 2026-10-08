@@ -1,0 +1,13 @@
+---
+interface Props {
+  title: string;
+  id: string;
+}
+
+const { title, id } = Astro.props;
+---
+
+<div class="mb-7 flex flex-col gap-2.5">
+  <h2 id={id} class="text-[clamp(1.6rem,1.2rem+1.8vw,2.25rem)]">{title}</h2>
+  {Astro.slots.has("default") && <p class="max-w-176 text-[1.08rem] text-muted"><slot /></p>}
+</div>

@@ -1,0 +1,72 @@
+---
+import Layout from "../layouts/Layout.astro";
+import PageHead from "../components/PageHead.astro";
+import Comprobador from "../components/Comprobador.astro";
+import Consultas from "../components/Consultas.astro";
+
+const razones = [
+  {
+    title: "Las personas no dependen del tamaño de tu empresa",
+    text: "Quien usa un lector de pantalla o amplía la letra lo necesita igual en una tienda de 5 personas que en una de 500.",
+  },
+  {
+    title: "Nos va a tocar a casi todos",
+    text: "La edad, una lesión, una pantalla al sol o un brazo ocupado con un bebé. La discapacidad no siempre es permanente.",
+  },
+  {
+    title: "Lo que es imprescindible para unos es cómodo para todos",
+    text: "Subtítulos, buen contraste, formularios claros y botones grandes mejoran la experiencia de cualquiera.",
+  },
+  {
+    title: "Empezar pronto sale barato",
+    text: "Hacerlo bien desde el diseño cuesta poco. Arreglarlo cuando la ley te alcance, o tras una queja, cuesta mucho más.",
+  },
+];
+---
+
+<Layout
+  title="¿Me afecta la normativa?"
+  description="Comprueba en tres preguntas si te obliga la normativa de accesibilidad web y por qué merece la pena hacerla accesible igualmente."
+>
+  <PageHead title="¿Me afecta la normativa de accesibilidad?">
+    Responde tres preguntas y verás al momento qué normas te aplican. Es una orientación, no un dictamen jurídico.
+  </PageHead>
+
+  <Comprobador />
+
+  <section aria-labelledby="t-justo" class="wrap mt-10">
+    <div class="border-t-2 border-ink pt-[clamp(1.5rem,4vw,2.5rem)]">
+      <h2 id="t-justo" class="max-w-[24ch] text-[clamp(1.7rem,1.2rem+2vw,2.5rem)]">
+        La ley marca el mínimo. Una web para todo el mundo es decisión tuya.
+      </h2>
+      <p class="mt-4 max-w-176 text-lead">
+        La normativa decide quién está obligado. Pero detrás de cada web inaccesible hay alguien que no pudo pedir cita,
+        comprar o informarse. Según la{" "}
+        <a
+          href="https://www.who.int/es/news-room/fact-sheets/detail/disability-and-health"
+          target="_blank"
+          rel="noopener"
+          class="font-semibold">Organización Mundial de la Salud</a
+        >, 1300 millones de personas, una de cada seis, tienen una discapacidad importante.
+      </p>
+      <ul class="mt-7 grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          razones.map((r) => (
+            <li class="border-t-4 border-mark pt-3">
+              <h3 class="text-[1.15rem]">{r.title}</h3>
+              <p class="mt-1.5 text-muted">{r.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="/criterios/" class="btn btn-primary">Empezar por los criterios</a>
+        <a href="/componentes/" class="btn btn-ghost">Ver componentes accesibles</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mt-10">
+    <Consultas />
+  </div>
+</Layout>

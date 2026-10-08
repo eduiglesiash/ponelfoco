@@ -1,0 +1,49 @@
+---
+import { SECCIONES } from "../data/navegacion";
+
+const sources = [
+  { href: "https://www.w3.org/TR/WCAG22/", label: "WCAG 2.2 (W3C)" },
+  { href: "https://www.boe.es/buscar/act.php?id=BOE-A-2023-11022", label: "Ley 11/2023" },
+  { href: "https://www.boe.es/buscar/act.php?id=BOE-A-2018-12699", label: "RD 1112/2018" },
+  {
+    href: "https://administracionelectronica.gob.es/pae_Home/pae_Estrategias/pae_Accesibilidad.html",
+    label: "Observatorio de Accesibilidad Web",
+  },
+];
+---
+
+<footer class="mt-8 border-t border-line pt-8 pb-12 text-[.93rem] text-muted">
+  <div class="wrap flex flex-col gap-4">
+    <nav aria-label="Pie de página">
+      <ul class="flex flex-wrap gap-x-5 gap-y-1">
+        <li><a href="/" class="inline-flex min-h-11 items-center font-semibold">Inicio</a></li>
+        {
+          SECCIONES.map((s) => (
+            <li>
+              <a href={s.href} class="inline-flex min-h-11 items-center font-semibold">
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+    <p>
+      Contenido orientativo elaborado a partir del RD 1112/2018, la Ley 11/2023, la norma EN 301 549 y las WCAG 2.2 del
+      W3C. No sustituye al asesoramiento jurídico.
+    </p>
+    <p>
+      Fuentes:{" "}
+      {
+        sources.map((s, i) => (
+          <>
+            {i > 0 && " · "}
+            <a href={s.href} target="_blank" rel="noopener">
+              {s.label}
+            </a>
+          </>
+        ))
+      }
+    </p>
+  </div>
+</footer>

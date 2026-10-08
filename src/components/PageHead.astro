@@ -1,0 +1,13 @@
+---
+/** Cabecera de página: el único h1 de cada página. */
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="wrap flex flex-col gap-4 pt-[clamp(2rem,5vw,3.5rem)] pb-8">
+  <h1 class="max-w-[22ch] text-[clamp(2.2rem,1.4rem+3.6vw,3.75rem)]">{title}</h1>
+  <p class="max-w-176 text-[1.15rem] text-muted"><slot /></p>
+</div>
