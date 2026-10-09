@@ -56,6 +56,13 @@ const lineas = Object.entries(PRINCIPIOS).map(([k, name]) => ({
   href: `/criterios/${slug(CRITERIOS.find((x) => x.id[0] === k && !esObsoleto(x.id))!.id)}/`,
 }));
 const anterior = prev && paso(prev);
+// Aviso de errores: abre un issue en GitHub con el criterio ya indicado
+const issueUrl =
+  "https://github.com/eduiglesiash/ponelfoco/issues/new?" +
+  new URLSearchParams({
+    title: `Error en el criterio ${c.id} ${c.nombre}`,
+    body: `Criterio: ${c.id} ${c.nombre}\nPágina: /criterios/${slug(c.id)}/\n\n¿Qué está mal?\n\n\n¿Cuál sería lo correcto? (si tienes una fuente, añade el enlace)\n`,
+  });
 const siguiente = next && paso(next);
 ---
 
@@ -235,6 +242,16 @@ const siguiente = next && paso(next);
           </a>
         </p>
       </section>
+
+      <aside aria-labelledby="t-error" class="mt-12 max-w-[44rem] rounded-lg border border-line bg-sunk px-5 py-4">
+        <h2 id="t-error" class="text-title">¿Has visto un error en este criterio?</h2>
+        <p class="mt-1 text-muted">
+          Cuéntanoslo y lo revisamos. El aviso se abre en GitHub con el criterio ya indicado; necesitas una cuenta.
+        </p>
+        <a href={issueUrl} target="_blank" rel="noopener" class="mt-2 inline-flex min-h-11 items-center font-bold">
+          Avisar de un error en {c.id} (GitHub)
+        </a>
+      </aside>
 
       <nav aria-label="Criterio anterior y siguiente" class="mt-14 grid gap-x-8 gap-y-6 sm:grid-cols-2">
         {

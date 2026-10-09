@@ -13,9 +13,9 @@ const sources = [
 ---
 
 <footer class="mt-8 border-t border-line pt-8 pb-12 text-[.93rem] text-muted">
-  <div class="wrap flex flex-col gap-4">
+  <div class="wrap flex flex-col items-center gap-4 text-center">
     <nav aria-label="Pie de página">
-      <ul class="flex flex-wrap gap-x-5 gap-y-1">
+      <ul class="flex flex-wrap justify-center gap-x-5 gap-y-1">
         <li><a href="/" class="inline-flex min-h-11 items-center font-semibold">Inicio</a></li>
         {
           SECCIONES.map((s) => (
@@ -28,11 +28,11 @@ const sources = [
         }
       </ul>
     </nav>
-    <p>
+    <p class="max-w-[60ch] text-balance">
       Contenido orientativo elaborado a partir del RD 1112/2018, la Ley 11/2023, la norma EN 301 549 y las WCAG 2.2 del
       W3C. No sustituye al asesoramiento jurídico.
     </p>
-    <p>
+    <p class="max-w-[60ch] text-balance">
       Fuentes:{" "}
       {
         sources.map((s, i) => (
@@ -44,6 +44,9 @@ const sources = [
           </>
         ))
       }
+    </p>
+    <p class="max-w-[60ch] text-balance">
+      Un producto de <a href="https://welly.es" target="_blank" rel="noopener">Welly Code SL</a>
     </p>
   </div>
 </footer>

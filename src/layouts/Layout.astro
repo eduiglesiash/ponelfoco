@@ -12,6 +12,9 @@ interface Props {
 const { title, description } = Astro.props;
 const SITE = "Pon el foco";
 const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · Accesibilidad web y WCAG en español`;
+// URL canónica absoluta (con barra final, como las rutas del sitio)
+const canonical = new URL(Astro.url.pathname.replace(/\/?$/, "/"), Astro.site).href;
+const esPortada = Astro.url.pathname === "/";
 ---
 
 <!doctype html>
@@ -21,10 +24,30 @@ const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · Accesibilidad web 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={SITE} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary" />
+    {
+      esPortada && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE,
+            url: canonical,
+            inLanguage: "es",
+            description,
+          })}
+        />
+      )
+    }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
