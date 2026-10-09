@@ -54,6 +54,25 @@ const esPortada = Astro.url.pathname === "/";
     <Font cssVariable="--font-atkinson" preload={[{ weight: 400, style: "normal" }]} />
     <Font cssVariable="--font-bricolage" preload />
     <Font cssVariable="--font-atkinson-mono" />
+    <!-- Analítica sin cookies (Plausible autoalojado): no guarda nada en el navegador, así que no hace falta aviso de cookies -->
+    <script
+      is:inline
+      async
+      src="https://analytics-welly-plausible-15858f-187-127-226-171.sslip.io/js/pa-cKW_L1iWeBWTEvZh-w16p.js"
+    ></script>
+    <script is:inline>
+      window.plausible =
+        window.plausible ||
+        function () {
+          (plausible.q = plausible.q || []).push(arguments);
+        };
+      plausible.init =
+        plausible.init ||
+        function (i) {
+          plausible.o = i || {};
+        };
+      plausible.init();
+    </script>
     <script is:inline>
       // Aplica el tamaño de texto guardado antes de pintar, para evitar saltos
       try {
