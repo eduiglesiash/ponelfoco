@@ -1,5 +1,5 @@
 ---
-name: Accesibilidad en Claro
+name: Pon el foco
 description: La normativa de accesibilidad digital y los criterios WCAG 2.2, leídos como un plano de metro.
 colors:
   sign-navy: "#14275e"
@@ -202,7 +202,7 @@ components:
     textColor: "{colors.ink}"
 ---
 
-# Design System: Accesibilidad en Claro
+# Design System: Pon el foco
 
 ## Overview
 
@@ -343,7 +343,7 @@ No hay tarjetas como andamiaje. Los únicos contenedores con fondo son los **pan
 - **Opciones del comprobador:** filas de 64 px de alto mínimo, con un punto de 20 px a la izquierda (borde de 3 px en muted). Elegida: borde en tinta, fondo sunk y punto relleno en tinta con un anillo interior.
 
 ### Navigation
-Cabecera de cartel de estación, fija desde `md`: marca con pictograma propio en trazo de 2 px y nombre en 800; secciones en 700 con 44 px de alto. La sección actual se marca con una barra amarilla de 3 px bajo el texto y `aria-current`. A la derecha, A−/A+ y el conmutador de tema con borde sign-muted de 1 px y hover en sign-navy-hover. En móvil, las secciones pasan a una fila desplazable a todo el ancho.
+Cabecera de cartel de estación, fija desde `md`: marca con pictograma propio (el indicador de foco de la web: anillo amarillo y anillo de tinta alrededor de un punto) y nombre en 800 con el lema «Accesibilidad web y WCAG en español» debajo, en caption muted, desde `sm`; secciones en 700 con 44 px de alto. La sección actual se marca con una barra amarilla de 3 px bajo el texto y `aria-current`. A la derecha, A−/A+ y el conmutador de tema con borde sign-muted de 1 px y hover en sign-navy-hover. En móvil, las secciones pasan a una fila desplazable a todo el ancho.
 
 ### Plano de línea (componente firma)
 Un trazo vertical de 6 px en el color de la línea. Los tramos llevan su número y nombre en muted; las estaciones son círculos de 1,1 rem con borde de 3,5 px y relleno del color del fondo. Cada fila muestra el número en mono 600 (3,1 rem de ancho fijo), el nombre y la insignia de nivel, con 44 px de alto y hover en sunk con nombre subrayado. Variantes: AAA con borde punteado; criterio eliminado en 2.2 con borde discontinuo en muted y nombre en muted; estación actual con punto relleno de 1,6 rem, borde del color del fondo, anillo de 3 px, fila en sunk y «Estás aquí» debajo del nombre.

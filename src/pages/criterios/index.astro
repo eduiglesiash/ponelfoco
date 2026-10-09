@@ -1,13 +1,20 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import LineaMetro from "../../components/LineaMetro.astro";
-import { CRITERIOS, PRINCIPIOS, PRINCIPIOS_TEXTO, obsoleto } from "../../data/criterios";
+import Figura from "../../components/Figura.astro";
+import LevelBadge from "../../components/LevelBadge.astro";
+import { CRITERIOS, PAUTAS, PRINCIPIOS, PRINCIPIOS_TEXTO, obsoleto, pauta, slug } from "../../data/criterios";
 
-const lineas = Object.entries(PRINCIPIOS).map(([n, name]) => ({
+/** Texto normalizado (minúsculas, sin tildes) para el buscador */
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+const principios = Object.entries(PRINCIPIOS).map(([n, name]) => ({
   n,
   name,
   text: PRINCIPIOS_TEXTO[n],
   total: CRITERIOS.filter((c) => c.id[0] === n && !obsoleto(c.id)).length,
+  pautas: Object.keys(PAUTAS)
+    .filter((p) => p[0] === n)
+    .map((p) => ({ id: p, items: CRITERIOS.filter((c) => pauta(c.id) === p) })),
 }));
 const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).length;
 ---
@@ -16,49 +23,49 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
   title="Criterios WCAG 2.2"
   description="Los criterios WCAG 2.2 explicados en castellano, con casos de uso y ejemplos de código para cumplirlos."
 >
-  <div class="wrap-wide grid gap-x-12 gap-y-6 pt-[clamp(2rem,5vw,3.5rem)] pb-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-end">
-    <div>
-      <h1 class="text-[clamp(2.2rem,1.4rem+3.6vw,4rem)]">Los criterios WCAG 2.2, con código</h1>
-      <p class="mt-4 max-w-[40rem] text-[1.15rem] text-muted">
-        Cada criterio explicado en castellano claro: qué pide, a quién ayuda, un caso real y código correcto e incorrecto.
-        La ley exige los {exigidos} de nivel A y AA; los AAA son recomendaciones.
-      </p>
-    </div>
-    <nav aria-labelledby="t-lineas">
-      <h2 id="t-lineas" class="mb-2 text-label text-muted">Las cuatro líneas: un principio cada una</h2>
-      <ul class="grid gap-2 min-[420px]:grid-cols-2">
-        {
-          lineas.map((l) => (
-            <li>
-              <a
-                href={`#linea-${l.n}`}
-                class:list={[
-                  `linea-${l.n}`,
-                  "flex min-h-11 items-center gap-2.5 rounded-md border border-edge bg-surface px-2.5 py-2 font-bold text-ink no-underline hover:border-ink",
-                ]}
-              >
-                <span class="line-badge" aria-hidden="true">L{l.n}</span>
-                <span class="flex-1">{l.name}</span>
-                <span class="font-mono text-caption font-semibold text-muted">
-                  {l.total}<span class="sr-only"> criterios</span>
-                </span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+  <div class="wrap-wide pt-[clamp(2rem,5vw,3.5rem)] pb-6">
+    <h1 class="max-w-[18ch] text-[clamp(2.4rem,1.4rem+3.8vw,4.25rem)] tracking-[-0.035em]">
+      Los criterios WCAG 2.2, <span class="pincel px-[.1em]">con código</span>
+    </h1>
+    <p class="mt-4 max-w-[44rem] text-lead text-muted">
+      Cada criterio explicado en castellano claro: qué pide, a quién ayuda, un caso real y código correcto e incorrecto.
+      La ley exige los {exigidos} de nivel A y AA; los AAA son recomendaciones.
+    </p>
   </div>
 
   <div class="wrap-wide">
     <section aria-labelledby="t-buscar">
-      <h2 id="t-buscar" class="sr-only">Buscar un criterio</h2>
+      <h2 id="t-buscar" class="sr-only">Buscar y filtrar criterios</h2>
+
+      <div role="group" aria-labelledby="g-principio" class="mb-5">
+        <p id="g-principio" class="mb-2 font-bold text-muted">Principio</p>
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          <button type="button" class="filtro-p" data-p="0" aria-pressed="true">
+            <span class="flex h-12 items-center gap-1" aria-hidden="true">
+              {principios.map((p) => <span class:list={[`principio-${p.n}`, "h-8 w-2.5 rounded-full bg-(--c)"]} />)}
+            </span>
+            <span>Todos</span>
+          </button>
+          {
+            principios.map((p) => (
+              <button type="button" class:list={["filtro-p figura-salta", `principio-${p.n}`]} data-p={p.n} aria-pressed="false">
+                <Figura n={p.n} class="h-12 w-auto" />
+                <span>
+                  {p.name}
+                  <span class="block text-caption font-normal">{p.total} criterios</span>
+                </span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
       <div
         role="search"
-        class="z-20 -mx-[clamp(16px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-line bg-bg/95 px-[clamp(16px,3vw,40px)] py-3 backdrop-blur-md min-[701px]:sticky min-[701px]:top-[calc(env(safe-area-inset-top,0px)+4rem)]"
+        class="z-20 -mx-[clamp(16px,3vw,40px)] flex flex-wrap items-center gap-x-6 gap-y-3 border-y border-line bg-bg/90 px-[clamp(16px,3vw,40px)] py-3 backdrop-blur-lg min-[701px]:sticky min-[701px]:top-[calc(env(safe-area-inset-top,0px)+4.25rem)]"
       >
         <div
-          class="flex min-w-[min(100%,18rem)] flex-[1_1_22rem] items-center gap-2 rounded-md border-[1.5px] border-muted bg-surface px-3 focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
+          class="flex min-w-[min(100%,18rem)] flex-[1_1_22rem] items-center gap-2 rounded-full border-[1.5px] border-edge bg-surface px-4 transition-colors focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
         >
           <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true" class="flex-none">
             <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle>
@@ -72,7 +79,7 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
             autocomplete="off"
             aria-keyshortcuts="/"
             placeholder="Número, nombre o tema: contraste, formulario, vídeo…"
-            class="min-w-0 flex-1 border-0 bg-transparent py-2.5 text-ink focus-visible:shadow-none focus-visible:outline-none"
+            class="min-h-11 min-w-0 flex-1 border-0 bg-transparent py-2.5 text-ink focus-visible:shadow-none focus-visible:outline-none"
           />
           <kbd
             aria-hidden="true"
@@ -86,59 +93,116 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
           <button type="button" class="toggle" data-lv="AAA" aria-pressed="false">AAA</button>
         </div>
         <button type="button" class="toggle" id="onlyNew" aria-pressed="false">Solo nuevos en 2.2</button>
-        <p id="count" aria-live="polite" class="text-[.95rem] font-semibold text-muted md:ml-auto"></p>
+        <p id="count" aria-live="polite" class="text-[.95rem] font-bold text-muted md:ml-auto"></p>
       </div>
 
-      <p id="empty" hidden class="mt-8 rounded-md border border-dashed border-line bg-surface p-8 text-center text-muted">
+      <p id="empty" hidden class="mt-8 rounded-xl border border-dashed border-edge p-8 text-center text-muted">
         No hay criterios con esos filtros. Prueba a quitar alguno o buscar otra palabra.
       </p>
 
-      <div class="mt-8 grid gap-x-10 gap-y-12 md:grid-cols-2 xl:grid-cols-3 wide:grid-cols-4 wide:gap-x-8">
-        {
-          [lineas.slice(0, 1), lineas.slice(1, 2), lineas.slice(2)].map((col) => (
-            <div class="flex min-w-0 flex-col gap-12 wide:contents">
-              {col.map((l) => (
-                <section id={`linea-${l.n}`} aria-labelledby={`t-linea-${l.n}`} data-line class="min-w-0 scroll-mt-40">
-                  <div class:list={[`linea-${l.n}`, "mb-4 border-t-[6px] border-(--c) pt-3"]}>
-                    <h2 id={`t-linea-${l.n}`} class="flex items-center gap-3 text-[1.6rem]">
-                      <span class="line-badge text-lead" aria-hidden="true">
-                        L{l.n}
-                      </span>
-                      <span>
-                        <span class="sr-only">Línea {l.n}: </span>
-                        {l.name}
-                      </span>
-                    </h2>
-                    <p class="mt-2 text-[.98rem] text-muted">{l.text}</p>
-                    <p class="mt-1 font-mono text-caption font-semibold text-muted" data-line-count data-total={l.total}></p>
-                  </div>
-                  <LineaMetro n={l.n} listado />
-                  <p data-line-empty hidden class="ml-2 text-[.95rem] text-muted">
-                    Ningún criterio de esta línea coincide.
-                  </p>
-                </section>
+      {
+        principios.map((p) => (
+          <section
+            id={`principio-${p.n}`}
+            aria-labelledby={`t-p-${p.n}`}
+            data-principio={p.n}
+            class:list={[`principio-${p.n}`, "revela mt-12 scroll-mt-40"]}
+          >
+            <div class="mb-6 flex items-end gap-4">
+              <Figura n={p.n} class="h-16 w-auto flex-none sm:h-20" />
+              <div class="min-w-0">
+                <h2 id={`t-p-${p.n}`} class="text-[clamp(1.8rem,1.3rem+2vw,2.6rem)]">
+                  <span class="sr-only">Principio {p.n}: </span>
+                  {p.name}
+                </h2>
+                <p class="mt-1 text-muted">{p.text}</p>
+              </div>
+              <p class="ml-auto hidden flex-none font-mono text-caption font-semibold text-muted sm:block" data-p-count />
+            </div>
+            <div class="grid gap-x-10 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
+              {p.pautas.map((t) => (
+                <div data-zone class="min-w-0">
+                  <h3 class="mb-1 flex items-baseline gap-2 border-b-[3px] border-(--c) pb-1.5 text-title">
+                    <span class="font-mono text-[.95rem] font-semibold text-(--c-text)">{t.id}</span>
+                    {PAUTAS[t.id]}
+                  </h3>
+                  <ol>
+                    {t.items.map((c) => (
+                      <li
+                        data-crit
+                        data-lv={c.nivel}
+                        data-new={c.nuevo ? "1" : undefined}
+                        data-obsoleto={obsoleto(c.id) ? "" : undefined}
+                        data-q={norm(Object.values(c).join(" "))}
+                        hidden={c.nivel === "AAA"}
+                        class="border-b border-line"
+                      >
+                        <a
+                          href={`/criterios/${slug(c.id)}/`}
+                          class="group flex min-h-12 items-start gap-3 rounded-lg px-1.5 py-2.5 text-ink no-underline transition-colors hover:bg-sunk"
+                        >
+                          <span
+                            class="w-[3.3rem] flex-none pt-px font-mono text-[.95rem] font-semibold text-(--c-text)"
+                            style={`view-transition-name: c-${slug(c.id)}`}
+                          >
+                            {c.id}
+                          </span>
+                          <span
+                            class:list={[
+                              "min-w-0 flex-1 leading-snug group-hover:underline group-hover:decoration-2",
+                              obsoleto(c.id) && "text-muted",
+                            ]}
+                          >
+                            {c.nombre}
+                            {c.nuevo && <span class="badge-new ml-1.5 inline-block align-[.1em]">Nuevo</span>}
+                          </span>
+                          {obsoleto(c.id) ? <span class="lv lv-AAA">Eliminado</span> : <LevelBadge nivel={c.nivel} />}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
               ))}
             </div>
-          ))
-        }
-      </div>
+          </section>
+        ))
+      }
     </section>
   </div>
 </Layout>
 
+<style>
+  @reference "../../styles/global.css";
+
+  /* Botones de principio: figura y nombre; el pulsado se rellena con el color del principio */
+  .filtro-p {
+    @apply flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border-[1.5px] border-edge bg-surface px-3 py-2 text-left font-display text-[1.05rem] font-extrabold text-ink transition-[background-color,border-color,scale] duration-200 hover:border-ink active:scale-[.98];
+  }
+  .filtro-p[aria-pressed="true"] {
+    background: var(--c, var(--ink));
+    border-color: var(--c, var(--ink));
+    color: var(--c-ink, var(--bg));
+  }
+  /* En el botón pulsado la figura pasa al color del texto para no perderse sobre su propio color */
+  .filtro-p[aria-pressed="true"]:not([data-p="0"]) :global(.figura) {
+    --ink: currentColor;
+    --c: currentColor;
+  }
+</style>
+
 <script>
   const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const plural = (n: number) => n + (n === 1 ? " criterio" : " criterios");
-  const ofTotal = (n: number, total: number) => (n === total ? plural(n) : `${n} de ${plural(total)}`);
 
-  type State = { lv: Record<string, boolean>; onlyNew: boolean; q: string };
-  const state: State = { lv: { A: true, AA: true, AAA: false }, onlyNew: false, q: "" };
+  type State = { lv: Record<string, boolean>; p: string; onlyNew: boolean; q: string };
+  const state: State = { lv: { A: true, AA: true, AAA: false }, p: "0", onlyNew: false, q: "" };
   try {
     const s = JSON.parse(localStorage.getItem("ac-filters") || "null");
     if (s && s.lv) Object.assign(state, { lv: s.lv, onlyNew: !!s.onlyNew });
   } catch {}
 
-  const lines = Array.from(document.querySelectorAll<HTMLElement>("[data-line]"));
+  const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-principio]"));
+  const pButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filtro-p"));
   const lvButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".toggle[data-lv]"));
   const onlyNew = document.getElementById("onlyNew")!;
   const count = document.getElementById("count")!;
@@ -149,31 +213,31 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
     const q = norm(state.q.trim());
     let shown = 0;
     let closed = 0;
-    for (const line of lines) {
-      let inLine = 0;
-      let lineShown = 0;
-      for (const zone of line.querySelectorAll<HTMLElement>("[data-zone]")) {
+    for (const sec of sections) {
+      let inSec = 0;
+      let visibleInSec = 0;
+      const pOk = state.p === "0" || sec.dataset.principio === state.p;
+      for (const zone of sec.querySelectorAll<HTMLElement>("[data-zone]")) {
         let inZone = 0;
-        let shownInZone = 0;
         for (const el of zone.querySelectorAll<HTMLElement>("[data-crit]")) {
           const d = el.dataset;
-          const visible = state.lv[d.lv!] && (!state.onlyNew || d.new === "1") && (!q || d.q!.includes(q));
+          const visible = pOk && state.lv[d.lv!] && (!state.onlyNew || d.new === "1") && (!q || d.q!.includes(q));
           el.hidden = !visible;
-          if (visible && d.obsoleto === undefined) inZone++;
-          if (visible && d.obsoleto !== undefined) closed++;
-          if (visible) shownInZone++;
+          if (!visible) continue;
+          inZone++;
+          if (d.obsoleto === undefined) inSec++;
+          else closed++;
         }
-        zone.hidden = shownInZone === 0;
-        lineShown += shownInZone;
-        inLine += inZone;
+        zone.hidden = inZone === 0;
+        visibleInSec += inZone;
       }
-      const lc = line.querySelector<HTMLElement>("[data-line-count]")!;
-      lc.textContent = ofTotal(inLine, Number(lc.dataset.total));
-      line.querySelector<HTMLElement>("[data-line-empty]")!.hidden = lineShown > 0;
-      shown += inLine;
+      sec.hidden = visibleInSec === 0;
+      sec.querySelector<HTMLElement>("[data-p-count]")!.textContent = plural(inSec);
+      shown += inSec;
     }
     empty.hidden = shown + closed > 0;
     count.textContent = plural(shown) + (closed ? ` · ${closed} eliminado` : "");
+    pButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.p === state.p)));
     lvButtons.forEach((b) => b.setAttribute("aria-pressed", String(!!state.lv[b.dataset.lv!])));
     onlyNew.setAttribute("aria-pressed", String(state.onlyNew));
     try {
@@ -181,6 +245,12 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
     } catch {}
   }
 
+  pButtons.forEach((b) =>
+    b.addEventListener("click", () => {
+      state.p = b.dataset.p!;
+      render();
+    }),
+  );
   lvButtons.forEach((b) =>
     b.addEventListener("click", () => {
       state.lv[b.dataset.lv!] = !state.lv[b.dataset.lv!];
@@ -206,12 +276,15 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
     e.preventDefault();
     search.focus();
   });
-  // Búsqueda que llega desde el buscador de una ficha (/criterios/?q=…)
-  const initial = new URLSearchParams(location.search).get("q");
+
+  // Búsqueda o principio que llegan por la URL: /criterios/?q=… desde una ficha, /criterios/?p=2 desde la portada
+  const params = new URLSearchParams(location.search);
+  const initial = params.get("q");
   if (initial) {
     search.value = initial;
     state.q = initial;
   }
+  if (["1", "2", "3", "4"].includes(params.get("p") ?? "")) state.p = params.get("p")!;
   render();
 
   // Enlaces antiguos de la página única: /criterios/#c-1-4-3 → /criterios/1-4-3/

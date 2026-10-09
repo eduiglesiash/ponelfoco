@@ -2,7 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import LevelBadge from "../../components/LevelBadge.astro";
 import CodeExample from "../../components/CodeExample.astro";
-import LineaMetro from "../../components/LineaMetro.astro";
+import ListaPrincipio from "../../components/ListaPrincipio.astro";
+import Figura from "../../components/Figura.astro";
 import Icon from "../../components/Icon.astro";
 import BuscadorCriterios from "../../components/BuscadorCriterios.astro";
 import { CRITERIOS, PAUTAS, PRINCIPIOS, obsoleto as esObsoleto, pauta, slug, type Criterio } from "../../data/criterios";
@@ -41,11 +42,11 @@ const indice = [
   { href: "#t-comprobar", label: "Cómo comprobarlo" },
 ];
 
-/** Enlace a otra estación: en la misma línea o con transbordo */
+/** Enlace al criterio anterior o siguiente; «cambio» cuando pasa a otro principio */
 const paso = (x: Criterio) => ({
   href: `/criterios/${slug(x.id)}/`,
   n: x.id[0],
-  transbordo: x.id[0] !== n,
+  cambio: x.id[0] !== n,
   x,
 });
 /** Primera ficha vigente de cada línea: el selector L1–L4 cambia de línea sin salir de la documentación */
@@ -62,7 +63,7 @@ const siguiente = next && paso(next);
   <div
     class="wrap-wide grid gap-x-10 gap-y-6 pt-6 lg:grid-cols-[17rem_minmax(0,1fr)] xl:grid-cols-[18rem_minmax(0,1fr)_14rem]"
   >
-    {/* Plano de la línea actual: columna fija en escritorio y plegable en móvil. Solo uno de los dos se muestra a la vez. */}
+    {/* Criterios del principio actual: columna fija en escritorio y plegable en móvil. Solo uno de los dos se muestra a la vez. */}
     <nav aria-labelledby="t-plano" class="hidden lg:block">
       <div
         data-rail
@@ -71,31 +72,31 @@ const siguiente = next && paso(next);
         <div data-rail-head class="sticky top-0 z-10 bg-bg pb-3 after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-3 after:bg-linear-to-b after:from-bg after:to-transparent">
         <BuscadorCriterios atajo />
         <a href="/criterios/" class="mt-1 inline-flex min-h-11 items-center gap-1.5 font-bold"><Icon name="arrow-left" size={16} /> Todos los criterios</a>
-        <ul class="mt-2 mb-4 flex gap-1.5" aria-label="Cambiar de línea">
+        <ul class="mt-2 mb-4 flex gap-1.5" aria-label="Cambiar de principio">
           {
             lineas.map(({ k, name, href }) => (
               <li>
                 <a
                   href={href}
                   class:list={[
-                    `linea-${k}`,
-                    "line-badge min-h-11 min-w-11 text-[.95rem] no-underline",
-                    k === n && "outline-2 outline-offset-2 outline-ink",
+                    `principio-${k}`,
+                    "figura-salta flex size-12 items-center justify-center rounded-xl border border-edge no-underline transition-colors hover:border-ink",
+                    k === n && "border-ink bg-sunk outline-2 outline-offset-2 outline-ink",
                   ]}
                   aria-current={k === n ? "true" : undefined}
                 >
-                  <span aria-hidden="true">L{k}</span>
-                  <span class="sr-only">Línea {k}: {name}</span>
+                  <Figura n={k} class="h-9 w-auto" />
+                  <span class="sr-only">Principio {k}: {name}</span>
                 </a>
               </li>
             ))
           }
         </ul>
-        <h2 id="t-plano" data-plano-titulo class:list={[`linea-${n}`, "border-t-[6px] border-(--c) pt-2 text-[1.15rem]"]}>
-          Línea {n} · {PRINCIPIOS[n]}
+        <h2 id="t-plano" data-plano-titulo class:list={[`principio-${n}`, "border-b-[3px] border-(--c) pb-1.5 text-title"]}>
+          {PRINCIPIOS[n]}
         </h2>
         </div>
-        <LineaMetro n={n} current={c.id} />
+        <ListaPrincipio n={n} current={c.id} />
       </div>
     </nav>
 
@@ -112,48 +113,49 @@ const siguiente = next && paso(next);
 
       <details class="card mt-4 lg:hidden">
         <summary class="flex min-h-11 cursor-pointer items-center gap-2.5 px-3 font-bold">
-          <span class:list={[`linea-${n}`, "line-badge text-[.9rem]"]} aria-hidden="true">L{n}</span>
-          Plano de la línea {n} · {PRINCIPIOS[n]}
+          <Figura n={n} class="h-8 w-auto flex-none" />
+          Criterios de {PRINCIPIOS[n]}
         </summary>
-        <nav aria-label={`Plano de la línea ${n}`} class="border-t border-line px-2 py-3">
+        <nav aria-label={`Criterios de ${PRINCIPIOS[n]}`} class="border-t border-line px-2 py-3">
           <div class="mb-3 px-1"><BuscadorCriterios idPrefix="m-" /></div>
-          <ul class="mb-3 flex gap-1.5 px-1" aria-label="Cambiar de línea">
+          <ul class="mb-3 flex gap-1.5 px-1" aria-label="Cambiar de principio">
             {
               lineas.map(({ k, name, href }) => (
                 <li>
                   <a
                     href={href}
                     class:list={[
-                      `linea-${k}`,
-                      "line-badge min-h-11 min-w-11 text-[.95rem] no-underline",
-                      k === n && "outline-2 outline-offset-2 outline-ink",
+                      `principio-${k}`,
+                      "figura-salta flex size-12 items-center justify-center rounded-xl border border-edge no-underline transition-colors hover:border-ink",
+                      k === n && "border-ink bg-sunk outline-2 outline-offset-2 outline-ink",
                     ]}
                     aria-current={k === n ? "true" : undefined}
                   >
-                    <span aria-hidden="true">L{k}</span>
-                    <span class="sr-only">Línea {k}: {name}</span>
+                    <Figura n={k} class="h-9 w-auto" />
+                    <span class="sr-only">Principio {k}: {name}</span>
                   </a>
                 </li>
               ))
             }
           </ul>
-          <LineaMetro n={n} current={c.id} idPrefix="m-" />
+          <ListaPrincipio n={n} current={c.id} idPrefix="m-" />
           <a href="/criterios/" class="mt-2 ml-2 inline-flex min-h-11 items-center gap-1.5 font-bold"><Icon name="arrow-left" size={16} /> Todos los criterios</a>
         </nav>
       </details>
 
       <header class="mt-6 flex flex-col gap-3">
         <p class="flex flex-wrap items-center gap-x-3 gap-y-1 font-bold">
-          <span class:list={[`linea-${n}`, "line-badge"]} aria-hidden="true">L{n}</span>
+          <Figura n={n} class="h-10 w-auto" />
           <span>{PRINCIPIOS[n]}</span>
           <span class="text-muted">Pauta {p} {PAUTAS[p]}</span>
         </p>
         <h1 class="flex flex-col">
           <span
             class:list={[
-              `linea-${n}`,
-              "font-mono text-[clamp(3rem,2rem+5vw,5.5rem)] leading-none font-semibold tracking-[-0.04em] text-(--c)",
-            ]}>{c.id}</span
+              `principio-${n}`,
+              "self-start font-mono text-[clamp(3rem,2rem+5vw,5.5rem)] leading-none font-semibold tracking-[-0.04em] text-(--c-text)",
+            ]}
+            style={`view-transition-name: c-${slug(c.id)}`}>{c.id}</span
           >
           <span class="mt-2 text-[clamp(1.9rem,1.3rem+2.4vw,3rem)]">{c.nombre}</span>
         </h1>
@@ -243,23 +245,22 @@ const siguiente = next && paso(next);
                   href={x.href}
                   rel={i === 0 ? "prev" : "next"}
                   class:list={[
-                    `linea-${x.n}`,
-                    "group flex flex-col gap-1.5 border-t-[6px] border-(--c) pt-3 text-ink no-underline",
+                    `principio-${x.n}`,
+                    "group flex flex-col gap-1.5 border-t-4 border-(--c) pt-3 text-ink no-underline",
                     i === 1 && "items-end text-right sm:col-start-2",
                   ]}
                 >
                   <span class="flex items-center gap-1.5 text-[.9rem] font-bold text-muted">
                     {i === 0 && <Icon name="arrow-left" size={16} />}
-                    {x.transbordo && <Icon name="transbordo" size={16} class="text-(--c)" />}
-                    {x.transbordo
-                      ? `Transbordo a la línea ${x.n} · ${PRINCIPIOS[x.n]}`
+                    {x.cambio
+                      ? `${i === 0 ? "Anterior" : "Siguiente"}: principio ${PRINCIPIOS[x.n]}`
                       : i === 0
-                        ? "Estación anterior"
-                        : "Siguiente estación"}
+                        ? "Anterior"
+                        : "Siguiente"}
                     {i === 1 && <Icon name="arrow-right" size={16} />}
                   </span>
                   <span class="text-[1.2rem] font-extrabold leading-snug group-hover:underline group-hover:decoration-2">
-                    <span class="font-mono text-(--c)">{x.x.id}</span> {x.x.nombre}
+                    <span class="font-mono text-(--c-text)">{x.x.id}</span> {x.x.nombre}
                   </span>
                 </a>
               ),
@@ -289,7 +290,7 @@ const siguiente = next && paso(next);
           <dl class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-[.93rem]">
             <dt class="text-muted">Nivel</dt>
             <dd><LevelBadge nivel={c.nivel} /></dd>
-            <dt class="text-muted">Línea</dt>
+            <dt class="text-muted">Principio</dt>
             <dd>{n} · {PRINCIPIOS[n]}</dd>
             <dt class="text-muted">Pauta</dt>
             <dd>{p} {PAUTAS[p]}</dd>
@@ -303,10 +304,10 @@ const siguiente = next && paso(next);
 </Layout>
 
 <script>
-  // Centra la estación actual en el plano lateral sin mover la página
+  // Centra el criterio actual en la columna lateral sin mover la página
   const rail = document.querySelector<HTMLElement>("[data-rail]");
   const here = rail?.querySelector<HTMLElement>('[aria-current="page"]');
-  // Al tabular, la estación con foco no queda bajo la cabecera fija ni bajo el degradado inferior (WCAG 2.4.11)
+  // Al tabular, el criterio con foco no queda bajo la cabecera fija ni bajo el degradado inferior (WCAG 2.4.11)
   const railHead = rail?.querySelector<HTMLElement>("[data-rail-head]");
   if (rail && railHead) {
     const pad = () => {
@@ -318,12 +319,12 @@ const siguiente = next && paso(next);
   }
   // Se calcula cuando ya han cargado las fuentes: antes, la altura de las líneas aún puede cambiar
   if (rail && here) document.fonts.ready.then(() => {
-    // Centrada en el hueco que queda bajo la cabecera fija del plano
+    // Centrado en el hueco que queda bajo la cabecera fija de la columna
     const head = rail.querySelector<HTMLElement>("[data-rail-head]")?.offsetHeight ?? 0;
     const offset = here.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop;
     const target = offset - head - (rail.clientHeight - head - here.offsetHeight) / 2;
-    // Ajusta al inicio de una estación o tramo para que ninguno quede cortado bajo la cabecera
-    const tops = Array.from(rail.querySelectorAll<HTMLElement>(".metro-stop, .metro-zone")).map(
+    // Ajusta al inicio de un criterio o pauta para que ninguno quede cortado bajo la cabecera
+    const tops = Array.from(rail.querySelectorAll<HTMLElement>(".lista-item, .lista-zona")).map(
       (el) => el.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop - head,
     );
     const max = rail.scrollHeight - rail.clientHeight;

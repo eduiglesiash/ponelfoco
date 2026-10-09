@@ -1,4 +1,6 @@
-# Accesibilidad en Claro
+# Pon el foco
+
+Accesibilidad web y WCAG en español.
 
 Web informativa sobre la normativa de accesibilidad digital en España y la UE. Cada sección es una página:
 

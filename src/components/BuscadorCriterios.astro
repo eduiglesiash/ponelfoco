@@ -1,6 +1,6 @@
 ---
 /**
- * Buscador de la columna de criterios en la ficha. Mientras hay texto, sustituye el plano de la línea por la lista de
+ * Buscador de la columna de criterios en la ficha. Mientras hay texto, sustituye la lista del principio por la de
  * criterios que coinciden (de todas las líneas). Sin JavaScript es un formulario que lleva al listado con la búsqueda
  * (/criterios/?q=…).
  */
@@ -20,7 +20,7 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
 <form data-buscador action="/criterios/" method="get" role="search" class="flex flex-col gap-2">
   <label for={`${idPrefix}buscar`} class="sr-only">Buscar criterio</label>
   <div
-    class="flex items-center gap-2 rounded-md border-[1.5px] border-muted bg-surface px-2.5 focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
+    class="flex items-center gap-2 rounded-full border-[1.5px] border-edge bg-surface px-3.5 focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
   >
     <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" class="flex-none">
       <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle>
@@ -53,14 +53,12 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
           <a
             href={`/criterios/${slug(c.id)}/`}
             class:list={[
-              `linea-${c.id[0]}`,
-              "flex min-h-11 items-start gap-2.5 rounded-md px-1.5 py-2 text-ink no-underline hover:bg-sunk",
+              `principio-${c.id[0]}`,
+              "flex min-h-11 items-start gap-2.5 rounded-lg px-1.5 py-2 text-ink no-underline transition-colors hover:bg-sunk",
             ]}
           >
-            <span class="line-badge mt-0.5 text-caption" aria-hidden="true">
-              L{c.id[0]}
-            </span>
-            <span class="w-[3.1rem] flex-none pt-0.5 font-mono text-[.9rem] font-semibold">{c.id}</span>
+            <span class="mt-1.5 size-3 flex-none rounded-full bg-(--c)" aria-hidden="true"></span>
+            <span class="w-[3.1rem] flex-none pt-0.5 font-mono text-[.9rem] font-semibold text-(--c-text)">{c.id}</span>
             <span class="min-w-0 flex-1 leading-snug">
               {c.nombre}
               {obsoleto(c.id) ? (
@@ -84,9 +82,9 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
     const estado = root.querySelector<HTMLElement>("[role=status]")!;
     const lista = root.querySelector<HTMLElement>("[data-resultados]")!;
     const items = Array.from(lista.querySelectorAll<HTMLLIElement>("li"));
-    // El plano de la línea que el buscador sustituye mientras hay texto
+    // La lista del principio que el buscador sustituye mientras hay texto
     const scope = root.closest<HTMLElement>("[data-rail], nav");
-    const plano = scope?.querySelector<HTMLElement>(".metro-track");
+    const plano = scope?.querySelector<HTMLElement>(".lista");
     const titulo = scope?.querySelector<HTMLElement>("[data-plano-titulo]");
     let timer: ReturnType<typeof setTimeout>;
 

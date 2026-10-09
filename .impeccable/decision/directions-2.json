@@ -1,0 +1,124 @@
+{
+  "title": "Elige el nuevo mundo visual",
+  "question": "El sorteo asignó «Tablero de la oca». Quédate con él, elige una alternativa o vuelve a tirar.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Tablero de la oca",
+      "kicker": "THE ROLL",
+      "lineage": "El juego de la oca: tablero en espiral de casillas numeradas, casillas especiales y dado; aquí en versión gráfica actual, plana y de color vivo",
+      "thesis": "Aprender la norma como se recorre un tablero: cada criterio es una casilla numerada, cada principio un color y siempre sabes en qué casilla estás.",
+      "palette": ["#f7f8fc", "#15131f", "#ff5a4e", "#2f5bff", "#b8f04a", "#b19cff", "#ffd23f"],
+      "materials": ["casillas planas de esquinas redondeadas", "fichas y dado", "color pleno por principio, sin degradados"],
+      "viewport": "Criterios como tablero a todo el ancho: cuatro tramos de casillas (una por criterio, con número grande, nombre y nivel) que fluyen en rejilla; arriba el buscador y un botón «Tira el dado» que abre un criterio al azar. La ficha abre con su casilla gigante, que se transforma desde el tablero con View Transitions.",
+      "risk": "Mal llevado puede parecer infantil y restar seriedad a la parte legal; la tipografía y el tono del texto deben seguir sobrios.",
+      "raised": [
+        {"from": "challenger-procedencia", "raise": "Cada dato legal muestra su estado: confirmado, previsto o pendiente de publicar, como pide la regla de fuentes del proyecto."},
+        {"from": "challenger-catodo", "raise": "Al filtrar, el tablero no se desmonta: las casillas que no coinciden se quedan como huecos y el recorrido conserva su forma."},
+        {"from": "challenger-noir", "raise": "Disciplina de dos tintas por principio: su color y la tinta, nunca degradados ni mezclas."},
+        {"from": "challenger-tensegridad", "raise": "Las casillas especiales llevan su regla anotada al margen, como en el tablero impreso."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Barcelona 92",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "El programa de identidad de los Juegos de Barcelona 92: pictogramas de trazo de pincel y colores mediterráneos vivos",
+      "thesis": "La accesibilidad son personas en movimiento: cada principio es un pictograma de trazo suelto y un color mediterráneo.",
+      "palette": ["#ffffff", "#141414", "#e2001a", "#0066b3", "#ffcc00", "#00a651"],
+      "materials": ["trazo de pincel", "pictogramas de cuerpo entero", "fondos blancos con manchas de color"],
+      "viewport": "Portada con cuatro pictogramas grandes que se dibujan trazo a trazo al cargar; Criterios agrupados bajo cada figura con su color.",
+      "risk": "Representar discapacidad con pictogramas es delicado y la referencia tiene más de 30 años; puede leerse retro."
+    },
+    {
+      "id": "challenger-mono",
+      "label": "Producto en monocromo",
+      "verdict": "competitive",
+      "lineage": "Webs de producto de software actuales: escala de neutros y un acento",
+      "thesis": "Cada afirmación va seguida de su prueba: el criterio y, al lado, el código que lo cumple.",
+      "palette": ["#fafafa", "#0a0a0a", "#737373", "#5b5bff"],
+      "materials": ["neutros finos", "capturas sobre fondos radiales suaves"],
+      "viewport": "Criterios en pares afirmación-código que suben suavemente al entrar.",
+      "case": "Gana en claridad, pero choca con lo que pides: un color más vivo y menos serio.",
+      "risk": "Se parece a cualquier web de producto actual.",
+      "hero": "https://impeccable.style/worlds/cards/digital-design-canon-monochrome-product-marketing-hero.webp"
+    },
+    {
+      "id": "challenger-procedencia",
+      "label": "Cinta de procedencia",
+      "verdict": "declined",
+      "lineage": "Museografía de procedencia",
+      "thesis": "Una cinta roja sigue la vida de un objeto.",
+      "palette": ["#efe6d3", "#1c1a17", "#b3262b"],
+      "materials": ["seda roja", "sellos"],
+      "viewport": "Una columna guiada por la cinta.",
+      "case": "Archivo y serifas: más serio aún.",
+      "risk": "Ajeno al público.",
+      "kept": "Estados confirmado, previsto y pendiente en cada dato."
+    },
+    {
+      "id": "challenger-catodo",
+      "label": "Tubo Nixie",
+      "verdict": "declined",
+      "lineage": "Contadores de cátodo",
+      "thesis": "Todas las opciones presentes; la elegida se enciende.",
+      "palette": ["#0b0f1e", "#ff7a1a", "#a07a4a"],
+      "materials": ["malla de bronce", "brillo naranja"],
+      "viewport": "Números fantasma tras una malla.",
+      "case": "Texto fantasma de bajo contraste: inaccesible.",
+      "risk": "Incumple contraste.",
+      "kept": "El conjunto conserva su forma al filtrar."
+    },
+    {
+      "id": "challenger-noir",
+      "label": "Cartel noir",
+      "verdict": "declined",
+      "lineage": "Carteles de cine negro a dos tintas",
+      "thesis": "Una sombra enorme que señala.",
+      "palette": ["#14110f", "#e0a43a", "#efe6d0"],
+      "materials": ["dos tintas", "sombras proyectadas"],
+      "viewport": "Figura pequeña y sombra gigante.",
+      "case": "Sombrío: lo contrario de lo que pides.",
+      "risk": "Serio y dramático.",
+      "kept": "Disciplina de dos tintas."
+    },
+    {
+      "id": "challenger-tensegridad",
+      "label": "Columna de tensegridad",
+      "verdict": "declined",
+      "lineage": "Escultura cinética",
+      "thesis": "Fuerzas opuestas que respiran.",
+      "palette": ["#e6e4df", "#151515", "#d1202f"],
+      "materials": ["varillas de carbono", "cuerda roja"],
+      "viewport": "Diagrama de fuerzas.",
+      "case": "Metáfora que no explica la norma.",
+      "risk": "Disfraz técnico.",
+      "kept": "Anotaciones ancladas al margen."
+    },
+    {
+      "id": "challenger-moviola",
+      "label": "Banco de montaje",
+      "verdict": "declined",
+      "lineage": "Moviola",
+      "thesis": "Tira perforada con marcas de estado.",
+      "palette": ["#0d0d0d", "#f26a1b", "#ffffff"],
+      "materials": ["grano", "cinta naranja"],
+      "viewport": "Fotogramas cruzando la página.",
+      "case": "Ajeno al público.",
+      "risk": "Disfraz de herramienta.",
+      "kept": "Ninguno nuevo: ya cedió «dónde lo dejaste» en la ronda anterior."
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code"},
+  "canon": true,
+  "canonCard": {
+    "label": "Documentación actual estándar",
+    "thesis": "Lo que hacen hoy Vercel o Linear: oscuro, degradados suaves y movimiento discreto.",
+    "palette": ["#0a0a0b", "#fafafa", "#7c5cff", "#22d3ee"],
+    "materials": ["degradados suaves", "bordes finos luminosos", "sans geométrica"],
+    "viewport": "Barra lateral, buscador ⌘K y fichas con brillo sutil al pasar.",
+    "risk": "Indistinguible de cualquier web técnica de 2025."
+  },
+  "steer": true
+}

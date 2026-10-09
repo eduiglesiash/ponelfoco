@@ -4,25 +4,23 @@ import { SECCIONES } from "../data/navegacion";
 const path = Astro.url.pathname.replace(/\/?$/, "/");
 ---
 
-<header class="z-50 bg-sign text-sign-ink md:sticky md:top-[env(safe-area-inset-top,0px)]">
+<header class="z-50 border-b border-line bg-bg/85 text-ink backdrop-blur-lg md:sticky md:top-[env(safe-area-inset-top,0px)]" style="view-transition-name: cabecera">
   <div class="wrap-wide flex flex-wrap items-center gap-x-2 gap-y-0 py-1.5 md:gap-x-4 md:py-2">
     <a
       href="/"
       aria-current={path === "/" ? "page" : undefined}
-      class="flex min-h-11 items-center gap-2 font-display text-label font-extrabold tracking-[-0.01em] text-sign-ink no-underline md:gap-2.5 md:text-[1.15rem]"
+      class="flex min-h-11 items-center gap-2 font-display text-label font-extrabold tracking-[-0.02em] text-ink no-underline md:gap-2.5 md:text-title"
     >
-      <svg class="size-6 flex-none md:size-7" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-        <circle cx="14" cy="14" r="13" fill="none" stroke="currentColor" stroke-width="2"></circle>
-        <circle cx="14" cy="8" r="2.2" fill="currentColor"></circle>
-        <path
-          d="M7.5 11.5 L14 12.8 L20.5 11.5 M14 12.8 V17 M14 17 L10.5 22.5 M14 17 L17.5 22.5"
-          stroke="currentColor"
-          stroke-width="2"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
+      <!-- Pictograma: el indicador de foco de la propia web (anillo amarillo y tinta) alrededor de un punto -->
+      <svg class="size-7 flex-none md:size-8" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="8" fill="none" stroke="var(--ink)" stroke-width="3"></rect>
+        <rect x="5" y="5" width="22" height="22" rx="5" fill="none" stroke="var(--mark)" stroke-width="3"></rect>
+        <circle cx="16" cy="16" r="5" fill="var(--ink)"></circle>
       </svg>
-      Accesibilidad en Claro
+      <span class="flex flex-col leading-tight">
+        Pon el foco
+        <span class="hidden font-body text-caption font-semibold tracking-normal text-muted sm:block">Accesibilidad web y WCAG en español</span>
+      </span>
     </a>
     <nav aria-label="Principal" class="order-last w-full md:order-none md:ml-auto md:w-auto">
       <ul class="-mx-2 -my-1 flex gap-0.5 overflow-x-auto px-2 py-2 pr-8 [mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] [scrollbar-width:none] md:mx-0 md:my-0 md:flex-wrap md:overflow-visible md:p-0 md:[mask-image:none]">
@@ -36,8 +34,8 @@ const path = Astro.url.pathname.replace(/\/?$/, "/");
                   href={s.href}
                   aria-current={current}
                   class:list={[
-                    "relative flex min-h-11 items-center whitespace-nowrap rounded-md px-2.5 text-[.95rem] font-bold text-sign-ink no-underline hover:bg-sign-hover md:px-3 md:text-[.98rem]",
-                    current && "after:absolute after:inset-x-3 after:bottom-1 after:h-[3px] after:rounded-full after:bg-mark",
+                    "relative flex min-h-11 items-center whitespace-nowrap rounded-full px-3 text-[.95rem] font-bold text-ink no-underline transition-colors hover:bg-sunk md:text-[.98rem]",
+                    current && "after:absolute after:inset-x-3 after:bottom-1.5 after:h-1 after:-rotate-1 after:rounded-[2px_5px_3px_6px] after:bg-ink",
                   ]}
                 >
                   {s.label}
@@ -54,13 +52,13 @@ const path = Astro.url.pathname.replace(/\/?$/, "/");
         type="button"
         id="txtDown"
         aria-label="Reducir tamaño del texto"
-        class="min-h-11 min-w-11 cursor-pointer rounded-md border border-sign-muted bg-transparent font-bold text-sign-ink hover:bg-sign-hover disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 min-w-11 cursor-pointer rounded-full border border-edge bg-transparent font-bold text-ink transition-colors hover:bg-sunk disabled:cursor-not-allowed disabled:opacity-50"
       >A−</button>
       <button
         type="button"
         id="txtUp"
         aria-label="Aumentar tamaño del texto"
-        class="min-h-11 min-w-11 cursor-pointer rounded-md border border-sign-muted bg-transparent font-bold text-sign-ink hover:bg-sign-hover disabled:cursor-not-allowed disabled:opacity-50"
+        class="min-h-11 min-w-11 cursor-pointer rounded-full border border-edge bg-transparent font-bold text-ink transition-colors hover:bg-sunk disabled:cursor-not-allowed disabled:opacity-50"
       >A+</button>
     </div>
     <button
@@ -68,7 +66,7 @@ const path = Astro.url.pathname.replace(/\/?$/, "/");
       id="themeToggle"
       aria-label="Modo oscuro"
       aria-pressed="false"
-      class="group flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-md border border-sign-muted bg-transparent text-sign-ink hover:bg-sign-hover"
+      class="group flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-full border border-edge bg-transparent text-ink transition-colors hover:bg-sunk"
     >
       <svg width="20" height="20" viewBox="0 0 22 22" aria-hidden="true">
         <path

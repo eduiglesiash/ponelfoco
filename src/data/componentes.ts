@@ -1,6 +1,10 @@
 /** Contenido de la página de componentes: elementos HTML nativos y componentes a medida. */
 import interruptorJs from "../scripts/interruptor.js?raw";
 import pestanasJs from "../scripts/pestanas.js?raw";
+import menuJs from "../scripts/menu.js?raw";
+import autocompletarJs from "../scripts/autocompletar.js?raw";
+import carruselJs from "../scripts/carrusel.js?raw";
+import avisoJs from "../scripts/aviso.js?raw";
 import type { Lang } from "./ejemplos";
 
 export interface Codigo {
@@ -8,10 +12,24 @@ export interface Codigo {
   code: string;
   /** Etiqueta del bloque; por defecto, el lenguaje */
   label?: string;
+  /** Vista previa propia de este bloque (cuando el componente enseña varias versiones); "same" reutiliza el código */
+  demo?: string;
 }
+
+/** Para qué sirve cada componente; ordena el catálogo y deja sitio para crecer */
+export const CATEGORIAS = [
+  "Acciones",
+  "Formularios",
+  "Navegación",
+  "Contenido",
+  "Avisos y estado",
+  "Qué no hacer",
+] as const;
+export type Categoria = (typeof CATEGORIAS)[number];
 
 export interface Componente {
   id: string;
+  categoria: Categoria;
   nombre: string;
   /** Elemento o patrón, mostrado en monoespaciada */
   elemento: string;
@@ -21,7 +39,7 @@ export interface Componente {
   /** [tecla, qué hace] */
   teclado?: [string, string][];
   codigo: Codigo[];
-  /** HTML de la demo en vivo; "same" reutiliza el primer bloque de código. Sin demo, no se muestra. */
+  /** HTML de la vista previa en vivo; "same" reutiliza el primer bloque de código. Sin demo, no se muestra. */
   demo?: string;
   nota?: string;
   /** Criterios WCAG relacionados */
@@ -35,6 +53,7 @@ const APG = "https://www.w3.org/WAI/ARIA/apg/patterns/";
 export const NATIVOS: Componente[] = [
   {
     id: "boton",
+    categoria: "Acciones",
     nombre: "Botón",
     elemento: "<button>",
     intro: "Para cualquier acción dentro de la página: enviar, abrir, guardar, cerrar.",
@@ -64,6 +83,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "enlace",
+    categoria: "Navegación",
     nombre: "Enlace",
     elemento: "<a href>",
     intro: "Para ir a otra página o a otra parte de la misma. Si no navega, es un botón.",
@@ -93,6 +113,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "campo",
+    categoria: "Formularios",
     nombre: "Campo de texto con etiqueta",
     elemento: "<label> + <input>",
     intro: "Todo campo necesita una etiqueta visible unida al campo con for e id.",
@@ -121,6 +142,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "grupo",
+    categoria: "Formularios",
     nombre: "Grupo de opciones",
     elemento: "<fieldset> + <legend>",
     intro: "Para agrupar opciones relacionadas, como botones de opción o casillas.",
@@ -151,6 +173,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "select",
+    categoria: "Formularios",
     nombre: "Lista desplegable",
     elemento: "<select>",
     intro: "Para elegir una opción de una lista. En el móvil usa el selector del sistema operativo.",
@@ -183,6 +206,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "details",
+    categoria: "Contenido",
     nombre: "Desplegable o acordeón",
     elemento: "<details> + <summary>",
     intro: "Para mostrar y ocultar contenido, como preguntas frecuentes. Sin una línea de JavaScript.",
@@ -214,6 +238,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "dialog",
+    categoria: "Avisos y estado",
     nombre: "Ventana modal",
     elemento: "<dialog>",
     intro: "Para pedir atención o confirmar algo sin salir de la página. Ábrela con showModal().",
@@ -260,6 +285,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "tabla",
+    categoria: "Contenido",
     nombre: "Tabla de datos",
     elemento: "<table> + <th>",
     intro: "Para datos con filas y columnas. Nunca para maquetar.",
@@ -291,6 +317,7 @@ export const NATIVOS: Componente[] = [
   },
   {
     id: "regiones",
+    categoria: "Navegación",
     nombre: "Regiones de la página",
     elemento: "<header> <nav> <main> <footer>",
     intro: "Dividen la página en zonas a las que se puede saltar directamente.",
@@ -317,10 +344,20 @@ export const NATIVOS: Componente[] = [
 </body>`,
       },
     ],
+    demo: `
+<p class="sr-only">Esquema visual de las regiones; no se reproducen de verdad para no duplicar las de esta página.</p>
+<div class="esquema-regiones" aria-hidden="true">
+  <span class="r-skip">Saltar al contenido</span>
+  <span class="r-header">header · search</span>
+  <span class="r-nav">nav «Principal»</span>
+  <span class="r-main">main · h1</span>
+  <span class="r-footer">footer</span>
+</div>`,
     criterios: ["1.3.1", "2.4.1"],
   },
   {
     id: "imagen",
+    categoria: "Contenido",
     nombre: "Imagen con alternativa",
     elemento: "<img alt> + <figure>",
     intro: "El alt es lo que se lee en lugar de la imagen. figcaption añade un pie visible para todo el mundo.",
@@ -341,10 +378,17 @@ export const NATIVOS: Componente[] = [
 <img src="separador.svg" alt="">`,
       },
     ],
+    demo: `
+<figure>
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 120'%3E%3Crect width='240' height='120' fill='%23f1f3f8'/%3E%3Crect x='30' y='60' width='40' height='45' rx='4' fill='%231d5bd8'/%3E%3Crect x='100' y='48' width='40' height='57' rx='4' fill='%231d5bd8'/%3E%3Crect x='170' y='30' width='40' height='75' rx='4' fill='%23e3122d'/%3E%3Cpath d='M20 105h200' stroke='%2314161c' stroke-width='2'/%3E%3C/svg%3E" width="240" height="120" alt="Las ventas online crecieron un 30 % entre 2024 y 2026.">
+  <figcaption>Evolución de las ventas online, 2024 a 2026 (datos de ejemplo).</figcaption>
+</figure>
+<img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 12'%3E%3Cpath d='M4 6c40-6 80 6 116 0s76-6 116 0' fill='none' stroke='%23ffc21a' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" width="240" height="12" alt="">`,
     criterios: ["1.1.1"],
   },
   {
     id: "progreso",
+    categoria: "Avisos y estado",
     nombre: "Progreso y medidores",
     elemento: "<progress> <meter>",
     intro: "Para mostrar el avance de una tarea o un valor dentro de un rango.",
@@ -372,6 +416,7 @@ export const NATIVOS: Componente[] = [
 export const A_MEDIDA: Componente[] = [
   {
     id: "interruptor",
+    categoria: "Acciones",
     nombre: "Interruptor",
     elemento: 'role="switch"',
     intro:
@@ -414,6 +459,7 @@ export const A_MEDIDA: Componente[] = [
   },
   {
     id: "pestanas",
+    categoria: "Navegación",
     nombre: "Pestañas",
     elemento: 'role="tablist"',
     intro: "Varias vistas en el mismo espacio. No hay elemento nativo, así que ARIA y un poco de JavaScript.",
@@ -461,6 +507,7 @@ export const A_MEDIDA: Componente[] = [
   },
   {
     id: "menu",
+    categoria: "Navegación",
     nombre: "Menú desplegable de navegación",
     elemento: "aria-expanded",
     intro:
@@ -488,34 +535,23 @@ export const A_MEDIDA: Componente[] = [
   </ul>
 </nav>`,
       },
-      {
-        lang: "js",
-        code: `
-const boton = document.querySelector('[aria-controls="menu-servicios"]');
-const menu = document.getElementById("menu-servicios");
-
-function mostrar(abrir) {
-  boton.setAttribute("aria-expanded", String(abrir));
-  menu.hidden = !abrir;
-}
-
-boton.addEventListener("click", () => mostrar(menu.hidden));
-
-// Esc cierra y devuelve el foco al botón
-boton.parentElement.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !menu.hidden) {
-    mostrar(false);
-    boton.focus();
-  }
-});`,
-      },
+      { lang: "js", code: menuJs },
     ],
+    demo: `
+<nav aria-label="Ejemplo de menú">
+  <button type="button" aria-expanded="false" aria-controls="menu-servicios">Servicios</button>
+  <ul id="menu-servicios" hidden>
+    <li><a href="/criterios/">Criterios</a></li>
+    <li><a href="/normativa/">Normativa</a></li>
+  </ul>
+</nav>`,
     nota: "Alternativa casi nativa: con popovertarget en el botón y popover en la lista, el navegador gestiona Esc, el clic fuera y el estado expandido sin JavaScript.",
     criterios: ["4.1.2", "2.1.1", "1.4.13"],
     apg: APG + "disclosure/",
   },
   {
     id: "autocompletar",
+    categoria: "Formularios",
     nombre: "Autocompletar",
     elemento: 'role="combobox"',
     intro:
@@ -542,64 +578,7 @@ boton.parentElement.addEventListener("keydown", (e) => {
 <ul id="ciudad-lista" role="listbox" aria-label="Sugerencias" hidden></ul>
 <p role="status" id="ciudad-estado" class="sr-only"></p>`,
       },
-      {
-        lang: "js",
-        code: `
-const CIUDADES = ["Barcelona", "Bilbao", "Madrid", "Málaga", "Sevilla", "Valencia", "Zaragoza"];
-const input = document.getElementById("ciudad");
-const lista = document.getElementById("ciudad-lista");
-const estado = document.getElementById("ciudad-estado");
-let activa = -1;
-
-function mostrar(opciones) {
-  lista.replaceChildren(...opciones.map((texto, i) => {
-    const li = document.createElement("li");
-    li.id = "ciudad-op-" + i;
-    li.setAttribute("role", "option");
-    li.textContent = texto;
-    li.addEventListener("click", () => elegir(texto));
-    return li;
-  }));
-  lista.hidden = opciones.length === 0;
-  input.setAttribute("aria-expanded", String(!lista.hidden));
-  resaltar(-1);
-}
-
-function resaltar(i) {
-  activa = i;
-  [...lista.children].forEach((op, j) => op.setAttribute("aria-selected", String(j === i)));
-  if (i >= 0) input.setAttribute("aria-activedescendant", lista.children[i].id);
-  else input.removeAttribute("aria-activedescendant");
-}
-
-function elegir(texto) {
-  input.value = texto;
-  mostrar([]);
-}
-
-input.addEventListener("input", () => {
-  const q = input.value.trim().toLowerCase();
-  const opciones = q ? CIUDADES.filter((c) => c.toLowerCase().startsWith(q)) : [];
-  mostrar(opciones);
-  estado.textContent = opciones.length === 1 ? "1 sugerencia" : opciones.length + " sugerencias";
-});
-
-input.addEventListener("keydown", (e) => {
-  const n = lista.children.length;
-  if (e.key === "ArrowDown" && n) {
-    e.preventDefault();
-    resaltar((activa + 1) % n);
-  } else if (e.key === "ArrowUp" && n) {
-    e.preventDefault();
-    resaltar((activa - 1 + n) % n);
-  } else if (e.key === "Enter" && activa >= 0) {
-    e.preventDefault();
-    elegir(lista.children[activa].textContent);
-  } else if (e.key === "Escape") {
-    mostrar([]);
-  }
-});`,
-      },
+      { lang: "js", code: autocompletarJs },
       {
         lang: "css",
         code: `
@@ -612,6 +591,7 @@ input.addEventListener("keydown", (e) => {
       {
         lang: "html",
         label: "Alternativa nativa",
+        demo: "same",
         code: `
 <label for="ciudad-nativa">Ciudad</label>
 <input id="ciudad-nativa" list="ciudades">
@@ -622,11 +602,18 @@ input.addEventListener("keydown", (e) => {
 </datalist>`,
       },
     ],
+    demo: `
+<label for="ciudad">Ciudad</label>
+<input id="ciudad" type="text" role="combobox" autocomplete="off"
+  aria-autocomplete="list" aria-expanded="false" aria-controls="ciudad-lista">
+<ul id="ciudad-lista" role="listbox" aria-label="Sugerencias" hidden></ul>
+<p role="status" id="ciudad-estado" class="sr-only"></p>`,
     criterios: ["4.1.2", "2.1.1", "4.1.3", "1.3.1"],
     apg: APG + "combobox/",
   },
   {
     id: "carrusel",
+    categoria: "Contenido",
     nombre: "Carrusel",
     elemento: 'aria-roledescription="carrusel"',
     intro:
@@ -657,48 +644,27 @@ input.addEventListener("keydown", (e) => {
   </div>
 </section>`,
       },
-      {
-        lang: "js",
-        code: `
-const carrusel = document.querySelector(".carrusel");
-const zona = carrusel.querySelector(".diapositivas");
-const diapositivas = [...zona.children];
-const pausa = carrusel.querySelector(".pausa");
-let actual = 0;
-let timer = null;
-
-function mostrar(i) {
-  actual = (i + diapositivas.length) % diapositivas.length;
-  diapositivas.forEach((d, j) => (d.hidden = j !== actual));
-}
-
-function reproducir(si) {
-  clearInterval(timer);
-  timer = si ? setInterval(() => mostrar(actual + 1), 6000) : null;
-  pausa.textContent = si ? "Pausar" : "Reproducir";
-  // Mientras gira solo, no se anuncia cada cambio
-  zona.setAttribute("aria-live", si ? "off" : "polite");
-}
-
-pausa.addEventListener("click", () => reproducir(!timer));
-carrusel.querySelector(".anterior").addEventListener("click", () => {
-  reproducir(false);
-  mostrar(actual - 1);
-});
-carrusel.querySelector(".siguiente").addEventListener("click", () => {
-  reproducir(false);
-  mostrar(actual + 1);
-});
-carrusel.addEventListener("focusin", () => reproducir(false));
-
-reproducir(!matchMedia("(prefers-reduced-motion: reduce)").matches);`,
-      },
+      { lang: "js", code: carruselJs },
     ],
+    demo: `
+<section class="carrusel" aria-roledescription="carrusel" aria-label="Ejemplo de carrusel">
+  <div class="carrusel-controles">
+    <button type="button" class="pausa">Pausar</button>
+    <button type="button" class="anterior">Anterior</button>
+    <button type="button" class="siguiente">Siguiente</button>
+  </div>
+  <div class="diapositivas" aria-live="off">
+    <div role="group" aria-roledescription="diapositiva" aria-label="1 de 3"><p><b>Envío gratis</b> en pedidos desde 30 €.</p></div>
+    <div role="group" aria-roledescription="diapositiva" aria-label="2 de 3" hidden><p><b>Devoluciones</b> sin coste durante 30 días.</p></div>
+    <div role="group" aria-roledescription="diapositiva" aria-label="3 de 3" hidden><p><b>Atención</b> por teléfono, chat o correo.</p></div>
+  </div>
+</section>`,
     criterios: ["2.2.2", "2.5.1", "4.1.2"],
     apg: APG + "carousel/",
   },
   {
     id: "aviso",
+    categoria: "Avisos y estado",
     nombre: "Aviso emergente (toast)",
     elemento: 'role="status"',
     intro: "Mensajes breves como «Cambios guardados». Tienen que anunciarse sin robar el foco y no desaparecer antes de poder leerlos.",
@@ -712,34 +678,18 @@ reproducir(!matchMedia("(prefers-reduced-motion: reduce)").matches);`,
       {
         lang: "html",
         code: `
+<button type="button" class="guardar">Guardar cambios</button>
 <div class="avisos" role="status"></div>`,
       },
-      {
-        lang: "js",
-        code: `
-const avisos = document.querySelector(".avisos");
-
-function avisar(texto) {
-  const aviso = document.createElement("div");
-  aviso.className = "aviso";
-  const mensaje = document.createElement("p");
-  mensaje.textContent = texto;
-  const cerrar = document.createElement("button");
-  cerrar.type = "button";
-  cerrar.textContent = "Cerrar aviso";
-  cerrar.addEventListener("click", () => aviso.remove());
-  aviso.append(mensaje, cerrar);
-  avisos.append(aviso);
-}
-
-avisar("Cambios guardados.");`,
-      },
+      { lang: "js", code: avisoJs },
     ],
+    demo: "same",
     criterios: ["4.1.3", "2.2.1"],
     apg: APG + "alert/",
   },
   {
     id: "div-boton",
+    categoria: "Qué no hacer",
     nombre: "Un div que hace de botón",
     elemento: 'role="button" tabindex="0"',
     intro:
@@ -759,12 +709,18 @@ avisar("Cambios guardados.");`,
       {
         lang: "html",
         label: "Mejor así",
+        demo: `
+<button type="button" data-demo-msg="Añadido a favoritos.">Añadir a favoritos</button>
+<p role="status"></p>`,
         code: `
 <button type="button">Añadir a favoritos</button>`,
       },
       {
         lang: "html",
         label: "Si no queda otro remedio",
+        demo: `
+<div role="button" tabindex="0" class="favorito">Añadir a favoritos</div>
+<p role="status" class="favorito-estado"></p>`,
         code: `
 <div role="button" tabindex="0" class="favorito">Añadir a favoritos</div>
 

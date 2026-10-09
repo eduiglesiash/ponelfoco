@@ -1,5 +1,6 @@
 ---
-import { CRITERIOS, PRINCIPIOS, obsoleto } from "../data/criterios";
+import Figura from "./Figura.astro";
+import { CRITERIOS, PRINCIPIOS, PRINCIPIOS_TEXTO, obsoleto } from "../data/criterios";
 
 const facts = [
   {
@@ -27,60 +28,47 @@ const facts = [
   },
 ];
 
-const lineas = Object.entries(PRINCIPIOS).map(([n, name]) => ({
+const principios = Object.entries(PRINCIPIOS).map(([n, name]) => ({
   n,
   name,
+  text: PRINCIPIOS_TEXTO[n],
   total: CRITERIOS.filter((c) => c.id[0] === n && !obsoleto(c.id)).length,
 }));
 ---
 
-<section aria-labelledby="t-hero" class="wrap pt-[clamp(2.5rem,6vw,4.5rem)] pb-10">
-  <div class="grid items-center gap-x-14 gap-y-10 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+<section aria-labelledby="t-hero" class="wrap pt-[clamp(2.5rem,6vw,5rem)] pb-10">
+  <div class="grid items-center gap-x-14 gap-y-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)]">
     <div>
-      <h1 id="t-hero" class="max-w-[20ch] text-[clamp(2.3rem,1.4rem+3.4vw,4rem)] leading-[1.02] tracking-[-0.03em]">
-        La accesibilidad web{" "}
-        <mark class="rounded-[.08em] bg-mark px-[.08em] text-mark-ink [box-decoration-break:clone]">ya es obligatoria.</mark>{" "}
-        Aquí aprendes a cumplirla.
+      <h1 id="t-hero" class="max-w-[16ch] text-[clamp(2.6rem,1.4rem+4.6vw,5rem)] leading-[0.98] tracking-[-0.04em]">
+        La accesibilidad web <mark class="pincel px-[.12em] text-inherit">ya es obligatoria.</mark> Aquí aprendes a
+        cumplirla.
       </h1>
-      <p class="mt-5 max-w-160 text-[1.2rem] text-muted">
+      <p class="mt-6 max-w-160 text-[1.2rem] text-muted">
         Qué exige la ley, si te afecta y cómo llevarlo al código. En castellano claro, con ejemplos que puedes copiar y
         pensado para quien diseña, programa o dirige un proyecto digital.
       </p>
-      <div class="mt-7 flex flex-wrap gap-3">
+      <div class="mt-8 flex flex-wrap gap-3">
         <a class="btn btn-primary" href="/me-afecta/">Comprobar si me afecta</a>
         <a class="btn btn-ghost" href="/criterios/">Ver los criterios con código</a>
       </div>
     </div>
 
-    <nav aria-labelledby="t-red" class="border-t-2 border-ink pt-4">
-      <h2 id="t-red" class="text-[1.15rem]">La red de criterios WCAG 2.2</h2>
-      <p class="mt-1 text-[.95rem] text-muted">Cuatro líneas, una por principio. Cada estación es un criterio.</p>
-      <ul class="mt-4 flex flex-col gap-1">
+    <nav aria-labelledby="t-principios">
+      <h2 id="t-principios" class="text-title">Cuatro principios para todo WCAG</h2>
+      <p class="mt-1 text-muted">Todo WCAG cabe en cuatro principios. Elige uno para ver sus criterios.</p>
+      <ul class="mt-5 grid grid-cols-2 gap-x-4 gap-y-6">
         {
-          lineas.map((l) => (
+          principios.map((p, i) => (
             <li>
               <a
-                href={`/criterios/#linea-${l.n}`}
-                class:list={[
-                  `linea-${l.n}`,
-                  "group grid min-h-12 grid-cols-[auto_8.5rem_minmax(0,1fr)] items-center gap-3 rounded-md px-1 py-1.5 text-ink no-underline hover:bg-sunk max-[479px]:grid-cols-[auto_1fr]",
-                ]}
+                href={`/criterios/?p=${p.n}`}
+                class:list={[`principio-${p.n}`, "figura-salta group flex flex-col items-start gap-2 rounded-2xl p-2 text-ink no-underline"]}
               >
-                <span class="line-badge" aria-hidden="true">L{l.n}</span>
-                <span class="font-bold group-hover:underline">
-                  <span class="sr-only">Línea {l.n}: </span>
-                  {l.name}
-                  <span class="block font-mono text-caption font-semibold text-muted">{l.total} estaciones</span>
+                <Figura n={p.n} delay={i * 220} class="h-[clamp(5.5rem,4rem+5vw,8rem)] w-auto" />
+                <span class="text-subtitle font-display font-extrabold leading-tight group-hover:underline group-hover:decoration-[3px] group-hover:decoration-(--c)">
+                  {p.name}
                 </span>
-                <span
-                  aria-hidden="true"
-                  class="relative flex h-4 items-center justify-between max-[479px]:hidden"
-                >
-                  <span class="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-(--c)"></span>
-                  {Array.from({ length: l.total }, () => (
-                    <span class="relative size-2.5 rounded-full border-2 border-(--c) bg-bg"></span>
-                  ))}
-                </span>
+                <span class="text-caption font-bold text-muted">{p.total} criterios</span>
               </a>
             </li>
           ))
@@ -89,7 +77,7 @@ const lineas = Object.entries(PRINCIPIOS).map(([n, name]) => ({
     </nav>
   </div>
 
-  <div class="mt-12 border-t border-line">
+  <div class="revela mt-14 border-t border-line">
     <dl class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,14rem),1fr))] gap-x-8">
       {
         facts.map((f) => (

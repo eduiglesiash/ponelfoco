@@ -1,24 +1,31 @@
 @import "tailwindcss";
 
 /* Tokens de color: variables en :root (cambian en modo oscuro) mapeadas a utilidades de Tailwind (bg-surface, text-muted, border-line…).
-   El sitio sigue la señalética de metro: --sign es el azul de los carteles y --l1…--l4 son las cuatro líneas (principios WCAG). */
+   Mundo «Barcelona 92»: blanco luminoso y tinta, con un color mediterráneo por principio WCAG.
+   --pN es el campo de color del principio N, --pN-ink el texto sobre ese campo y --pN-text el texto en ese color sobre el fondo. */
 :root {
-  --bg: #fafbfc; --surface: #ffffff; --sunk: #eef1f5;
-  --ink: #10151d; --muted: #4b5564; --line: #d3d8e0; --edge: #7d8696;
-  --sign: #14275e; --sign-ink: #ffffff; --sign-muted: #c9d3ec; --sign-hover: #213a7c;
-  --accent: #0b4fc0; --accent-ink: #ffffff; --accent-soft: #e4ecfb;
-  --mark: #ffd84d; --mark-ink: #10151d;
+  --bg: #fbfbfd; --surface: #ffffff; --sunk: #f1f3f8;
+  --ink: #14161c; --muted: #4f5666; --line: #dde1ea; --edge: #7d8696;
+  --sign: #ffc21a; --sign-ink: #14161c; --sign-muted: #3b3210; --sign-hover: #f5b200;
+  --accent: #1d5bd8; --accent-ink: #ffffff; --accent-soft: #e6eeff;
+  --mark: #ffc21a; --mark-ink: #14161c;
   --ok: #17663a; --ok-soft: #e2f3e8; --ko: #a3261c; --ko-soft: #fbe6e3;
-  --l1: #c8102e; --l2: #0057b8; --l3: #00754a; --l4: #6b2c91; --l-ink: #ffffff;
+  --p1: #e3122d; --p1-ink: #ffffff; --p1-text: #c8102e;
+  --p2: #1d5bd8; --p2-ink: #ffffff; --p2-text: #1d5bd8;
+  --p3: #ffc21a; --p3-ink: #14161c; --p3-text: #8a5c00;
+  --p4: #087a4e; --p4-ink: #ffffff; --p4-text: #087a4e;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d1118; --surface: #141a24; --sunk: #1b2330;
-    --ink: #e9edf3; --muted: #a8b2c1; --line: #2c3646; --edge: #66728a;
-    --sign: #15275c; --sign-ink: #ffffff; --sign-muted: #c9d3ec; --sign-hover: #233c80;
-    --accent: #8fb4ff; --accent-ink: #0d1118; --accent-soft: #1c2a48;
+    --bg: #0f1424; --surface: #161c2f; --sunk: #1c2338;
+    --ink: #eef1f8; --muted: #aab3c6; --line: #2a3350; --edge: #6f7a99;
+    --sign: #ffd047; --sign-ink: #0f1424; --sign-muted: #3b3210; --sign-hover: #ffdb70;
+    --accent: #8fb4ff; --accent-ink: #0f1424; --accent-soft: #1d2a4d;
     --ok: #7fd6a0; --ok-soft: #14301f; --ko: #ff9d92; --ko-soft: #3a1a17;
-    --l1: #ff8a8a; --l2: #7fb2ff; --l3: #5fd39b; --l4: #c99bf0; --l-ink: #0d1118;
+    --p1: #ff6b78; --p1-ink: #0f1424; --p1-text: #ff8a94;
+    --p2: #7ea6ff; --p2-ink: #0f1424; --p2-text: #8fb4ff;
+    --p3: #ffd047; --p3-ink: #0f1424; --p3-text: #ffd047;
+    --p4: #3fd69a; --p4-ink: #0f1424; --p4-text: #3fd69a;
     color-scheme: dark;
   }
 }
@@ -26,12 +33,15 @@
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --bg: #0d1118; --surface: #141a24; --sunk: #1b2330;
-  --ink: #e9edf3; --muted: #a8b2c1; --line: #2c3646; --edge: #66728a;
-  --sign: #15275c; --sign-ink: #ffffff; --sign-muted: #c9d3ec; --sign-hover: #233c80;
-  --accent: #8fb4ff; --accent-ink: #0d1118; --accent-soft: #1c2a48;
+  --bg: #0f1424; --surface: #161c2f; --sunk: #1c2338;
+  --ink: #eef1f8; --muted: #aab3c6; --line: #2a3350; --edge: #6f7a99;
+  --sign: #ffd047; --sign-ink: #0f1424; --sign-muted: #3b3210; --sign-hover: #ffdb70;
+  --accent: #8fb4ff; --accent-ink: #0f1424; --accent-soft: #1d2a4d;
   --ok: #7fd6a0; --ok-soft: #14301f; --ko: #ff9d92; --ko-soft: #3a1a17;
-  --l1: #ff8a8a; --l2: #7fb2ff; --l3: #5fd39b; --l4: #c99bf0; --l-ink: #0d1118;
+  --p1: #ff6b78; --p1-ink: #0f1424; --p1-text: #ff8a94;
+  --p2: #7ea6ff; --p2-ink: #0f1424; --p2-text: #8fb4ff;
+  --p3: #ffd047; --p3-ink: #0f1424; --p3-text: #ffd047;
+  --p4: #3fd69a; --p4-ink: #0f1424; --p4-text: #3fd69a;
   color-scheme: dark;
 }
 
@@ -57,23 +67,18 @@
   --color-ok-soft: var(--ok-soft);
   --color-ko: var(--ko);
   --color-ko-soft: var(--ko-soft);
-  --color-l1: var(--l1);
-  --color-l2: var(--l2);
-  --color-l3: var(--l3);
-  --color-l4: var(--l4);
-  --color-l-ink: var(--l-ink);
 }
 
 /* Resaltado de código (tema css-variables del componente <Code> de Astro). Todos ≥ 4,5:1 sobre --sunk en claro y oscuro. */
 :root {
   --astro-code-foreground: var(--ink);
   --astro-code-background: var(--sunk);
-  --astro-code-token-keyword: var(--l4);
+  --astro-code-token-keyword: var(--p2-text);
   --astro-code-token-string: var(--ok);
   --astro-code-token-string-expression: var(--ok);
   --astro-code-token-comment: var(--muted);
   --astro-code-token-function: var(--accent);
-  --astro-code-token-constant: var(--ko);
+  --astro-code-token-constant: var(--p1-text);
   --astro-code-token-parameter: var(--ink);
   --astro-code-token-punctuation: var(--muted);
   --astro-code-token-link: var(--accent);
@@ -86,10 +91,10 @@
   --text-lead: 1.15rem;
   --text-title: 1.2rem;
   --text-subtitle: 1.35rem;
-  /* Pantallas anchas: el listado de criterios pasa a cuatro líneas en paralelo */
+  /* Pantallas anchas */
   --breakpoint-wide: 87.5rem;
-  /* Una sola familia, diseñada para baja visión; la mono solo para código y números */
-  --font-display: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Titulares con personalidad (Bricolage Grotesque); cuerpo en Atkinson, diseñada para baja visión; mono solo para código y números */
+  --font-display: "Bricolage Grotesque", "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
@@ -132,9 +137,14 @@
     border-radius: 4px;
   }
   h1, h2, h3 {
-    @apply font-display leading-tight text-balance;
+    @apply font-display leading-[1.08] text-balance;
     font-weight: 800;
-    letter-spacing: -0.015em;
+    letter-spacing: -0.025em;
+  }
+  /* En tamaños pequeños el titular necesita aire */
+  h3 {
+    letter-spacing: -0.005em;
+    line-height: 1.2;
   }
   summary {
     list-style: none;
@@ -157,26 +167,27 @@
     @apply mx-auto max-w-[92rem] px-[clamp(16px,3vw,40px)];
   }
   .card {
-    @apply rounded-lg border border-line bg-surface;
+    @apply rounded-xl border border-line bg-surface;
   }
+  /* Botones en píldora; se hunden un poco al pulsar */
   .btn {
-    @apply inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-md border-2 px-[1.15rem] py-2.5 font-bold no-underline disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex min-h-12 cursor-pointer items-center gap-2 rounded-full border-2 px-5 py-2.5 font-bold no-underline transition-[background-color,color,translate,scale] duration-200 ease-out active:scale-[.97] disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply border-sign bg-sign text-sign-ink hover:border-sign-hover hover:bg-sign-hover;
+    @apply border-ink bg-ink text-bg hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-accent-ink;
   }
   .btn-ghost {
-    @apply border-ink bg-transparent text-ink hover:bg-sunk;
+    @apply border-ink bg-transparent text-ink hover:-translate-y-0.5 hover:bg-sign hover:text-sign-ink hover:border-sign-ink;
   }
   .toggle {
-    @apply min-h-11 cursor-pointer rounded-md border-[1.5px] border-edge bg-surface px-3 py-1.5 text-[.95rem] font-bold text-ink hover:border-ink aria-pressed:border-sign aria-pressed:bg-sign aria-pressed:text-sign-ink;
+    @apply min-h-11 cursor-pointer rounded-full border-[1.5px] border-edge bg-surface px-4 py-1.5 text-[.95rem] font-bold text-ink transition-colors hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-bg;
   }
   .chip {
-    @apply min-h-10 cursor-pointer rounded-md border-[1.5px] border-edge bg-bg px-3 py-2 text-left text-[.92rem] text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50;
+    @apply min-h-10 cursor-pointer rounded-full border-[1.5px] border-edge bg-bg px-3.5 py-2 text-left text-[.92rem] text-ink hover:border-ink disabled:cursor-not-allowed disabled:opacity-50;
   }
   /* Niveles: A con borde, AA relleno, AAA con borde discontinuo. El texto siempre está; la forma lo refuerza. */
   .lv {
-    @apply inline-block min-w-[2.6rem] rounded border-[1.5px] border-ink px-[.45rem] py-[.08rem] text-center font-mono text-caption font-semibold text-ink;
+    @apply inline-block min-w-[2.6rem] rounded-full border-[1.5px] border-ink px-[.5rem] py-[.05rem] text-center font-mono text-caption font-semibold text-ink;
   }
   .lv-AA {
     @apply bg-ink text-bg;
@@ -185,86 +196,57 @@
     @apply border-dashed border-muted text-muted;
   }
   .badge-new {
-    @apply rounded bg-mark px-[.45rem] py-[.08rem] text-caption font-bold leading-snug text-mark-ink;
+    @apply rounded-full bg-sign px-[.5rem] py-[.05rem] text-caption font-bold leading-snug text-sign-ink;
   }
-  /* Insignia de línea («L1»), como las de los planos de metro */
-  .line-badge {
-    @apply inline-flex h-[1.9em] min-w-[2.4em] flex-none items-center justify-center rounded-md px-[.4em] font-extrabold leading-none text-l-ink;
-    background: var(--c);
+  /* Principios WCAG: cada uno con su color mediterráneo */
+  .principio-1 { --c: var(--p1); --c-ink: var(--p1-ink); --c-text: var(--p1-text); }
+  .principio-2 { --c: var(--p2); --c-ink: var(--p2-ink); --c-text: var(--p2-text); }
+  .principio-3 { --c: var(--p3); --c-ink: var(--p3-ink); --c-text: var(--p3-text); }
+  .principio-4 { --c: var(--p4); --c-ink: var(--p4-ink); --c-text: var(--p4-text); }
+  /* Pincelada: fondo de color con bordes irregulares, para resaltar */
+  .pincel {
+    background: var(--c, var(--sign));
+    color: var(--c-ink, var(--sign-ink));
+    border-radius: 0.5em 0.25em 0.6em 0.3em / 0.35em 0.6em 0.3em 0.55em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
   }
-  .linea-1 { --c: var(--l1); }
-  .linea-2 { --c: var(--l2); }
-  .linea-3 { --c: var(--l3); }
-  .linea-4 { --c: var(--l4); }
 
-  /* Plano de una línea: trazo vertical continuo, tramos (pautas) y estaciones (criterios) */
-  .metro-track {
-    @apply relative;
+  /* Lista de criterios de un principio (columna de la ficha y listado) */
+  .lista-zona {
+    @apply mb-1 px-2 text-caption font-bold text-muted;
   }
-  .metro-track::before {
-    content: "";
-    position: absolute;
-    left: calc(var(--stop-x) - 3px);
-    top: 0.4rem;
-    bottom: 0.4rem;
-    width: 6px;
-    border-radius: 9999px;
-    background: var(--c);
+  .lista-zona + ol,
+  .lista > [data-zone] + [data-zone] {
+    @apply mt-0;
   }
-  .metro-track {
-    --stop-x: 0.95rem;
+  .lista > [data-zone] + [data-zone] {
+    @apply mt-5;
   }
-  .metro-track > [data-zone] + [data-zone] {
-    @apply mt-4;
+  .lista-item > a {
+    @apply relative flex min-h-11 items-start gap-x-2.5 rounded-lg px-2 py-2 text-ink no-underline transition-colors hover:bg-sunk;
   }
-  .metro-zone {
-    @apply relative mb-1 ml-[calc(var(--stop-x)*2+.35rem)] font-display text-caption font-bold tracking-normal text-muted;
-  }
-  .metro-stop {
-    @apply relative;
-  }
-  .metro-stop > a {
-    @apply relative flex min-h-11 items-start gap-x-2.5 rounded-md py-2 pr-2 pl-[calc(var(--stop-x)*2+.35rem)] text-ink no-underline hover:bg-sunk;
-  }
-  .metro-stop > a:hover .metro-name {
+  .lista-item > a:hover .lista-nombre {
     @apply underline decoration-2;
   }
-  .metro-stop > a::before {
-    content: "";
-    position: absolute;
-    left: calc(var(--stop-x) - 0.55rem);
-    top: 0.72rem;
-    width: 1.1rem;
-    height: 1.1rem;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 3.5px solid var(--c);
+  .lista-item > a[aria-current="page"] {
+    background: var(--c);
+    color: var(--c-ink);
+    border-radius: 0.7rem 0.35rem 0.8rem 0.4rem;
   }
-  .metro-stop[data-lv="AAA"] > a::before {
-    border-style: dotted;
+  .lista-item > a[aria-current="page"] .text-muted {
+    color: inherit;
   }
-  /* Estación cerrada (criterio eliminado en 2.2) */
-  .metro-stop[data-obsoleto] > a::before {
-    border-style: dashed;
-    border-color: var(--muted);
-  }
-  .metro-stop[data-obsoleto] .metro-name {
+  .lista-item[data-obsoleto] .lista-nombre {
     @apply text-muted;
   }
-  /* Estación actual: punto relleno con anillo, como «Usted está aquí» */
-  .metro-stop > a[aria-current="page"] {
-    @apply bg-sunk font-bold;
+  .lista-num {
+    @apply w-[3.2rem] flex-none pt-px font-mono text-[.9rem] font-semibold;
   }
-  .metro-stop > a[aria-current="page"]::before {
-    left: calc(var(--stop-x) - 0.8rem);
-    top: 0.47rem;
-    width: 1.6rem;
-    height: 1.6rem;
-    background: var(--c);
-    border: 4px solid var(--bg);
-    box-shadow: 0 0 0 3px var(--c);
+  .lista-nombre {
+    @apply min-w-0 flex-1 leading-snug;
   }
-  /* Trayecto del comprobador: estaciones numeradas sobre una línea; el tramo recorrido se pinta en tinta (los colores quedan para las líneas WCAG) */
+  /* Recorrido del comprobador: pasos numerados sobre un trazo; lo recorrido se pinta en tinta (los colores quedan para los principios) */
   .route-stop {
     @apply relative pb-9 pl-[3.75rem];
     --m: 2.5rem;
@@ -302,7 +284,7 @@
   .route-stop[data-state="skipped"] > .route-marker {
     @apply border-dashed border-muted;
   }
-  /* Destino: marcador cuadrado, como el final de una línea */
+  /* Resultado: marcador cuadrado */
   .route-marker-end {
     @apply rounded-md;
   }
@@ -338,12 +320,6 @@
     outline-offset: 2px;
   }
 
-  .metro-num {
-    @apply w-[3.1rem] flex-none font-mono text-[.9rem] font-semibold;
-  }
-  .metro-name {
-    @apply min-w-0 flex-1 leading-snug;
-  }
   /* Bloques de código */
   .astro-code {
     @apply rounded-[10px] p-4 font-mono text-[.9rem] leading-normal;
@@ -427,6 +403,68 @@
     @apply font-semibold;
   }
 
+  /* Vistas previas de la página de componentes */
+  .ejemplo :where(.astro-code, figcaption) {
+    border-radius: 0;
+  }
+  .ejemplo figure + figure {
+    @apply border-t border-edge;
+  }
+  .demo :where(figure) {
+    @apply flex flex-col gap-2;
+  }
+  .demo :where(figcaption) {
+    @apply text-caption text-muted;
+  }
+  .demo :where(ul:not([role])) {
+    @apply mt-1 flex flex-col gap-1 rounded-lg border border-edge bg-surface p-2;
+  }
+  .demo :where(ul:not([role]) a) {
+    @apply flex min-h-11 items-center rounded-md px-3;
+  }
+  .demo :where([role="listbox"]) {
+    @apply w-full max-w-sm rounded-lg border border-edge bg-surface p-1;
+  }
+  .demo :where([role="option"]) {
+    @apply flex min-h-11 cursor-pointer items-center rounded-md px-3;
+  }
+  /* La opción resaltada tiene que verse, no solo anunciarse (el mismo CSS que enseña el ejemplo) */
+  .demo [role="option"][aria-selected="true"] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .demo .carrusel {
+    @apply flex w-full max-w-md flex-col gap-3 rounded-xl border border-edge bg-bg p-4;
+  }
+  .demo .carrusel-controles {
+    @apply flex flex-wrap gap-2;
+  }
+  .demo .diapositivas {
+    @apply text-lead;
+  }
+  .demo .avisos {
+    @apply flex w-full max-w-md flex-col gap-2;
+  }
+  .demo .aviso {
+    @apply flex flex-wrap items-center justify-between gap-3 rounded-xl bg-ink px-4 py-2 text-bg;
+  }
+  .demo .favorito {
+    @apply inline-flex min-h-11 cursor-pointer items-center rounded-lg border-2 border-ink bg-surface px-4 py-2 font-semibold text-ink;
+  }
+  .demo .esquema-regiones {
+    @apply grid w-full max-w-md gap-1.5 font-mono text-caption;
+    grid-template-columns: 7rem 1fr;
+    grid-template-areas: "skip skip" "header header" "nav main" "footer footer";
+  }
+  .demo .esquema-regiones > span {
+    @apply rounded-md border-[1.5px] border-dashed border-edge bg-bg px-2 py-2 text-muted;
+  }
+  .demo .r-skip { grid-area: skip; @apply self-start justify-self-start border-solid! bg-sign! text-sign-ink!; }
+  .demo .r-header { grid-area: header; }
+  .demo .r-nav { grid-area: nav; @apply min-h-20; }
+  .demo .r-main { grid-area: main; @apply min-h-20; }
+  .demo .r-footer { grid-area: footer; }
+
   /* Interruptor (role="switch") */
   .switch {
     @apply inline-flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border-0 bg-transparent px-1 font-semibold text-ink;
@@ -482,4 +520,68 @@
 }
 .consultas[data-off] > #chat {
   order: 2;
+}
+
+/* Figuras de los principios: trazos de pincel en SVG. Cada trazo usa pathLength="1" para poder dibujarse. */
+.trazo {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+/* Movimiento. Solo si la persona no ha pedido reducirlo; sin animación, todo está ya visible y en su sitio. */
+@media (prefers-reduced-motion: no-preference) {
+  /* Transiciones entre páginas: el número del criterio viaja del listado a su ficha */
+  @view-transition {
+    navigation: auto;
+  }
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Las figuras se dibujan trazo a trazo y la cabeza aparece al final */
+  .trazo {
+    animation: trazo 0.9s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation-delay: calc(var(--i, 0) * 140ms + var(--d, 0ms));
+  }
+  .cabeza {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: cabeza 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(3 * 140ms + var(--d, 0ms));
+  }
+  /* Al pasar por encima, la figura salta un poco */
+  .figura-salta:hover .figura,
+  .figura-salta:focus-visible .figura {
+    animation: salto 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Apariciones ligadas al scroll, donde el navegador lo soporte */
+  @supports (animation-timeline: view()) {
+    .revela {
+      animation: revela linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+  }
+
+  /* Paso del comprobador que se abre */
+  .route-stop[data-state="current"] [data-options] {
+    animation: revela 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  #verdict:not([hidden]) {
+    animation: revela 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@keyframes trazo {
+  from { stroke-dashoffset: 1; }
+}
+@keyframes cabeza {
+  from { scale: 0; }
+}
+@keyframes salto {
+  40% { translate: 0 -8%; rotate: -4deg; }
+}
+@keyframes revela {
+  from { opacity: 0; translate: 0 1.25rem; }
 }

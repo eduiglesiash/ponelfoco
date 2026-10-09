@@ -1,0 +1,46 @@
+---
+/** Lista de los criterios de un principio, agrupados por pauta. Se usa en la columna de la ficha. */
+import { CRITERIOS, PAUTAS, obsoleto, pauta, slug } from "../data/criterios";
+
+interface Props {
+  /** Número del principio: "1"…"4" */
+  n: string;
+  /** Criterio de la página actual, que se marca como «Estás aquí» */
+  current?: string;
+  /** Prefijo de ids, para poder pintar la misma lista dos veces en una página */
+  idPrefix?: string;
+}
+
+const { n, current, idPrefix = "" } = Astro.props;
+const tramos = Object.keys(PAUTAS)
+  .filter((p) => p[0] === n)
+  .map((p) => ({ id: p, items: CRITERIOS.filter((c) => pauta(c.id) === p) }));
+---
+
+<div class:list={["lista", `principio-${n}`]}>
+  {
+    tramos.map((t) => (
+      <div data-zone>
+        <p class="lista-zona" id={`${idPrefix}z-${slug(t.id)}`}>
+          {`${t.id} ${PAUTAS[t.id]}`}
+        </p>
+        <ol aria-labelledby={`${idPrefix}z-${slug(t.id)}`}>
+          {t.items.map((c) => (
+            <li class="lista-item" data-obsoleto={obsoleto(c.id) ? "" : undefined}>
+              <a href={`/criterios/${slug(c.id)}/`} aria-current={c.id === current ? "page" : undefined}>
+                <span class="lista-num">{c.id}</span>
+                <span class="lista-nombre">
+                  {c.nombre}
+                  {c.id === current && <span class="block text-caption font-bold">Estás aquí</span>}
+                </span>
+                {(c.nivel === "AAA" || obsoleto(c.id)) && (
+                  <span class="pt-0.5 font-mono text-caption text-muted">{obsoleto(c.id) ? "Eliminado" : "AAA"}</span>
+                )}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))
+  }
+</div>

@@ -41,7 +41,8 @@ Une la ley y el código en un solo sitio y en castellano: cada criterio tiene un
 
 ## Brand Commitments
 
-- Nombre: «Accesibilidad en Claro».
+- Nombre: «Pon el foco». Lema y posicionamiento: «Accesibilidad web y WCAG en español».
+- Logo: el indicador de foco de la propia web (anillo amarillo `--mark` dentro de un anillo de tinta) alrededor de un punto de tinta. Une el foco de teclado y «poner el foco» en algo. Va con `aria-hidden` junto al nombre; favicon en `public/favicon.svg`.
 - Tono: castellano claro, frases cortas, sin jerga innecesaria; para no juristas.
 - La web tiene que ser un ejemplo de lo que explica. Si un recurso visual choca con WCAG 2.2 AA, gana la accesibilidad.
 
