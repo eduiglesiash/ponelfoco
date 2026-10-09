@@ -1,0 +1,84 @@
+---
+/**
+ * Figura de un principio WCAG: una persona en tres o cuatro trazos de pincel.
+ * Cabeza y brazos en el color del principio; piernas en tinta. Siempre decorativa: el texto de al lado da el nombre.
+ *   1 Perceptible: mira y escucha (ondas junto a la cabeza)
+ *   2 Operable: alarga el brazo y pulsa un botón
+ *   3 Comprensible: abre los brazos para explicar
+ *   4 Robusto: sostiene una barra por encima de la cabeza
+ */
+interface Props {
+  n: string;
+  /** Retraso de la animación de dibujo, en ms */
+  delay?: number;
+  class?: string;
+}
+
+const { n, delay = 0, class: cls } = Astro.props;
+
+type Trazo = { d: string; tinta?: boolean; fino?: boolean };
+const figuras: Record<string, { cabeza: [number, number]; trazos: Trazo[] }> = {
+  "1": {
+    cabeza: [40, 22],
+    trazos: [
+      { d: "M14 56 C30 46 46 44 60 36" },
+      { d: "M42 44 C43 64 38 80 26 102", tinta: true },
+      { d: "M42 62 C52 74 58 88 64 102", tinta: true },
+      { d: "M66 12 C74 18 74 30 66 36", fino: true },
+      { d: "M78 4 C92 14 92 36 78 46", fino: true },
+    ],
+  },
+  "2": {
+    cabeza: [30, 24],
+    trazos: [
+      { d: "M12 62 C32 54 54 50 74 46" },
+      { d: "M32 46 C32 66 28 82 18 104", tinta: true },
+      { d: "M32 66 C42 78 48 92 52 104", tinta: true },
+      { d: "M88 38 A8 8 0 1 1 87.9 38", fino: true },
+    ],
+  },
+  "3": {
+    cabeza: [50, 30],
+    trazos: [
+      { d: "M12 22 C24 50 76 50 88 22" },
+      { d: "M50 52 C49 70 42 86 32 104", tinta: true },
+      { d: "M50 70 C58 82 64 94 68 104", tinta: true },
+    ],
+  },
+  "4": {
+    cabeza: [50, 34],
+    trazos: [
+      { d: "M8 10 L92 10", fino: true },
+      { d: "M22 12 C28 42 72 42 78 12" },
+      { d: "M50 56 C46 72 34 88 22 104", tinta: true },
+      { d: "M50 56 C54 72 66 88 78 104", tinta: true },
+    ],
+  },
+};
+const f = figuras[n];
+---
+
+<svg
+  viewBox="0 0 100 110"
+  aria-hidden="true"
+  focusable="false"
+  class:list={["figura overflow-visible", `principio-${n}`, cls]}
+  style={`--d:${delay}ms`}
+>
+  {
+    f.trazos.map((t, i) => (
+      <path
+        d={t.d}
+        pathLength="1"
+        class="trazo"
+        style={`--i:${i}`}
+        fill="none"
+        stroke={t.tinta ? "var(--ink)" : "var(--c)"}
+        stroke-width={t.fino ? 7 : 12}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    ))
+  }
+  <circle class="cabeza" cx={f.cabeza[0]} cy={f.cabeza[1]} r="12" fill="var(--c)" />
+</svg>

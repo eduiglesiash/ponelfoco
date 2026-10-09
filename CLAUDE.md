@@ -1,6 +1,6 @@
 # Decisiones del proyecto
 
-Accesibilidad en Claro es una web informativa sobre normativa de accesibilidad digital (España y UE) y criterios WCAG 2.2. Estas reglas aplican a cualquier cambio.
+Pon el foco (accesibilidad web y WCAG en español) es una web informativa sobre normativa de accesibilidad digital (España y UE) y criterios WCAG 2.2. Estas reglas aplican a cualquier cambio.
 
 ## Prioridades
 

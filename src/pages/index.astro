@@ -52,7 +52,7 @@ const ejemplo = `
 <button type="button">Añadir al carrito</button>`;
 ---
 
-<Layout description="Guía en castellano sobre la normativa de accesibilidad web en España y la UE y los criterios WCAG 2.2, con ejemplos de código y componentes accesibles.">
+<Layout description="Accesibilidad web y WCAG en español: la normativa de España y la UE y los criterios WCAG 2.2 explicados con ejemplos de código y componentes accesibles.">
   <Hero />
 
   <section aria-labelledby="t-que" class="border-t border-line py-[clamp(2.5rem,5vw,4rem)]">
@@ -60,12 +60,12 @@ const ejemplo = `
       <SectionHead title="Qué puedes hacer aquí" id="t-que">
         Cuatro secciones, según lo que necesites hoy.
       </SectionHead>
-      <ul class="overflow-hidden rounded-xl bg-sign text-sign-ink">
+      <ul class="revela overflow-hidden rounded-[2rem_1.25rem_2.25rem_1.5rem] bg-sign text-sign-ink">
         {
           secciones.map((s, i) => (
             <li
               class:list={[
-                "group relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-1 px-[clamp(1rem,3vw,2rem)] py-5 hover:bg-sign-hover",
+                "group relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 gap-y-1 px-[clamp(1.25rem,3vw,2.5rem)] py-6 transition-colors hover:bg-sign-hover",
                 i > 0 && "border-t border-sign-hover",
               ]}
             >
@@ -82,7 +82,9 @@ const ejemplo = `
               </div>
               <span class="flex items-center gap-2 font-bold text-sign-ink max-[599px]:hidden" aria-hidden="true">
                 {s.cta}
-                <Icon name="arrow-right" size={22} />
+                <span class="flex size-10 items-center justify-center rounded-full bg-sign-ink text-sign transition-transform duration-300 ease-out group-hover:translate-x-1.5">
+                  <Icon name="arrow-right" size={20} />
+                </span>
               </span>
             </li>
           ))
@@ -109,9 +111,9 @@ const ejemplo = `
       <SectionHead title="Para quién es" id="t-quien" />
       <ul class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,16rem),1fr))] gap-6">
         {
-          perfiles.map((p) => (
-            <li class="border-t-2 border-ink pt-3">
-              <h3 class="text-[1.2rem]">{p.title}</h3>
+          perfiles.map((p, i) => (
+            <li class:list={[`principio-${[1, 2, 4][i]}`, "revela border-t-4 border-(--c) pt-3"]}>
+              <h3 class="text-title">{p.title}</h3>
               <p class="mt-1 text-muted">{p.text}</p>
             </li>
           ))
@@ -121,17 +123,17 @@ const ejemplo = `
   </section>
 
   <section aria-labelledby="t-cierre" class="wrap pb-8">
-    <div class="rounded-xl bg-sign p-[clamp(1.25rem,4vw,2.5rem)] text-sign-ink">
+    <div class="principio-2 revela rounded-[2.25rem_1.5rem_2rem_1.25rem] bg-(--c) p-[clamp(1.5rem,5vw,3.5rem)] text-(--c-ink)">
       <h2 id="t-cierre" class="max-w-[26ch] text-[clamp(1.6rem,1.2rem+1.8vw,2.3rem)]">
         Aunque la ley no te obligue, tu web puede ser para todo el mundo.
       </h2>
-      <p class="mt-3 max-w-176 text-[1.08rem] text-sign-muted">
+      <p class="mt-3 max-w-176 text-[1.08rem]">
         Una de cada seis personas tiene una discapacidad importante, según la{" "}
-        <a href="https://www.who.int/es/news-room/fact-sheets/detail/disability-and-health" target="_blank" rel="noopener" class="font-bold text-sign-ink"
+        <a href="https://www.who.int/es/news-room/fact-sheets/detail/disability-and-health" target="_blank" rel="noopener" class="font-bold text-(--c-ink)"
           >Organización Mundial de la Salud</a
         >. Hacer tu web accesible es decidir que también son tu público.
       </p>
-      <a href="/me-afecta/" class="btn mt-6 border-sign-ink bg-sign-ink text-sign hover:bg-mark hover:border-mark hover:text-mark-ink">Comprobar si me afecta</a>
+      <a href="/me-afecta/" class="btn mt-6 border-(--c-ink) bg-(--c-ink) text-(--c) hover:-translate-y-0.5 hover:border-sign hover:bg-sign hover:text-sign-ink">Comprobar si me afecta</a>
     </div>
   </section>
 </Layout>

@@ -1,7 +1,7 @@
 ---
 /** Iconos del sitio: un solo trazo redondeado. Siempre decorativos; el texto de al lado da el significado. */
 interface Props {
-  name: "check" | "cross" | "plus" | "arrow-left" | "arrow-right" | "transbordo";
+  name: "check" | "cross" | "plus" | "arrow-left" | "arrow-right";
   size?: number;
   class?: string;
 }
@@ -13,7 +13,6 @@ const paths: Record<Props["name"], string> = {
   plus: "M11 4v14M4 11h14",
   "arrow-left": "M18 11H5M10 5l-6 6 6 6",
   "arrow-right": "M4 11h13M12 5l6 6-6 6",
-  transbordo: "",
 };
 ---
 
@@ -29,14 +28,5 @@ const paths: Record<Props["name"], string> = {
   aria-hidden="true"
   class:list={["flex-none", cls]}
 >
-  {
-    name === "transbordo" ? (
-      <>
-        <circle cx="11" cy="11" r="8" stroke-width="2.4" />
-        <circle cx="11" cy="11" r="3.2" fill="currentColor" stroke="none" />
-      </>
-    ) : (
-      <path d={paths[name]} />
-    )
-  }
+  <path d={paths[name]} />
 </svg>

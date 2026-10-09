@@ -12,21 +12,39 @@ interface Props {
 
 const { c, kind } = Astro.props;
 const demo = c.demo === "same" ? c.codigo[0].code : c.demo;
+/**
+ * Ejemplos: el principal reúne la vista previa del componente y los bloques de código sin vista propia;
+ * cada bloque con vista previa propia (otra versión del mismo componente) forma su propio ejemplo.
+ */
+const ejemplos = [
+  { demo, codigo: c.codigo.filter((k) => !k.demo) },
+  ...c.codigo.filter((k) => k.demo).map((k) => ({ demo: k.demo === "same" ? k.code : k.demo, codigo: [k] })),
+].filter((e) => e.codigo.length > 0);
+/** Solo invita a probar con teclado si la vista previa tiene algo con lo que interactuar */
+const interactiva = (html: string) => /<(button|input|select|textarea|details|dialog|a\s)|tabindex=/.test(html);
 const nombre = (id: string) => CRITERIOS.find((x) => x.id === id)?.nombre ?? "";
 ---
 
-<article id={c.id} aria-labelledby={`t-${c.id}`} class="flex min-w-0 scroll-mt-24 flex-col gap-5 border-t-2 border-ink pt-5">
+<article
+  id={c.id}
+  aria-labelledby={`t-${c.id}`}
+  data-componente={c.id}
+  class="flex min-w-0 scroll-mt-24 flex-col gap-6"
+>
   <header class="flex flex-col gap-1.5">
-    <h3 id={`t-${c.id}`} class="flex flex-wrap items-center gap-x-3 gap-y-1 text-subtitle">
+    <h2 id={`t-${c.id}`} tabindex="-1" class="text-[clamp(2rem,1.4rem+2.4vw,3rem)] tracking-[-0.03em] focus-visible:outline-offset-4">
       {c.nombre}
-      <code class="rounded bg-sunk px-2 py-0.5 font-mono text-[.9rem] font-normal tracking-normal text-muted">{c.elemento}</code>
-    </h3>
-    <p class="max-w-[46rem]">{c.intro}</p>
+    </h2>
+    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[.95rem] text-muted">
+      <code class="rounded-full bg-sunk px-2.5 py-0.5 font-mono text-[.9rem] text-ink">{c.elemento}</code>
+      <span>{kind === "nativo" ? "Nativo de HTML" : "A medida"} · {c.categoria}</span>
+    </p>
+    <p class="max-w-[46rem] text-lead">{c.intro}</p>
   </header>
 
   <div class="grid gap-5 min-[861px]:grid-cols-2">
     <div>
-      <h4 class="mb-2 font-bold">{kind === "nativo" ? "Lo que te da el navegador" : "Lo que tienes que añadir"}</h4>
+      <h3 class="mb-2 font-bold">{kind === "nativo" ? "Lo que te da el navegador" : "Lo que tienes que añadir"}</h3>
       <ul class="flex flex-col gap-1.5">
         {
           c.claves.map((k) => (
@@ -65,20 +83,31 @@ const nombre = (id: string) => CRITERIOS.find((x) => x.id === id)?.nombre ?? "";
     }
   </div>
 
-  {
-    demo && (
-      <div class="rounded-md border-2 border-dashed border-edge p-4">
-        <p class="mb-3 font-bold">Pruébalo con el teclado</p>
-        <div class="demo flex flex-col items-start gap-2" set:html={demo} />
-      </div>
-    )
-  }
-
-  <div class="flex flex-col gap-3">
-    {c.codigo.map((k) => <CodeExample code={k.code} lang={k.lang} label={k.label} />)}
+  {/* Cada ejemplo es una unidad: la vista previa en vivo arriba y su código debajo */}
+  <div class="flex flex-col gap-6">
+    {
+      ejemplos.map((e) => (
+        <div class="ejemplo overflow-hidden rounded-2xl border border-edge">
+          {e.demo && (
+            <div class="border-b border-edge bg-surface p-5">
+              <p class="mb-4 flex flex-wrap items-center gap-x-2 text-caption font-bold text-muted">
+                <span class="rounded-full bg-sign px-2 py-px text-sign-ink">Vista previa</span>
+                {interactiva(e.demo) ? "Pruébala con el ratón y con el teclado" : "Así se ve"}
+              </p>
+              <div class="demo flex flex-col items-start gap-3" set:html={e.demo} />
+            </div>
+          )}
+          <div class="flex flex-col">
+            {e.codigo.map((k) => (
+              <CodeExample code={k.code} lang={k.lang} label={k.label} />
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </div>
 
-  {c.nota && <p class="rounded-md bg-accent-soft px-4 py-3"><b>Ojo:</b> {c.nota}</p>}
+  {c.nota && <p class="max-w-[46rem] rounded-[1.25rem_.75rem_1.5rem_.9rem] bg-sign px-5 py-4 text-sign-ink"><b>Ojo:</b> {c.nota}</p>}
 
   <p class="text-[.93rem] text-muted">
     <b>Criterios relacionados:</b>{" "}

@@ -1,7 +1,7 @@
 ---
 /**
- * Comprobador «¿Me afecta?» como un trayecto: una pregunta por estación, las respondidas quedan como paradas
- * que se pueden cambiar y el resultado es la estación de destino. Sin JavaScript se ven todas las preguntas.
+ * Comprobador «¿Me afecta?» paso a paso: una pregunta cada vez, las respondidas quedan como pasos
+ * que se pueden cambiar y el resultado llega al final. Sin JavaScript se ven todas las preguntas.
  */
 const groups = [
   {
@@ -101,8 +101,8 @@ const groups = [
         <span class="route-marker route-marker-end" aria-hidden="true"></span>
         <h3 id="t-destino" tabindex="-1" class="route-q">Tu resultado</h3>
         <p data-wait class="mt-1 text-muted">Responde las preguntas y aquí verás qué normas te aplican.</p>
-        <div id="verdict" hidden class="mt-3 flex flex-col gap-3 rounded-lg bg-sign px-[clamp(1rem,3vw,1.75rem)] py-5 text-sign-ink">
-          <span data-pill class="self-start rounded px-2.5 py-0.5 text-[.9rem] font-extrabold"></span>
+        <div id="verdict" hidden class="mt-3 flex flex-col gap-3 rounded-[1.75rem_1rem_2rem_1.25rem] bg-sign px-[clamp(1rem,3vw,1.75rem)] py-5 text-sign-ink">
+          <span data-pill class="self-start rounded-full px-3 py-0.5 text-[.9rem] font-extrabold"></span>
           <p data-title class="text-[clamp(1.4rem,1.2rem+.8vw,1.75rem)] leading-tight font-extrabold"></p>
           <ul data-items class="m-0 flex list-disc flex-col gap-1.5 pl-[1.15rem] marker:text-sign-muted"></ul>
         </div>
@@ -128,7 +128,7 @@ const groups = [
   /** Las preguntas 2 y 3 no aplican al sector público */
   const applies = (i: number) => i === 0 || !isPublic();
 
-  /** Índice de la estación actual; steps.length es el destino */
+  /** Índice del paso actual; steps.length es el resultado */
   let current = 0;
 
   function render() {
@@ -154,12 +154,12 @@ const groups = [
         (checked("serv")?.value ?? "info") as Serv,
         (checked("size")?.value ?? "pyme") as Size,
       );
-      // Obligado o posible obligación: etiqueta amarilla; sin obligación: etiqueta blanca. El texto lo dice siempre.
+      // Obligado o posible obligación: etiqueta en tinta; sin obligación: etiqueta con borde. El texto lo dice siempre.
       const pill = q(box, "[data-pill]");
-      pill.classList.toggle("bg-mark", v.tone === "yes");
-      pill.classList.toggle("text-mark-ink", v.tone === "yes");
-      pill.classList.toggle("bg-sign-ink", v.tone === "no");
-      pill.classList.toggle("text-sign", v.tone === "no");
+      pill.classList.toggle("bg-sign-ink", v.tone === "yes");
+      pill.classList.toggle("text-sign", v.tone === "yes");
+      pill.classList.toggle("border-2", v.tone === "no");
+      pill.classList.toggle("border-sign-ink", v.tone === "no");
       pill.textContent = v.pill;
       q(box, "[data-title]").textContent = v.title;
       q(box, "[data-items]").replaceChildren(

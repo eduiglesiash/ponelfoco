@@ -1,68 +1,135 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PageHead from "../components/PageHead.astro";
-import SectionHead from "../components/SectionHead.astro";
 import ComponentEntry from "../components/ComponentEntry.astro";
-import { NATIVOS, A_MEDIDA } from "../data/componentes";
+import Icon from "../components/Icon.astro";
+import { NATIVOS, A_MEDIDA, CATEGORIAS } from "../data/componentes";
+
+/** Texto normalizado (minúsculas, sin tildes) para el buscador */
+const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+const todos = [
+  ...NATIVOS.map((c) => ({ c, kind: "nativo" as const })),
+  ...A_MEDIDA.map((c) => ({ c, kind: "medida" as const })),
+];
+/** Catálogo por categoría, en el orden de CATEGORIAS; las categorías vacías no se pintan */
+const grupos = CATEGORIAS.map((cat) => ({ cat, items: todos.filter((x) => x.c.categoria === cat) })).filter(
+  (g) => g.items.length > 0,
+);
+/** Orden de lectura (anterior / siguiente): el del catálogo */
+const orden = grupos.flatMap((g) => g.items);
 ---
 
 <Layout
   title="Componentes accesibles"
   description="Elementos HTML que ya son accesibles sin hacer nada y cómo hacer accesibles los componentes a medida: pestañas, interruptores, carruseles o autocompletar."
 >
-  <PageHead title="Componentes accesibles, con código">
+  <PageHead title="Componentes accesibles, con código" wide>
     Muchos elementos de HTML ya son accesibles de serie: solo hay que usarlos. Cuando el diseño pide algo que no existe en
     HTML, aquí tienes cómo construirlo para que cumpla.
   </PageHead>
 
-  <div class="wrap">
-    <div class="mb-12 grid items-start gap-x-10 gap-y-8 min-[861px]:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-      <div class="rounded-xl bg-sign p-[clamp(1.25rem,3vw,2rem)] text-sign-ink">
-        <h2 class="mb-2 text-[clamp(1.6rem,1.2rem+1.8vw,2.25rem)]">La regla de oro</h2>
-        <p>
-          Si existe un elemento HTML que hace lo que necesitas, úsalo. Un <code>button</code> trae de serie el foco, el
-          teclado, el rol y los estados. Con un <code>div</code> tienes que programarlo todo, y es fácil que falte algo.
-          ARIA cambia lo que se anuncia, pero no añade comportamiento.
-        </p>
-      </div>
-      <nav aria-labelledby="t-indice" class="border-t-2 border-ink pt-4">
-        <h2 id="t-indice" class="mb-2 text-subtitle">En esta página</h2>
-        <div class="grid grid-cols-[repeat(auto-fit,minmax(min(100%,11rem),1fr))] gap-x-6 gap-y-3">
-          <div>
-            <p class="font-semibold"><a href="#nativos">Nativos</a></p>
-            <ul class="mt-1 flex flex-col text-[.95rem]">
-              {NATIVOS.map((c) => <li><a href={`#${c.id}`} class="inline-flex min-h-8 items-center">{c.nombre}</a></li>)}
-            </ul>
-          </div>
-          <div>
-            <p class="font-semibold"><a href="#a-medida">A medida</a></p>
-            <ul class="mt-1 flex flex-col text-[.95rem]">
-              {A_MEDIDA.map((c) => <li><a href={`#${c.id}`} class="inline-flex min-h-8 items-center">{c.nombre}</a></li>)}
-            </ul>
-          </div>
-        </div>
-      </nav>
+  <div class="wrap-wide">
+    <div class="mb-10 rounded-[2rem_1.25rem_2.25rem_1.5rem] bg-sign px-[clamp(1.25rem,3vw,2.5rem)] py-6 text-sign-ink">
+      <h2 class="text-[clamp(1.5rem,1.2rem+1.4vw,2rem)]">La regla de oro</h2>
+      <p class="mt-2 max-w-[60rem]">
+        Si existe un elemento HTML que hace lo que necesitas, úsalo. Un <code>button</code> trae de serie el foco, el teclado,
+        el rol y los estados. Con un <code>div</code> tienes que programarlo todo, y es fácil que falte algo. ARIA cambia lo
+        que se anuncia, pero no añade comportamiento.
+      </p>
     </div>
 
-    <section id="nativos" aria-labelledby="t-nativos" class="border-t border-line py-[clamp(2rem,4vw,3rem)]">
-      <SectionHead title="Componentes nativos de HTML" id="t-nativos">
-        Elementos que el navegador ya hace accesibles. Lo único que tienes que poner tú es un buen texto: etiquetas,
-        nombres y alternativas.
-      </SectionHead>
-      <div class="flex flex-col gap-14">
-        {NATIVOS.map((c) => <ComponentEntry c={c} kind="nativo" />)}
-      </div>
-    </section>
+    <div class="grid gap-x-12 gap-y-6 lg:grid-cols-[19rem_minmax(0,1fr)]">
+      <nav aria-labelledby="t-catalogo" class="min-w-0">
+        {/* Un solo catálogo: en móvil es un desplegable; en escritorio una columna fija (el resumen se oculta). Abierto sin JS. */}
+        <details
+          open
+          data-catalogo
+          class="rounded-2xl border border-edge lg:sticky lg:top-[calc(env(safe-area-inset-top,0px)+5rem)] lg:-mx-2 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:rounded-none lg:border-0 lg:px-2 lg:pt-2 lg:pb-8"
+        >
+          <summary class="flex min-h-12 cursor-pointer items-center gap-2 px-4 font-bold lg:hidden">
+            <span class="flex-1">Catálogo de componentes</span>
+            <span class="text-caption font-normal text-muted" data-actual-movil></span>
+          </summary>
+          <div class="px-2 pb-3 lg:p-0">
+          <h2 id="t-catalogo" class="mb-3 hidden text-title lg:block">Catálogo</h2>
+          <div
+            class="flex items-center gap-2 rounded-full border-[1.5px] border-edge bg-surface px-3.5 transition-colors focus-within:border-ink focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-mark"
+          >
+            <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true" class="flex-none">
+              <circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle>
+              <path d="M13 13l5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <label for="buscar-componente" class="sr-only">Buscar componente</label>
+            <input
+              id="buscar-componente"
+              type="search"
+              autocomplete="off"
+              aria-describedby="estado-catalogo"
+              placeholder="Botón, tabla, teclado…"
+              class="min-h-11 min-w-0 flex-1 border-0 bg-transparent py-2 text-label text-ink focus-visible:shadow-none focus-visible:outline-none"
+            />
+          </div>
+          <div role="group" aria-label="Tipo de componente" class="mt-3 flex flex-wrap gap-1.5">
+            <button type="button" class="toggle" data-tipo="todos" aria-pressed="true">Todos</button>
+            <button type="button" class="toggle" data-tipo="nativo" aria-pressed="false">Nativos</button>
+            <button type="button" class="toggle" data-tipo="medida" aria-pressed="false">A medida</button>
+          </div>
+          <p id="estado-catalogo" role="status" class="mt-2 text-caption text-muted"></p>
 
-    <section id="a-medida" aria-labelledby="t-medida" class="border-t border-line py-[clamp(2rem,4vw,3rem)]">
-      <SectionHead title="Componentes a medida" id="t-medida">
-        Patrones de diseño que HTML no trae. Para que cumplan WCAG necesitan roles y estados ARIA, manejo de teclado y foco
-        visible. Siguen la guía de prácticas de ARIA del W3C.
-      </SectionHead>
-      <div class="flex flex-col gap-14">
-        {A_MEDIDA.map((c) => <ComponentEntry c={c} kind="medida" />)}
+          {
+            grupos.map((g, gi) => (
+              <div data-grupo class="mt-5">
+                <h3 id={`cat-${gi}`} class="mb-1 px-2 text-caption font-bold text-muted">
+                  {g.cat}
+                </h3>
+                <ul aria-labelledby={`cat-${gi}`}>
+                  {g.items.map(({ c, kind }) => (
+                    <li data-item data-tipo={kind} data-q={norm(`${c.nombre} ${c.elemento} ${c.intro} ${c.claves.join(" ")} ${g.cat}`)}>
+                      <a
+                        href={`#${c.id}`}
+                        data-ir={c.id}
+                        class="group flex min-h-11 items-start gap-2 rounded-lg px-2 py-2 text-ink no-underline transition-colors hover:bg-sunk aria-[current=true]:bg-sign aria-[current=true]:text-sign-ink"
+                      >
+                        <span class="min-w-0 flex-1 leading-snug group-hover:underline group-aria-[current=true]:no-underline">
+                          {c.nombre}
+                        </span>
+                        <span class="pt-0.5 text-caption text-muted group-aria-[current=true]:text-sign-ink">
+                          {kind === "nativo" ? "Nativo" : "A medida"}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+          <p data-vacio hidden class="mt-5 px-2 text-muted">Ningún componente coincide.</p>
+          </div>
+        </details>
+      </nav>
+
+      <div class="min-w-0 pb-6" data-detalle>
+        <div class="flex flex-col gap-20">
+          {orden.map(({ c, kind }) => <ComponentEntry c={c} kind={kind} />)}
+        </div>
+
+        <nav aria-label="Componente anterior y siguiente" data-pasos hidden class="mt-14 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+          <a href="#" data-paso="anterior" class="group flex flex-col gap-1 border-t-4 border-ink pt-3 text-ink no-underline">
+            <span class="flex items-center gap-1.5 text-[.9rem] font-bold text-muted"><Icon name="arrow-left" size={16} /> Anterior</span>
+            <span class="font-display text-title font-extrabold group-hover:underline" data-nombre></span>
+          </a>
+          <a
+            href="#"
+            data-paso="siguiente"
+            class="group flex flex-col items-end gap-1 border-t-4 border-ink pt-3 text-right text-ink no-underline sm:col-start-2"
+          >
+            <span class="flex items-center gap-1.5 text-[.9rem] font-bold text-muted">Siguiente <Icon name="arrow-right" size={16} /></span>
+            <span class="font-display text-title font-extrabold group-hover:underline" data-nombre></span>
+          </a>
+        </nav>
       </div>
-    </section>
+    </div>
   </div>
 </Layout>
 
@@ -70,6 +137,10 @@ import { NATIVOS, A_MEDIDA } from "../data/componentes";
   // Los mismos scripts cuyo código se muestra en la página
   import "../scripts/interruptor.js";
   import "../scripts/pestanas.js";
+  import "../scripts/menu.js";
+  import "../scripts/autocompletar.js";
+  import "../scripts/carrusel.js";
+  import "../scripts/aviso.js";
 
   // Demo del botón: escribe el mensaje en la región role="status" de su demo
   for (const b of document.querySelectorAll<HTMLButtonElement>("[data-demo-msg]")) {
@@ -79,7 +150,133 @@ import { NATIVOS, A_MEDIDA } from "../data/componentes";
     });
   }
 
+  // Demo del div con role="button": el mismo manejo de teclado que enseña el código
+  const favorito = document.querySelector<HTMLElement>(".favorito");
+  if (favorito) {
+    const anadirFavorito = () => {
+      favorito.closest(".demo")!.querySelector(".favorito-estado")!.textContent = "Añadido a favoritos.";
+    };
+    favorito.addEventListener("click", anadirFavorito);
+    favorito.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") anadirFavorito();
+      if (e.key === " ") e.preventDefault(); // evita que la página se desplace
+    });
+    favorito.addEventListener("keyup", (e) => {
+      if (e.key === " ") anadirFavorito();
+    });
+  }
+
   // Demo de la ventana modal
   const dialogo = document.getElementById("demo-dialogo") as HTMLDialogElement;
   document.getElementById("demo-abrir")!.addEventListener("click", () => dialogo.showModal());
+</script>
+
+<script>
+  /*
+   * Maestro-detalle: el catálogo de la izquierda muestra un componente cada vez a la derecha, sin saltar por la página.
+   * La URL lleva el componente (#boton) para poder enlazarlo y volver atrás. Sin JavaScript se ven todos, uno tras otro,
+   * y los enlaces del catálogo llevan a cada uno.
+   */
+  const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+  const catalogo = document.querySelector<HTMLDetailsElement>("[data-catalogo]")!;
+  const actualMovil = document.querySelector<HTMLElement>("[data-actual-movil]")!;
+  const detalle = document.querySelector<HTMLElement>("[data-detalle]")!;
+  const articulos = Array.from(document.querySelectorAll<HTMLElement>("[data-componente]"));
+  const enlaces = Array.from(catalogo.querySelectorAll<HTMLAnchorElement>("[data-ir]"));
+  const items = Array.from(catalogo.querySelectorAll<HTMLLIElement>("[data-item]"));
+  const grupos = Array.from(catalogo.querySelectorAll<HTMLElement>("[data-grupo]"));
+  const buscar = document.getElementById("buscar-componente") as HTMLInputElement;
+  const estado = document.getElementById("estado-catalogo")!;
+  const vacio = catalogo.querySelector<HTMLElement>("[data-vacio]")!;
+  const tipos = Array.from(catalogo.querySelectorAll<HTMLButtonElement>("[data-tipo]"));
+  const pasos = document.querySelector<HTMLElement>("[data-pasos]")!;
+  const ids = articulos.map((a) => a.dataset.componente!);
+  const nombre = (id: string) => document.getElementById(`t-${id}`)!.textContent!.trim();
+
+  // En escritorio el catálogo siempre está abierto; en móvil empieza cerrado para dejar ver el componente
+  const escritorio = matchMedia("(min-width: 64rem)");
+  const ajustarCatalogo = () => (catalogo.open = escritorio.matches);
+  escritorio.addEventListener("change", ajustarCatalogo);
+  ajustarCatalogo();
+  catalogo.addEventListener("toggle", () => {
+    if (escritorio.matches && !catalogo.open) catalogo.open = true;
+  });
+
+  function mostrar(id: string, { foco = false } = {}) {
+    if (!ids.includes(id)) id = ids[0];
+    for (const a of articulos) a.hidden = a.dataset.componente !== id;
+    for (const e of enlaces) e.setAttribute("aria-current", String(e.dataset.ir === id));
+    actualMovil.textContent = nombre(id);
+
+    const i = ids.indexOf(id);
+    pasos.hidden = false;
+    for (const [sel, j] of [["anterior", i - 1], ["siguiente", i + 1]] as const) {
+      const a = pasos.querySelector<HTMLAnchorElement>(`[data-paso="${sel}"]`)!;
+      a.hidden = j < 0 || j >= ids.length;
+      if (a.hidden) continue;
+      a.href = `#${ids[j]}`;
+      a.dataset.ir = ids[j];
+      a.querySelector("[data-nombre]")!.textContent = nombre(ids[j]);
+    }
+
+    if (foco) {
+      // Solo se desplaza si el inicio del componente ha quedado por encima de la pantalla
+      const top = detalle.getBoundingClientRect().top;
+      if (top < 0) window.scrollBy({ top: top - 96 });
+      document.getElementById(`t-${id}`)!.focus({ preventScroll: true });
+    }
+  }
+
+  function ir(id: string) {
+    history.pushState(null, "", `#${id}`);
+    mostrar(id, { foco: true });
+    if (!escritorio.matches) catalogo.open = false;
+  }
+
+  // Clic en el catálogo o en anterior / siguiente: cambia el componente sin saltar
+  document.addEventListener("click", (e) => {
+    const a = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-ir]");
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    ir(a.dataset.ir!);
+  });
+  addEventListener("popstate", () => mostrar(location.hash.slice(1), { foco: true }));
+
+  // Buscador y filtro por tipo
+  let tipo = "todos";
+  function filtrar() {
+    const q = norm(buscar.value.trim());
+    let n = 0;
+    for (const li of items) {
+      li.hidden = !((tipo === "todos" || li.dataset.tipo === tipo) && (!q || li.dataset.q!.includes(q)));
+      if (!li.hidden) n++;
+    }
+    for (const g of grupos) g.hidden = !g.querySelector("[data-item]:not([hidden])");
+    vacio.hidden = n > 0;
+    estado.textContent = q || tipo !== "todos" ? (n === 1 ? "1 componente" : `${n} componentes`) : "";
+    tipos.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.tipo === tipo)));
+  }
+  let timer: ReturnType<typeof setTimeout>;
+  buscar.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(filtrar, 120);
+  });
+  // Intro abre el primer resultado
+  buscar.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const first = items.find((li) => !li.hidden)?.querySelector<HTMLAnchorElement>("[data-ir]");
+    if (first) ir(first.dataset.ir!);
+  });
+  tipos.forEach((b) =>
+    b.addEventListener("click", () => {
+      tipo = b.dataset.tipo!;
+      filtrar();
+    }),
+  );
+
+  // Estado inicial: el componente de la URL o el primero, sin el salto del navegador al ancla
+  mostrar(location.hash.slice(1));
+  if (location.hash) requestAnimationFrame(() => window.scrollTo({ top: 0 }));
 </script>

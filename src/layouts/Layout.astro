@@ -10,7 +10,8 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const fullTitle = title ? `${title} · Accesibilidad en Claro` : "Accesibilidad en Claro";
+const SITE = "Pon el foco";
+const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · Accesibilidad web y WCAG en español`;
 ---
 
 <!doctype html>
@@ -20,11 +21,16 @@ const fullTitle = title ? `${title} · Accesibilidad en Claro` : "Accesibilidad 
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta property="og:site_name" content={SITE} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_ES" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap"
     />
     <script is:inline>
       // Aplica el tamaño de texto guardado antes de pintar, para evitar saltos

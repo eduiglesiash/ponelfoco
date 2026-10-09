@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .t { stroke: #14161c; } .p { fill: #14161c; }
+    @media (prefers-color-scheme: dark) { .t { stroke: #eef1f8; } .p { fill: #eef1f8; } }
+  </style>
+  <rect class="t" x="2" y="2" width="28" height="28" rx="8" fill="none" stroke-width="3"/>
+  <rect x="5" y="5" width="22" height="22" rx="5" fill="none" stroke="#ffc21a" stroke-width="3"/>
+  <circle class="p" cx="16" cy="16" r="5"/>
+</svg>
