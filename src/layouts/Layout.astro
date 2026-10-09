@@ -1,8 +1,8 @@
 ---
-import { Font } from "astro:assets";
-import "../styles/global.css";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 
 interface Props {
   /** Título de la página; se completa con el nombre del sitio salvo en la portada */
@@ -11,88 +11,131 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const SITE = "Pon el foco";
+const SITE = 'Pon el foco';
 const fullTitle = title ? `${title} · ${SITE}` : `${SITE} · Accesibilidad web y WCAG en español`;
 // URL canónica absoluta (con barra final, como las rutas del sitio)
-const canonical = new URL(Astro.url.pathname.replace(/\/?$/, "/"), Astro.site).href;
-const esPortada = Astro.url.pathname === "/";
+const canonical = new URL(Astro.url.pathname.replace(/\/?$/, '/'), Astro.site).href;
+const esPortada = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang='es'>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta charset='utf-8' />
+    <meta
+      name='viewport'
+      content='width=device-width, initial-scale=1, viewport-fit=cover'
+    />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="sitemap" href="/sitemap.xml" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:site_name" content={SITE} />
-    <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:locale" content="es_ES" />
-    <meta name="twitter:card" content="summary" />
+    <meta
+      name='description'
+      content={description}
+    />
+    <link
+      rel='canonical'
+      href={canonical}
+    />
+    <link
+      rel='sitemap'
+      href='/sitemap.xml'
+    />
+    <meta
+      property='og:type'
+      content='website'
+    />
+    <meta
+      property='og:url'
+      content={canonical}
+    />
+    <meta
+      property='og:site_name'
+      content={SITE}
+    />
+    <meta
+      property='og:title'
+      content={fullTitle}
+    />
+    <meta
+      property='og:description'
+      content={description}
+    />
+    <meta
+      property='og:locale'
+      content='es_ES'
+    />
+    <meta
+      name='twitter:card'
+      content='summary'
+    />
     {
       esPortada && (
         <script
-          type="application/ld+json"
+          type='application/ld+json'
           set:html={JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
             name: SITE,
             url: canonical,
-            inLanguage: "es",
-            description,
+            inLanguage: 'es',
+            description
           })}
         />
       )
     }
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link
+      rel='icon'
+      href='/favicon.svg'
+      type='image/svg+xml'
+    />
     <!-- Precarga solo lo que pinta la primera pantalla: cuerpo normal y titulares -->
-    <Font cssVariable="--font-atkinson" preload={[{ weight: 400, style: "normal" }]} />
-    <Font cssVariable="--font-bricolage" preload />
-    <Font cssVariable="--font-atkinson-mono" />
+    <Font
+      cssVariable='--font-atkinson'
+      preload={[{ weight: 400, style: 'normal' }]}
+    />
+    <Font
+      cssVariable='--font-bricolage'
+      preload
+    />
+    <Font cssVariable='--font-atkinson-mono' />
     <!-- Analítica sin cookies (Plausible autoalojado): no guarda nada en el navegador, así que no hace falta aviso de cookies -->
     <script
       is:inline
       async
-      src="https://analytics-welly-plausible-15858f-187-127-226-171.sslip.io/js/pa-cKW_L1iWeBWTEvZh-w16p.js"
+      src='https://analytics.wellylabs.cloud/js/pa-i_Hz2ryu4_kToJbpBYK8D.js'
     ></script>
     <script is:inline>
-      window.plausible =
+      ((window.plausible =
         window.plausible ||
         function () {
           (plausible.q = plausible.q || []).push(arguments);
-        };
-      plausible.init =
-        plausible.init ||
-        function (i) {
-          plausible.o = i || {};
-        };
+        }),
+        (plausible.init =
+          plausible.init ||
+          function (i) {
+            plausible.o = i || {};
+          }));
       plausible.init();
     </script>
+
     <script is:inline>
       // Aplica el tamaño de texto guardado antes de pintar, para evitar saltos
       try {
-        const v = Number(localStorage.getItem("ac-size"));
-        if (v) document.documentElement.style.setProperty("--root-size", v + "%");
+        const v = Number(localStorage.getItem('ac-size'));
+        if (v) document.documentElement.style.setProperty('--root-size', v + '%');
         // Y el modo claro u oscuro elegido con el botón de la cabecera
-        const t = localStorage.getItem("ac-theme");
-        if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+        const t = localStorage.getItem('ac-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
   </head>
   <body>
     <a
-      href="#contenido"
-      class="absolute -top-24 left-4 z-[100] rounded-md bg-mark px-4 py-2.5 font-bold text-mark-ink focus:top-[calc(env(safe-area-inset-top,0px)+8px)]"
-    >
+      href='#contenido'
+      class='absolute -top-24 left-4 z-[100] rounded-md bg-mark px-4 py-2.5 font-bold text-mark-ink focus:top-[calc(env(safe-area-inset-top,0px)+8px)]'>
       Saltar al contenido
     </a>
     <Header />
-    <main id="contenido">
+    <main id='contenido'>
       <slot />
     </main>
     <Footer />
