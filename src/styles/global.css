@@ -94,9 +94,10 @@
   /* Pantallas anchas */
   --breakpoint-wide: 87.5rem;
   /* Titulares con personalidad (Bricolage Grotesque); cuerpo en Atkinson, diseñada para baja visión; mono solo para código y números */
-  --font-display: "Bricolage Grotesque", "Atkinson Hyperlegible Next", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* Las familias las define la API de fuentes de Astro (astro.config.mjs), con su fallback ajustado */
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-atkinson);
+  --font-mono: var(--font-atkinson-mono);
 }
 
 @layer base {

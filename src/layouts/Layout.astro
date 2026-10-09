@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
@@ -49,12 +50,10 @@ const esPortada = Astro.url.pathname === "/";
       )
     }
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Atkinson+Hyperlegible+Mono:wght@400;600&family=Bricolage+Grotesque:opsz,wght@12..96,600..800&display=swap"
-    />
+    <!-- Precarga solo lo que pinta la primera pantalla: cuerpo normal y titulares -->
+    <Font cssVariable="--font-atkinson" preload={[{ weight: 400, style: "normal" }]} />
+    <Font cssVariable="--font-bricolage" preload />
+    <Font cssVariable="--font-atkinson-mono" />
     <script is:inline>
       // Aplica el tamaño de texto guardado antes de pintar, para evitar saltos
       try {
