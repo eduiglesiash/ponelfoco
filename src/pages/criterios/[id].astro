@@ -1,6 +1,8 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import LevelBadge from "../../components/LevelBadge.astro";
+import Areas from "../../components/Areas.astro";
+import FiltroAreas from "../../components/FiltroAreas.astro";
 import CodeExample from "../../components/CodeExample.astro";
 import ListaPrincipio from "../../components/ListaPrincipio.astro";
 import Figura from "../../components/Figura.astro";
@@ -79,6 +81,17 @@ const siguiente = next && paso(next);
         <div data-rail-head class="sticky top-0 z-10 bg-bg pb-3 after:pointer-events-none after:absolute after:inset-x-0 after:top-full after:h-3 after:bg-linear-to-b after:from-bg after:to-transparent">
         <BuscadorCriterios atajo />
         <a href="/criterios/" class="mt-1 inline-flex min-h-11 items-center gap-1.5 font-bold"><Icon name="arrow-left" size={16} /> Todos los criterios</a>
+        <details class="filtro-areas">
+          <summary class="flex min-h-11 cursor-pointer items-center gap-1.5 font-bold">
+            Filtrar por responsabilidad <span data-areas-marcadas class="font-normal text-muted"></span>
+          </summary>
+          <FiltroAreas
+            idPrefix="r-"
+            ayuda="Sin ninguno marcado se ven todos. El criterio que estás viendo se muestra siempre."
+            class="pt-1 pb-2 text-[.95rem]"
+          />
+        </details>
+        <p role="status" data-areas-estado class="text-caption text-muted empty:hidden"></p>
         <ul class="mt-2 mb-4 flex gap-1.5" aria-label="Cambiar de principio">
           {
             lineas.map(({ k, name, href }) => (
@@ -125,6 +138,19 @@ const siguiente = next && paso(next);
         </summary>
         <nav aria-label={`Criterios de ${PRINCIPIOS[n]}`} class="border-t border-line px-2 py-3">
           <div class="mb-3 px-1"><BuscadorCriterios idPrefix="m-" /></div>
+          <div class="mb-3 px-1">
+            <details class="filtro-areas">
+              <summary class="flex min-h-11 cursor-pointer items-center gap-1.5 font-bold">
+                Filtrar por responsabilidad <span data-areas-marcadas class="font-normal text-muted"></span>
+              </summary>
+              <FiltroAreas
+                idPrefix="m-"
+                ayuda="Sin ninguno marcado se ven todos. El criterio que estás viendo se muestra siempre."
+                class="pt-1 pb-2 text-[.95rem]"
+              />
+            </details>
+            <p role="status" data-areas-estado class="text-caption text-muted empty:hidden"></p>
+          </div>
           <ul class="mb-3 flex gap-1.5 px-1" aria-label="Cambiar de principio">
             {
               lineas.map(({ k, name, href }) => (
@@ -171,6 +197,9 @@ const siguiente = next && paso(next);
           {c.nuevo && <span class="badge-new">Nuevo en WCAG 2.2</span>}
           <span class="text-[.95rem] text-muted">{estado}</span>
         </div>
+        <p class="text-[.95rem]">
+          <Areas id={c.id} conTexto />
+        </p>
       </header>
 
       <section id="que-pide" aria-labelledby="t-que" class="prose mt-8 max-w-[44rem] scroll-mt-24">
@@ -321,6 +350,44 @@ const siguiente = next && paso(next);
 </Layout>
 
 <script>
+  import { coincide, guardarAreas, leerAreas } from "../../scripts/filtro-areas.js";
+
+  // Filtro por responsabilidad: oculta de la columna los criterios de otras áreas, salvo el actual.
+  // Hay dos copias (columna y plegable de móvil) que comparten selección.
+  let seleccion = leerAreas();
+  const botonesArea = Array.from(document.querySelectorAll<HTMLButtonElement>(".toggle[data-area]"));
+  function filtrarAreas() {
+    for (const b of botonesArea) b.setAttribute("aria-pressed", String(seleccion.includes(b.dataset.area!)));
+    for (const scope of document.querySelectorAll<HTMLElement>("[data-rail], details.card nav")) {
+      let vistos = 0;
+      let total = 0;
+      for (const zona of scope.querySelectorAll<HTMLElement>(".lista [data-zone]")) {
+        let enZona = 0;
+        for (const li of zona.querySelectorAll<HTMLElement>(".lista-item")) {
+          const actual = !!li.querySelector('[aria-current="page"]');
+          li.hidden = !actual && !coincide(seleccion, li.dataset.areas);
+          total++;
+          if (!li.hidden) enZona++;
+        }
+        zona.hidden = enZona === 0;
+        vistos += enZona;
+      }
+      const marcadas = scope.querySelector<HTMLElement>("[data-areas-marcadas]");
+      if (marcadas) marcadas.textContent = seleccion.length ? `(${seleccion.length})` : "";
+      const estado = scope.querySelector<HTMLElement>("[data-areas-estado]");
+      if (estado) estado.textContent = seleccion.length ? `Ves ${vistos} de ${total} criterios de este principio.` : "";
+    }
+    document.dispatchEvent(new CustomEvent("filtro-areas"));
+  }
+  for (const b of botonesArea)
+    b.addEventListener("click", () => {
+      const a = b.dataset.area!;
+      seleccion = seleccion.includes(a) ? seleccion.filter((x) => x !== a) : [...seleccion, a];
+      guardarAreas(seleccion);
+      filtrarAreas();
+    });
+  filtrarAreas();
+
   // Centra el criterio actual en la columna lateral sin mover la página
   const rail = document.querySelector<HTMLElement>("[data-rail]");
   const here = rail?.querySelector<HTMLElement>('[aria-current="page"]');
@@ -341,9 +408,10 @@ const siguiente = next && paso(next);
     const offset = here.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop;
     const target = offset - head - (rail.clientHeight - head - here.offsetHeight) / 2;
     // Ajusta al inicio de un criterio o pauta para que ninguno quede cortado bajo la cabecera
-    const tops = Array.from(rail.querySelectorAll<HTMLElement>(".lista-item, .lista-zona")).map(
-      (el) => el.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop - head,
-    );
+    // Sin los que oculta el filtro por responsabilidad: no tienen posición
+    const tops = Array.from(rail.querySelectorAll<HTMLElement>(".lista-item, .lista-zona"))
+      .filter((el) => el.getClientRects().length > 0)
+      .map((el) => el.getBoundingClientRect().top - rail.getBoundingClientRect().top + rail.scrollTop - head);
     const max = rail.scrollHeight - rail.clientHeight;
     const snap = tops.filter((t) => t <= Math.min(target, max)).pop();
     rail.scrollTop = Math.max(0, snap ?? target);

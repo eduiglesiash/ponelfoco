@@ -5,6 +5,7 @@
  * (/criterios/?q=…).
  */
 import { CRITERIOS, obsoleto, slug } from "../data/criterios";
+import { areas } from "../data/areas";
 
 interface Props {
   /** Prefijo de ids, para poder tener el buscador en el plano lateral y en el plegable de móvil */
@@ -49,7 +50,7 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
   <ul data-resultados hidden class="-mx-2 flex max-h-[calc(100vh-16rem)] flex-col overflow-y-auto p-2">
     {
       CRITERIOS.map((c) => (
-        <li data-q={norm(`${c.id} ${c.nombre} ${c.descripcion}`)} hidden>
+        <li data-q={norm(`${c.id} ${c.nombre} ${c.descripcion}`)} data-areas={areas(c.id).join(" ")} hidden>
           <a
             href={`/criterios/${slug(c.id)}/`}
             class:list={[
@@ -75,6 +76,8 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
 </form>
 
 <script>
+  import { coincide, leerAreas } from "../scripts/filtro-areas.js";
+
   const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
   for (const root of document.querySelectorAll<HTMLFormElement>("[data-buscador]")) {
@@ -90,9 +93,10 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
 
     function render() {
       const q = norm(input.value.trim());
+      const sel = leerAreas();
       let n = 0;
       for (const li of items) {
-        li.hidden = !q || !li.dataset.q!.includes(q);
+        li.hidden = !q || !li.dataset.q!.includes(q) || !coincide(sel, li.dataset.areas);
         if (!li.hidden) n++;
       }
       lista.hidden = !q;
@@ -101,6 +105,8 @@ const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,
       estado.textContent = !q ? "" : n === 0 ? "Ningún criterio coincide." : n === 1 ? "1 criterio" : `${n} criterios`;
     }
 
+    // El filtro por responsabilidad de la ficha también se aplica a los resultados
+    document.addEventListener("filtro-areas", render);
     input.addEventListener("input", () => {
       clearTimeout(timer);
       timer = setTimeout(render, 120);

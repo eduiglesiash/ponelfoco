@@ -1,0 +1,33 @@
+---
+/**
+ * Áreas a las que afecta un criterio (desarrollo, diseño, negocio).
+ * Por defecto solo iconos, con el texto oculto para lectores de pantalla. Con «conTexto», el texto también se ve.
+ */
+import Icon from "./Icon.astro";
+import { AREAS, areas } from "../data/areas";
+
+interface Props {
+  id: string;
+  conTexto?: boolean;
+  class?: string;
+}
+
+const { id, conTexto = false, class: cls } = Astro.props;
+const lista = areas(id);
+---
+
+{
+  lista.length > 0 && (
+    <span class:list={["inline-flex flex-wrap items-center gap-x-2.5 gap-y-1 text-muted", cls]}>
+      <span class:list={[!conTexto && "sr-only"]}>
+        Responsabilidad de{conTexto ? ":" : ` ${lista.map((a) => AREAS[a].nombre.toLowerCase()).join(", ")}.`}
+      </span>
+      {lista.map((a) => (
+        <span class="inline-flex items-center gap-1" title={conTexto ? undefined : AREAS[a].nombre}>
+          <Icon name={a} size={16} />
+          {conTexto && <span class="font-semibold text-ink">{AREAS[a].nombre}</span>}
+        </span>
+      ))}
+    </span>
+  )
+}

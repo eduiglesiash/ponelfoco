@@ -1,6 +1,7 @@
 ---
 /** Lista de los criterios de un principio, agrupados por pauta. Se usa en la columna de la ficha. */
 import { CRITERIOS, PAUTAS, obsoleto, pauta, slug } from "../data/criterios";
+import { areas } from "../data/areas";
 
 interface Props {
   /** Número del principio: "1"…"4" */
@@ -26,7 +27,7 @@ const tramos = Object.keys(PAUTAS)
         </p>
         <ol aria-labelledby={`${idPrefix}z-${slug(t.id)}`}>
           {t.items.map((c) => (
-            <li class="lista-item" data-obsoleto={obsoleto(c.id) ? "" : undefined}>
+            <li class="lista-item" data-obsoleto={obsoleto(c.id) ? "" : undefined} data-areas={areas(c.id).join(" ")}>
               <a href={`/criterios/${slug(c.id)}/`} aria-current={c.id === current ? "page" : undefined}>
                 <span class="lista-num">{c.id}</span>
                 <span class="lista-nombre">

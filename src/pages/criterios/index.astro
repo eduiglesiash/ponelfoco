@@ -2,6 +2,9 @@
 import Layout from "../../layouts/Layout.astro";
 import Figura from "../../components/Figura.astro";
 import LevelBadge from "../../components/LevelBadge.astro";
+import Areas from "../../components/Areas.astro";
+import FiltroAreas from "../../components/FiltroAreas.astro";
+import { AREAS, areas } from "../../data/areas";
 import { CRITERIOS, PAUTAS, PRINCIPIOS, PRINCIPIOS_TEXTO, obsoleto, pauta, slug } from "../../data/criterios";
 
 /** Texto normalizado (minúsculas, sin tildes) para el buscador */
@@ -59,6 +62,8 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
           }
         </div>
       </div>
+
+      <FiltroAreas leyenda class="mb-5" />
 
       <div
         role="search"
@@ -132,8 +137,9 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
                         data-crit
                         data-lv={c.nivel}
                         data-new={c.nuevo ? "1" : undefined}
+                        data-areas={areas(c.id).join(" ")}
                         data-obsoleto={obsoleto(c.id) ? "" : undefined}
-                        data-q={norm(Object.values(c).join(" "))}
+                        data-q={norm([...Object.values(c), ...areas(c.id).map((a) => AREAS[a].nombre)].join(" "))}
                         hidden={c.nivel === "AAA"}
                         class="border-b border-line"
                       >
@@ -155,6 +161,9 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
                           >
                             {c.nombre}
                             {c.nuevo && <span class="badge-new ml-1.5 inline-block align-[.1em]">Nuevo</span>}
+                            <span class="mt-1 block">
+                              <Areas id={c.id} />
+                            </span>
                           </span>
                           {obsoleto(c.id) ? <span class="lv lv-AAA">Eliminado</span> : <LevelBadge nivel={c.nivel} />}
                         </a>
@@ -192,11 +201,13 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
 </style>
 
 <script>
+  import { coincide, leerAreas } from "../../scripts/filtro-areas.js";
+
   const norm = (s: string) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
   const plural = (n: number) => n + (n === 1 ? " criterio" : " criterios");
 
-  type State = { lv: Record<string, boolean>; p: string; onlyNew: boolean; q: string };
-  const state: State = { lv: { A: true, AA: true, AAA: false }, p: "0", onlyNew: false, q: "" };
+  type State = { lv: Record<string, boolean>; p: string; onlyNew: boolean; q: string; areas: string[] };
+  const state: State = { lv: { A: true, AA: true, AAA: false }, p: "0", onlyNew: false, q: "", areas: leerAreas() };
   try {
     const s = JSON.parse(localStorage.getItem("ac-filters") || "null");
     if (s && s.lv) Object.assign(state, { lv: s.lv, onlyNew: !!s.onlyNew });
@@ -205,6 +216,7 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
   const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-principio]"));
   const pButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".filtro-p"));
   const lvButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".toggle[data-lv]"));
+  const areaButtons = Array.from(document.querySelectorAll<HTMLButtonElement>(".toggle[data-area]"));
   const onlyNew = document.getElementById("onlyNew")!;
   const count = document.getElementById("count")!;
   const empty = document.getElementById("empty")!;
@@ -222,7 +234,12 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
         let inZone = 0;
         for (const el of zone.querySelectorAll<HTMLElement>("[data-crit]")) {
           const d = el.dataset;
-          const visible = pOk && state.lv[d.lv!] && (!state.onlyNew || d.new === "1") && (!q || d.q!.includes(q));
+          const visible =
+            pOk &&
+            state.lv[d.lv!] &&
+            coincide(state.areas, d.areas) &&
+            (!state.onlyNew || d.new === "1") &&
+            (!q || d.q!.includes(q));
           el.hidden = !visible;
           if (!visible) continue;
           inZone++;
@@ -240,9 +257,10 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
     count.textContent = plural(shown) + (closed ? ` · ${closed} eliminado` : "");
     pButtons.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.p === state.p)));
     lvButtons.forEach((b) => b.setAttribute("aria-pressed", String(!!state.lv[b.dataset.lv!])));
+    areaButtons.forEach((b) => b.setAttribute("aria-pressed", String(state.areas.includes(b.dataset.area!))));
     onlyNew.setAttribute("aria-pressed", String(state.onlyNew));
     try {
-      localStorage.setItem("ac-filters", JSON.stringify({ lv: state.lv, onlyNew: state.onlyNew }));
+      localStorage.setItem("ac-filters", JSON.stringify({ lv: state.lv, onlyNew: state.onlyNew, areas: state.areas }));
     } catch {}
   }
 
@@ -255,6 +273,13 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
   lvButtons.forEach((b) =>
     b.addEventListener("click", () => {
       state.lv[b.dataset.lv!] = !state.lv[b.dataset.lv!];
+      render();
+    }),
+  );
+  areaButtons.forEach((b) =>
+    b.addEventListener("click", () => {
+      const a = b.dataset.area!;
+      state.areas = state.areas.includes(a) ? state.areas.filter((x) => x !== a) : [...state.areas, a];
       render();
     }),
   );

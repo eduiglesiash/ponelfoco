@@ -1,0 +1,57 @@
+---
+/**
+ * Filtro por responsabilidad (desarrollo, diseño, contenidos, negocio). Botones con aria-pressed; la lógica de
+ * filtrado está en cada página y la selección compartida en src/scripts/filtro-areas.js.
+ */
+import Icon from "./Icon.astro";
+import { AREAS, type Area } from "../data/areas";
+
+interface Props {
+  /** Prefijo de ids, para poder tener el filtro dos veces en una página */
+  idPrefix?: string;
+  /** Muestra qué cubre cada responsabilidad */
+  leyenda?: boolean;
+  /** Frase de ayuda bajo los botones */
+  ayuda?: string;
+  class?: string;
+}
+
+const {
+  idPrefix = "",
+  leyenda = false,
+  ayuda = "Sin ninguno marcado se ven todos los criterios. Si marcas varios, se ven los de cualquiera de ellos.",
+  class: cls,
+} = Astro.props;
+const lista = Object.keys(AREAS) as Area[];
+---
+
+<div role="group" aria-labelledby={`${idPrefix}g-area`} aria-describedby={`${idPrefix}d-area`} class={cls}>
+  <p id={`${idPrefix}g-area`} class="mb-2 font-bold text-muted">
+    Responsabilidad de <span class="font-normal">(clasificación orientativa nuestra, no del W3C)</span>
+  </p>
+  <div class="flex flex-wrap gap-1.5">
+    {
+      lista.map((a) => (
+        <button type="button" class="toggle inline-flex items-center gap-1.5" data-area={a} aria-pressed="false">
+          <Icon name={a} size={16} />
+          {AREAS[a].nombre}
+        </button>
+      ))
+    }
+  </div>
+  <p id={`${idPrefix}d-area`} class="mt-2 text-[.93rem] text-muted">{ayuda}</p>
+  {
+    leyenda && (
+      <ul aria-label="Qué cubre cada responsabilidad" class="mt-1 flex flex-wrap gap-x-6 gap-y-1 text-[.93rem] text-muted">
+        {lista.map((a) => (
+          <li class="flex items-start gap-1.5">
+            <Icon name={a} size={16} class="mt-[.2em]" />
+            <span>
+              <b class="text-ink">{AREAS[a].nombre}</b>: {AREAS[a].texto}
+            </span>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</div>
