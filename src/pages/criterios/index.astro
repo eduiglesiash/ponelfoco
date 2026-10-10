@@ -50,7 +50,7 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
             principios.map((p) => (
               <button type="button" class:list={["filtro-p figura-salta", `principio-${p.n}`]} data-p={p.n} aria-pressed="false">
                 <Figura n={p.n} class="h-12 w-auto" />
-                <span>
+                <span class="min-w-0 hyphens-auto [overflow-wrap:anywhere]">
                   {p.name}
                   <span class="block text-caption font-normal">{p.total} criterios</span>
                 </span>
@@ -174,9 +174,10 @@ const exigidos = CRITERIOS.filter((c) => c.nivel !== "AAA" && !obsoleto(c.id)).l
 <style>
   @reference "../../styles/global.css";
 
-  /* Botones de principio: figura y nombre; el pulsado se rellena con el color del principio */
+  /* Botones de principio: figura y nombre; el pulsado se rellena con el color del principio.
+     Si el nombre no cabe junto a la figura (columnas estrechas, texto ampliado), pasa debajo en vez de salirse */
   .filtro-p {
-    @apply flex min-h-16 cursor-pointer items-center gap-3 rounded-2xl border-[1.5px] border-edge bg-surface px-3 py-2 text-left font-display text-[1.05rem] font-extrabold text-ink transition-[background-color,border-color,scale] duration-200 hover:border-ink active:scale-[.98];
+    @apply flex min-h-16 cursor-pointer flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border-[1.5px] border-edge bg-surface px-3 py-2 text-left font-display text-[1.05rem] font-extrabold text-ink transition-[background-color,border-color,scale] duration-200 hover:border-ink active:scale-[.98];
   }
   .filtro-p[aria-pressed="true"] {
     background: var(--c, var(--ink));
